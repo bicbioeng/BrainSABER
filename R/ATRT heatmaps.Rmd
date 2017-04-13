@@ -1,0 +1,48 @@
+---
+title: "ATRT heat maps"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r echo=FALSE}
+library(htmltools)
+library(d3heatmap)
+tags$style('.d3heatmap { margin-left: auto; margin-right: auto; }')
+```
+
+## MYC Group
+
+```{r MYC, echo=FALSE}
+#load("data/MYCmat.rda")
+d3heatmap(t(MYCmat), scale = "column",Colv = FALSE)
+```
+
+## SHH Group
+
+```{r SHH, echo=FALSE}
+d3heatmap(t(SHHmat), scale = "column",Colv = FALSE)
+```
+
+## TYR Group
+
+```{r TYR, echo=FALSE}
+d3heatmap(t(TYRmat), scale = "column",Colv = FALSE)
+```
+
+## Side by Side
+
+```{r SbS, echo=FALSE}
+d3heatmap(t(MYCmat), scale = "column",Colv = FALSE)
+d3heatmap(t(SHHmat), scale = "column",Colv = FALSE)
+d3heatmap(t(TYRmat), scale = "column",Colv = FALSE)
+```
+
+## All Groups
+
+```{r AG, echo=FALSE}
+d3heatmap(t(ATRTmat), scale = "column",Colv = FALSE)
+```

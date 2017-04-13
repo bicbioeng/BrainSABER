@@ -15,7 +15,9 @@
 
 getCosineSim <- function(v, dataSet){
   #relevantGenes <- subset of AIBSARNA containing only genes specified in V
-  relevantGenes <- dataSet[featureData(dataSet)$gene_symbol == names(v), ]
+  #relevantGenes <- dataSet[featureData(dataSet)$gene_symbol == names(v), ]
+  vInd <- which(fData(dataSet)$gene_symbol %in% names(v), arr.ind = TRUE)
+  relevantGenes <- dataSet[vInd]
   nrows <- length(v)
   ncols <- lengths(relevantGenes[1,]) #returns row length
   #initialize Similarity_Score vector

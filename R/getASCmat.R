@@ -7,7 +7,7 @@
 #'
 #' @param relevantGenes a Biobase ExpressionSet
 #'
-#' @return a numeric matrix of cosine similaritys
+#' @return a numeric matrix of cosine similarities
 #' @import Biobase
 #' @export
 
