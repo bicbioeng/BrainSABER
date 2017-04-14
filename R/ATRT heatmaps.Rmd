@@ -1,48 +1,50 @@
 ---
 title: "ATRT heat maps"
-output: html_document
+output: 
+  html_document:
+    fig_width: 14
+    fig_height: 4
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+## Cosine Similarity Heatmaps
+```{r cosSim, echo=FALSE}
+library(ComplexHeatmap, quietly = TRUE)
+library(BrainSABER, quietly = TRUE)
+data("MYCcosMat","SHHcosMat","TYRcosMat")
+MYCc <- ComplexHeatmap::Heatmap(t(MYCcosMat), cluster_columns = FALSE,       column_names_gp = gpar(fontsize = 8), name = "MYC Group", column_title = "MYC Group", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+SHHc <- ComplexHeatmap::Heatmap(t(SHHcosMat), cluster_columns = FALSE,  column_names_gp = gpar(fontsize = 8), name = "SHH Group", column_title = "SHH Group", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+TYRc <- ComplexHeatmap::Heatmap(t(TYRcosMat), cluster_columns = FALSE, column_names_gp = gpar(fontsize = 8), name = "TYR Group", column_title = "TYR Group",  column_title_gp = gpar(fontsize = 20, fontface = "bold"))
 
-```{r echo=FALSE}
-library(htmltools)
-library(d3heatmap)
-tags$style('.d3heatmap { margin-left: auto; margin-right: auto; }')
+hlistc <- MYCc+ SHHc + TYRc
+
+ComplexHeatmap::draw(hlistc)
 ```
 
-## MYC Group
+## Euclidean Distance Heatmaps
 
-```{r MYC, echo=FALSE}
-#load("data/MYCmat.rda")
-d3heatmap(t(MYCmat), scale = "column",Colv = FALSE)
+```{r eucSim, echo=FALSE}
+library(ComplexHeatmap, quietly = TRUE)
+library(BrainSABER, quietly = TRUE)
+data("MYCeucMat","SHHeucMat","TYReucMat")
+MYCe <- ComplexHeatmap::Heatmap(t(MYCeucMat), cluster_columns = FALSE, column_names_gp = gpar(fontsize = 8), name = "MYC Group", column_title = "MYC Group", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+SHHe <- ComplexHeatmap::Heatmap(t(SHHeucMat), cluster_columns = FALSE,  column_names_gp = gpar(fontsize = 8), name = "SHH Group", column_title = "SHH Group", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+TYRe <- ComplexHeatmap::Heatmap(t(TYReucMat), cluster_columns = FALSE, column_names_gp = gpar(fontsize = 8), name = "TYR Group", column_title = "TYR Group",  column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+
+hliste <- MYCe+ SHHe + TYRe
+
+ComplexHeatmap::draw(hliste)
 ```
 
-## SHH Group
+## All Groups Together
 
-```{r SHH, echo=FALSE}
-d3heatmap(t(SHHmat), scale = "column",Colv = FALSE)
-```
+```{r allGroups, echo=FALSE}
+library(ComplexHeatmap, quietly = TRUE)
+library(BrainSABER, quietly = TRUE)
+data("ATRTcosMat","ATRTeucMat")
+ComplexHeatmap::Heatmap(t(ATRTcosMat), cluster_columns = FALSE, row_names_gp = gpar(fontsize = 8), name = "Cosine Similarity", column_title = "Cosine Similarity", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
 
-## TYR Group
-
-```{r TYR, echo=FALSE}
-d3heatmap(t(TYRmat), scale = "column",Colv = FALSE)
-```
-
-## Side by Side
-
-```{r SbS, echo=FALSE}
-d3heatmap(t(MYCmat), scale = "column",Colv = FALSE)
-d3heatmap(t(SHHmat), scale = "column",Colv = FALSE)
-d3heatmap(t(TYRmat), scale = "column",Colv = FALSE)
-```
-
-## All Groups
-
-```{r AG, echo=FALSE}
-d3heatmap(t(ATRTmat), scale = "column",Colv = FALSE)
-```
+ComplexHeatmap::Heatmap(t(ATRTeucMat), cluster_columns = FALSE, row_names_gp = gpar(fontsize = 8), name = "Euclidean Distance", column_title = "Euclidean Distance", column_title_gp = gpar(fontsize = 20, fontface = "bold"))

@@ -14,25 +14,25 @@ ui <-  navbarPage(title = "BrainSABER Cosine Similarity of 8pcw sample Heatmap",
 
 server <- function(input, output) {
   output$MYC <- renderD3heatmap({
-    d3heatmap(t(MYCmat), scale = "column",Colv = FALSE,xaxis_font_size = "2pt")
+    d3heatmap(t(MYCcosMat), scale = "column",Colv = FALSE,xaxis_font_size = "2pt")
   })
   output$SHH <- renderD3heatmap({
-    d3heatmap(t(SHHmat), scale = "column", Colv = FALSE,xaxis_font_size = "2pt")
+    d3heatmap(t(SHHcosMat), scale = "column", Colv = FALSE,xaxis_font_size = "2pt")
   })
   output$TYR <- renderD3heatmap({
-    d3heatmap(t(TYRmat), scale = "column", Colv = FALSE,xaxis_font_size = "2pt")
+    d3heatmap(t(TYRcosMat), scale = "column", Colv = FALSE,xaxis_font_size = "2pt")
   })
   output$MYCc <- renderD3heatmap({
-    d3heatmap(t(MYCmat), scale = "column",Colv = FALSE,xaxis_font_size = "0px")
+    d3heatmap(t(MYCcosMat), scale = "column",Colv = FALSE,xaxis_font_size = "0px")
   })
   output$SHHc <- renderD3heatmap({
-    d3heatmap(t(SHHmat), scale = "column", Colv = FALSE,xaxis_font_size = "0px")
+    d3heatmap(t(SHHcosMat), scale = "column", Colv = FALSE,xaxis_font_size = "0px")
   })
   output$TYRc <- renderD3heatmap({
-    d3heatmap(t(TYRmat), scale = "column", Colv = FALSE,xaxis_font_size = "0px")
+    d3heatmap(t(TYRcosMat), scale = "column", Colv = FALSE,xaxis_font_size = "0px")
   })
   output$ATRT <- renderD3heatmap({
-    d3heatmap(t(ATRTmat), scale = "column", Colv = FALSE,xaxis_font_size = "2pt",
+    d3heatmap(t(ATRTcosMat), scale = "column", Colv = FALSE,xaxis_font_size = "2pt",
               yaxis_font_size = "4pt")
   })
 }
