@@ -2,7 +2,7 @@
 #'
 #' This function returns a named example vector of gene expression values for
 #' the specified genes, taken from the 1st row of dataSet, for use in
-#' demonstrating getCosineSim.
+#' demonstrating getSimScores.
 #'
 #' @param genes a character vector of HGNC-compliant gene names
 #' @param dataSet a Biobase ExpressionSet
