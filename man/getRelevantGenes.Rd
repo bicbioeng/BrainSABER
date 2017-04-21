@@ -4,10 +4,12 @@
 \alias{getRelevantGenes}
 \title{Get a subset of AIBSARNA using a Gene Expression Vector}
 \usage{
-getRelevantGenes(v)
+getRelevantGenes(v, gene_names = "HGNC")
 }
 \arguments{
-\item{v}{a vector of HGNC-conformant named gene expression values}
+\item{v}{a vector of HGNC-conformant or RefSeq ID named gene expression values}
+
+\item{gene_names}{either "HGNC" or "RefSeq", defaults to "HGNC"}
 }
 \value{
 a Biobase ExpressionSet consisting of genes in v
@@ -15,11 +17,14 @@ a Biobase ExpressionSet consisting of genes in v
 \description{
 This function returns a subset of the AIBSARNA dataset, containing only
 the genes listed in the parameter vector, v.  The vector must consist of
-numerical gene expression values named with HGNC-conformant gene names.
+numerical gene expression values named with HGNC-conformant gene names for
+\code{gene_names = "HGNC"}, or named with RefSeq IDs for \code{gene_names =
+"RefSeq"}.
 }
 \examples{
+
 myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
-myGeneSet <- getRelevantGenes(myGenes)
+myGeneSet <- getRelevantGenes(myGenes, gene_names = "HGNC")
 
 }

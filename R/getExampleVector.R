@@ -8,6 +8,7 @@
 #' @param dataSet a Biobase ExpressionSet
 #'
 #' @return a named character vector of gene-expression values
+#' @import Biobase
 #' @export
 
 getExampleVector <- function(genes, dataSet) {
