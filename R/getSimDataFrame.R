@@ -13,13 +13,13 @@
 #' @import Biobase
 #' @export
 #' @examples
-#' myGenes <- c(4.484885, 0.121902, 0.510035)
+#' \dontrun{myGenes <- c(4.484885, 0.121902, 0.510035)
 #' names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 #' myGeneSet <- getRelevantGenes(myGenes)
 #' myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
 #' myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
 #' myCosineDF <- getSimDataFrame(myGeneSet, similarity_method = "cosine")
-#' myEuclideanDF <- getSimDataFrame(myGeneSet, similarity_method = "euclidean")
+#' myEuclideanDF <- getSimDataFrame(myGeneSet, similarity_method = "euclidean")}
 
 getSimDataFrame <- function(relevantGenes, similarity_method = "cosine"){
   #get column numbers to allow comparison to original dataset

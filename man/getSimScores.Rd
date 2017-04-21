@@ -26,9 +26,9 @@ values named with HGNC-conformant gene names, and should be the same vector
 used to generate the ExpressionSet.
 }
 \examples{
-myGenes <- c(4.484885, 0.121902, 0.510035)
+\dontrun{myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 myGeneSet <- getRelevantGenes(myGenes)
 myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
-myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
+myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")}
 }
