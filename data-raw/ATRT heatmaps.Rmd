@@ -1,0 +1,50 @@
+---
+title: "ATRT Heat Maps"
+output: 
+  html_document:
+    fig_width: 14
+    fig_height: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Cosine Similarity Heatmaps
+```{r cosSim, echo=FALSE}
+library(ComplexHeatmap, quietly = TRUE)
+library(BrainSABER, quietly = TRUE)
+data("MYCcosMat","SHHcosMat","TYRcosMat")
+MYCc <- ComplexHeatmap::Heatmap(t(MYCcosMat), cluster_columns = FALSE,       column_names_gp = gpar(fontsize = 8), name = "MYC Group", column_title = "MYC Group", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+SHHc <- ComplexHeatmap::Heatmap(t(SHHcosMat), cluster_columns = FALSE,  column_names_gp = gpar(fontsize = 8), name = "SHH Group", column_title = "SHH Group", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+TYRc <- ComplexHeatmap::Heatmap(t(TYRcosMat), cluster_columns = FALSE, column_names_gp = gpar(fontsize = 8), name = "TYR Group", column_title = "TYR Group",  column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+
+hlistc <- MYCc+ SHHc + TYRc
+
+ComplexHeatmap::draw(hlistc)
+```
+
+## Euclidean Distance Heatmaps
+
+```{r eucSim, echo=FALSE}
+library(ComplexHeatmap, quietly = TRUE)
+library(BrainSABER, quietly = TRUE)
+data("MYCeucMat","SHHeucMat","TYReucMat")
+MYCe <- ComplexHeatmap::Heatmap(t(MYCeucMat), cluster_columns = FALSE, column_names_gp = gpar(fontsize = 8), name = "MYC Group", column_title = "MYC Group", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+SHHe <- ComplexHeatmap::Heatmap(t(SHHeucMat), cluster_columns = FALSE,  column_names_gp = gpar(fontsize = 8), name = "SHH Group", column_title = "SHH Group", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+TYRe <- ComplexHeatmap::Heatmap(t(TYReucMat), cluster_columns = FALSE, column_names_gp = gpar(fontsize = 8), name = "TYR Group", column_title = "TYR Group",  column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+
+hliste <- MYCe+ SHHe + TYRe
+
+ComplexHeatmap::draw(hliste)
+```
+
+## All Groups Together
+
+```{r allGroups, echo=FALSE}
+library(ComplexHeatmap, quietly = TRUE)
+library(BrainSABER, quietly = TRUE)
+data("ATRTcosMat","ATRTeucMat")
+ComplexHeatmap::Heatmap(t(ATRTcosMat), cluster_columns = FALSE, row_names_gp = gpar(fontsize = 8), name = "Cosine Similarity", column_title = "Cosine Similarity", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+
+ComplexHeatmap::Heatmap(t(ATRTeucMat), cluster_columns = FALSE, row_names_gp = gpar(fontsize = 8), name = "Euclidean Distance", column_title = "Euclidean Distance", column_title_gp = gpar(fontsize = 20, fontface = "bold"))

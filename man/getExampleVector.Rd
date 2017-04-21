@@ -4,18 +4,16 @@
 \alias{getExampleVector}
 \title{Get an example vector for specified genes}
 \usage{
-getExampleVector(genes, dataSet)
+getExampleVector(genes)
 }
 \arguments{
 \item{genes}{a character vector of HGNC-compliant gene names}
-
-\item{dataSet}{a Biobase ExpressionSet}
 }
 \value{
 a named character vector of gene-expression values
 }
 \description{
 This function returns a named example vector of gene expression values for
-the specified genes, taken from the 1st row of dataSet, for use in
+the specified genes, taken from the 1st row of AIBSARNA, for use in
 demonstrating getSimScores.
 }
