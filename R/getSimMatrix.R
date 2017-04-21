@@ -12,13 +12,13 @@
 #' @import Biobase
 #' @export
 #' @examples
-#' \dontrun{myGenes <- c(4.484885, 0.121902, 0.510035)
+#' myGenes <- c(4.484885, 0.121902, 0.510035)
 #' names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 #' myGeneSet <- getRelevantGenes(myGenes)
 #' myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
 #' myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
 #' myCosineMatrix <- getSimMatrix(myGeneSet, similarity_method = "cosine")
-#' myEuclideanMatrix <- getSimMatrix(myGeneSet, similarity_method = "euclidean")}
+#' myEuclideanMatrix <- getSimMatrix(myGeneSet, similarity_method = "euclidean")
 
 getSimMatrix <- function(relevantGenes, similarity_method = "cosine"){
   #get data vectors
@@ -33,7 +33,7 @@ getSimMatrix <- function(relevantGenes, similarity_method = "cosine"){
   nrows <- nlevels(age)
   ncols <- nlevels(structure_acronym)
   #create and prefill the matrix, in case not all ages have all structures
-  mat <- matrix(data = rep(0, nrows * ncols), nrow = nrows,
+  mat <- matrix(data = rep(NA, nrows * ncols), nrow = nrows,
                 ncol = ncols)
   rownames(mat) <- as.character(levels(age))
   colnames(mat) <- as.character(levels(structure_acronym))

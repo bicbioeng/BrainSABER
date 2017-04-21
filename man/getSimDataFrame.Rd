@@ -22,11 +22,11 @@ structure_acroynym, and either cosine_similarity or euclidean_similarity,
 sorted by similarity score in decreasing order.
 }
 \examples{
-\dontrun{myGenes <- c(4.484885, 0.121902, 0.510035)
+myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 myGeneSet <- getRelevantGenes(myGenes)
 myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
 myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
 myCosineDF <- getSimDataFrame(myGeneSet, similarity_method = "cosine")
-myEuclideanDF <- getSimDataFrame(myGeneSet, similarity_method = "euclidean")}
+myEuclideanDF <- getSimDataFrame(myGeneSet, similarity_method = "euclidean")
 }
