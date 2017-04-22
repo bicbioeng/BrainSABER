@@ -24,7 +24,7 @@
 
 getSimScores <- function(v, relevantGenes, similarity_method = "cosine"){
   #get row length
-  ncols <- lengths(relevantGenes[1,])
+  ncols <- length(pData(relevantGenes)$column_num)
   if (similarity_method == "euclidean"){
     #initialize Similarity_Score vector
     euclidean_similarity <- euclideanSim(exprs(relevantGenes)[, 1], v)

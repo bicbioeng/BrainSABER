@@ -33,8 +33,10 @@ getSimMatrix <- function(relevantGenes, similarity_method = "cosine"){
   nrows <- nlevels(age)
   ncols <- nlevels(structure_acronym)
   #create and prefill the matrix, in case not all ages have all structures
-  mat <- matrix(data = rep(NA, nrows * ncols), nrow = nrows,
+  mat <- matrix(data = rep(-1, nrows * ncols), nrow = nrows,
                 ncol = ncols)
+  checkedMat <- matrix(data = rep(0, nrows * ncols), nrow = nrows,
+                       ncol = ncols)
   rownames(mat) <- as.character(levels(age))
   colnames(mat) <- as.character(levels(structure_acronym))
   #populate the matrix with similarity scores
@@ -42,6 +44,18 @@ getSimMatrix <- function(relevantGenes, similarity_method = "cosine"){
     a <- as.character(age[i])
     s <- as.character(structure_acronym[i])
     mat[a,s] <- sim_score[i]
+  }
+
+  keepCols <- NULL
+  for(i in 1:ncols){
+    if (sum(mat[, i]) > -10){
+      checkedMat[, i] <- mat[, i]
+      keepCols <- c(keepCols, colnames(mat)[i])
+    }
+  }
+
+  if (!(is.null(keepCols))){
+    mat <- checkedMat[, keepCols]
   }
   return(mat)
 }

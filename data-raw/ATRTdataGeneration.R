@@ -16,10 +16,10 @@ generateATRTdata <- function(){
                  "VEGFA", "WNT11", "WNT7A", "WTIP", "WWC1")
 
   #build example vectors
-  MYC8pcw <- getExampleVector(MYCgenes, AIBSARNA)
-  SHH8pcw <- getExampleVector(SHHgenes, AIBSARNA)
-  TYR8pcw <- getExampleVector(TYRgenes, AIBSARNA)
-  ATRT8pcw <- c(MYC8pcw, SHH8pcw, TYR8pcw)
+  MYC8pcw <- getExampleVector(MYCgenes)
+  SHH8pcw <- getExampleVector(SHHgenes)
+  TYR8pcw <- getExampleVector(TYRgenes)
+  ATRT8pcw <- getExampleVector(unique(c(MYCgenes, SHHgenes, TYRgenes)))
 
   #get relevant gene sets
   MYCset <- getRelevantGenes(MYC8pcw)

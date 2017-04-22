@@ -15,6 +15,7 @@
 
 getExampleVector <- function(genes) {
   #get relevant genes
+  names(genes) <- genes
   relevantGenes <- getRelevantGenes(genes, gene_names = "HGNC")
   #get 8pcw exprs
   v <- as.vector(exprs(relevantGenes[, 1]))
