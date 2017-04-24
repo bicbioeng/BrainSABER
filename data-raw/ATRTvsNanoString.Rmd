@@ -1,5 +1,5 @@
 ---
-title: "ATRT heat maps"
+title: "NanoString Sample 1 Heat Maps"
 output: 
   html_document:
     fig_width: 14
@@ -8,43 +8,21 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+library(BrainSABER)
+library(ComplexHeatmap)
 ```
 
-## Cosine Similarity Heatmaps
+
 ```{r cosSim, echo=FALSE}
-library(ComplexHeatmap, quietly = TRUE)
-library(BrainSABER, quietly = TRUE)
-data("MYCcosMat","SHHcosMat","TYRcosMat")
-MYCc <- ComplexHeatmap::Heatmap(t(MYCcosMat), cluster_columns = FALSE,       column_names_gp = gpar(fontsize = 8), name = "MYC Group", column_title = "MYC Group", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
-SHHc <- ComplexHeatmap::Heatmap(t(SHHcosMat), cluster_columns = FALSE,  column_names_gp = gpar(fontsize = 8), name = "SHH Group", column_title = "SHH Group", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
-TYRc <- ComplexHeatmap::Heatmap(t(TYRcosMat), cluster_columns = FALSE, column_names_gp = gpar(fontsize = 8), name = "TYR Group", column_title = "TYR Group",  column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+data("NanoSample1cosMat")
+ComplexHeatmap::Heatmap(t(NanoSample1cosMat), cluster_columns = FALSE,       column_names_gp = gpar(fontsize = 8), name = "NanoString Sample 1 Cosine Similarity", heatmap_legend_param = list(title = "Legend"), column_title = "NanoString Sample 1 Cosine Similarity", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
 
-hlistc <- MYCc+ SHHc + TYRc
-
-ComplexHeatmap::draw(hlistc)
 ```
 
-## Euclidean Distance Heatmaps
+
 
 ```{r eucSim, echo=FALSE}
-library(ComplexHeatmap, quietly = TRUE)
-library(BrainSABER, quietly = TRUE)
-data("MYCeucMat","SHHeucMat","TYReucMat")
-MYCe <- ComplexHeatmap::Heatmap(t(MYCeucMat), cluster_columns = FALSE, column_names_gp = gpar(fontsize = 8), name = "MYC Group", column_title = "MYC Group", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
-SHHe <- ComplexHeatmap::Heatmap(t(SHHeucMat), cluster_columns = FALSE,  column_names_gp = gpar(fontsize = 8), name = "SHH Group", column_title = "SHH Group", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
-TYRe <- ComplexHeatmap::Heatmap(t(TYReucMat), cluster_columns = FALSE, column_names_gp = gpar(fontsize = 8), name = "TYR Group", column_title = "TYR Group",  column_title_gp = gpar(fontsize = 20, fontface = "bold"))
-
-hliste <- MYCe+ SHHe + TYRe
-
-ComplexHeatmap::draw(hliste)
+data("NanoSample1eucMat")
+ComplexHeatmap::Heatmap(t(NanoSample1eucMat), cluster_columns = FALSE,       column_names_gp = gpar(fontsize = 8), name = "NanoString Sample 1 Euclidean Distance", heatmap_legend_param = list(title = "Legend"), column_title = "NanoString Sample 1 Euclidean Distance", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
 ```
 
-## All Groups Together
-
-```{r allGroups, echo=FALSE}
-library(ComplexHeatmap, quietly = TRUE)
-library(BrainSABER, quietly = TRUE)
-data("ATRTcosMat","ATRTeucMat")
-ComplexHeatmap::Heatmap(t(ATRTcosMat), cluster_columns = FALSE, row_names_gp = gpar(fontsize = 8), name = "Cosine Similarity", column_title = "Cosine Similarity", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
-
-ComplexHeatmap::Heatmap(t(ATRTeucMat), cluster_columns = FALSE, row_names_gp = gpar(fontsize = 8), name = "Euclidean Distance", column_title = "Euclidean Distance", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
