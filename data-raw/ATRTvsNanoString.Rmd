@@ -1,0 +1,35 @@
+---
+title: "NanoString Sample 1 Heat Maps"
+output: 
+  html_document:
+    fig_width: 14
+    fig_height: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(BrainSABER)
+library(ComplexHeatmap)
+library(nanoSet)
+```
+
+Heatmaps generated using Sample 1 from the NanoString data set.
+
+```{r cosSim, echo=FALSE}
+data("NanoSample1cosMat")
+ComplexHeatmap::Heatmap(t(NanoSample1cosMat), cluster_columns = FALSE,       column_names_gp = gpar(fontsize = 8), name = "NanoString Sample 1 Cosine Similarity", heatmap_legend_param = list(title = "Legend"), column_title = "NanoString Sample 1 Cosine Similarity", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+
+```
+
+
+
+```{r eucSim, echo=FALSE}
+data("NanoSample1eucMat")
+ComplexHeatmap::Heatmap(t(NanoSample1eucMat), cluster_columns = FALSE,       column_names_gp = gpar(fontsize = 8), name = "NanoString Sample 1 Euclidean Distance", heatmap_legend_param = list(title = "Legend"), column_title = "NanoString Sample 1 Euclidean Distance", column_title_gp = gpar(fontsize = 20, fontface = "bold"))
+```
+
+Full vector used:
+```{r, eval=TRUE, echo=FALSE}
+getExternalVector(nanoSet::NanoSet, index = 1, dataSetColName = "gene_symbol",
+                  AIBSARNAcolName = "gene_symbol")
+```
