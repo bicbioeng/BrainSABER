@@ -1,12 +1,11 @@
 #' Get Age, Structure Acronym, and Similarity Score Matrix
 #'
-#' This function takes a \code{Biobase ExpressionSet} as returned by
-#' \code{getSimScores} and returns a numeric matrix of similarity scores with
-#' rows labeled by age, and columns labeled by structure_acronym.
+#' This function takes a similarity vector as returned by \code{getSimScores}
+#' and returns a numeric matrix of similarity scores with rows labeled by age,
+#' and columns labeled by structure_acronym.
 #'
+#' @param sim_score a vector of similarity scores
 #' @param relevantGenes a Biobase ExpressionSet
-#' @param similarity_method currently supported similarity methods are "cosine"
-#'     and "euclidean", defaults to "cosine"
 #'
 #' @return a numeric matrix of similarity scores
 #' @import Biobase
@@ -15,20 +14,20 @@
 #' myGenes <- c(4.484885, 0.121902, 0.510035)
 #' names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 #' myGeneSet <- getRelevantGenes(myGenes)
-#' myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
-#' myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
-#' myCosineMatrix <- getSimMatrix(myGeneSet, similarity_method = "cosine")
-#' myEuclideanMatrix <- getSimMatrix(myGeneSet, similarity_method = "euclidean")
+#' myCosScore <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
+#' myEucScore <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
+#' myCosineMatrix <- getSimMatrix(myCosScore, myGeneSet)
+#' myEuclideanMatrix <- getSimMatrix(myEucScore, myGeneSet)
 
-getSimMatrix <- function(relevantGenes, similarity_method = "cosine"){
+getSimMatrix <- function(sim_score, relevantGenes){
   #get data vectors
   age <- phenoData(relevantGenes)$age
   structure_acronym <- phenoData(relevantGenes)$structure_acronym
-  if (similarity_method == "euclidean"){
-    sim_score <- phenoData(relevantGenes)$euclidean_similarity
-  } else {
-    sim_score <- phenoData(relevantGenes)$cosine_similarity
-  }
+  #if (similarity_method == "euclidean"){
+  #  sim_score <- phenoData(relevantGenes)$euclidean_similarity
+  #} else {
+  #  sim_score <- phenoData(relevantGenes)$cosine_similarity
+  #}
   #get the dimensions
   nrows <- nlevels(age)
   ncols <- nlevels(structure_acronym)
@@ -52,17 +51,6 @@ getSimMatrix <- function(relevantGenes, similarity_method = "cosine"){
   inr <- which(rownames(mat) %in% badrows, arr.ind = TRUE)
   mat <- mat[,-inn]
   mat <- mat[-inr,]
-  # the following columns contain less than 5 different
-  #keepCols <- NULL
-  #for(i in 1:ncols){
-  #  if (sum(mat[, i]) > 1){
-  #    checkedMat[, i] <- mat[, i]
-  #    keepCols <- c(keepCols, colnames(mat)[i])
-  #  }
-  #}
 
- # if (!(is.null(keepCols))){
-  #  mat <- checkedMat[, keepCols]
-  #}
   return(mat)
 }

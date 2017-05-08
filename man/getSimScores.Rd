@@ -15,8 +15,7 @@ getSimScores(v, relevantGenes, similarity_method = "cosine")
 and "euclidean", defaults to "cosine"}
 }
 \value{
-relevantGenes, with similarity scores stored as part of the sample
-    data (phenoData)
+vector of similarity scores for each sample in relevantGenes
 }
 \description{
 This function computes the similarity score of a gene expression
@@ -29,6 +28,6 @@ used to generate the ExpressionSet.
 myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 myGeneSet <- getRelevantGenes(myGenes)
-myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
-myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
+CosScores <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
+EucScores <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
 }

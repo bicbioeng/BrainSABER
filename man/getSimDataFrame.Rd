@@ -4,9 +4,11 @@
 \alias{getSimDataFrame}
 \title{Get Age, Structure Acronym, and Similarity Scores Data Frame}
 \usage{
-getSimDataFrame(relevantGenes, similarity_method = "cosine")
+getSimDataFrame(sim_score, relevantGenes, similarity_method = "cosine")
 }
 \arguments{
+\item{sim_score}{a vector of similarity scores}
+
 \item{relevantGenes}{a Biobase Expression set}
 
 \item{similarity_method}{currently supported similarity methods are "cosine"
@@ -16,17 +18,19 @@ and "euclidean", defaults to "cosine"}
 a three-column data.frame
 }
 \description{
-This function takes a \code{Biobase ExpressionSet} as returned by
-\code{getSimScores} and constructs a \code{data.frame} with columns age,
-structure_acroynym, and either cosine_similarity or euclidean_similarity,
-sorted by similarity score in decreasing order.
+This function takes a similarity vector as returned by \code{getSimScores}
+and constructs a \code{data.frame} with columns age, structure_acroynym,
+and either cosine_similarity or euclidean_similarity, sorted by similarity
+score in decreasing order.
 }
 \examples{
 myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 myGeneSet <- getRelevantGenes(myGenes)
-myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
-myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
-myCosineDF <- getSimDataFrame(myGeneSet, similarity_method = "cosine")
-myEuclideanDF <- getSimDataFrame(myGeneSet, similarity_method = "euclidean")
+myCosScore <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
+myEucScore <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
+myCosineDF <- getSimDataFrame(myCosScore, myGeneSet,
+  similarity_method = "cosine")
+myEuclideanDF <- getSimDataFrame(myEucScore, myGeneSet,
+  similarity_method = "euclidean")
 }
