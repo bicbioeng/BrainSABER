@@ -23,6 +23,9 @@ down-regulation, 1 indicating up-regulation, and 0 indicating normal, or
 "char" for a character matrix with "D" indicating down-regulation, "U"
 indicating up-regulation, and "N" indicating normal}
 }
+\value{
+either a numerical or character matrix
+}
 \description{
 This function returns a matrix showing whether gene expression values in
  \code{dataSet} are up-regulated, down-regulated, or normal. \code{method = "discrete"} requires \code{up_threshold} and \code{down_threshold} to be defined.

@@ -20,9 +20,14 @@ the sample vector's names, defaults to "gene_symbol"}
 comparable to dataSetColName.  One of "gene_id", "ensembl_gene_id",
 "gene_symbol", "entrez_id", "refseq_ids"}
 }
+\value{
+a named vector of gene expression values
+}
 \description{
-Get a sample vector from an outside Biobase ExpressionSet, for use in
-creating subsets of AIBSARNA with \code{getRelevantGenes}
+Get a named vector of gene expression values from a single sample in an
+outside Biobase ExpressionSet, for use in creating subsets of AIBSARNA with
+ \code{getRelevantGenes} and comparison with that subset with
+ \code{getSimScores}
 }
 \examples{
 myGenes <- c(4.484885, 0.121902, 0.510035)

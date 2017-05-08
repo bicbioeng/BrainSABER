@@ -14,7 +14,7 @@
 #'     "char" for a character matrix with "D" indicating down-regulation, "U"
 #'     indicating up-regulation, and "N" indicating normal
 #'
-#' @return
+#' @return either a numerical or character matrix
 #' @export
 #'
 #' @examples
