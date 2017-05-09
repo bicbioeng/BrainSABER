@@ -4,28 +4,27 @@
 \alias{getSimMatrix}
 \title{Get Age, Structure Acronym, and Similarity Score Matrix}
 \usage{
-getSimMatrix(relevantGenes, similarity_method = "cosine")
+getSimMatrix(sim_score, relevantGenes)
 }
 \arguments{
-\item{relevantGenes}{a Biobase ExpressionSet}
+\item{sim_score}{a vector of similarity scores}
 
-\item{similarity_method}{currently supported similarity methods are "cosine"
-and "euclidean", defaults to "cosine"}
+\item{relevantGenes}{a Biobase ExpressionSet}
 }
 \value{
 a numeric matrix of similarity scores
 }
 \description{
-This function takes a \code{Biobase ExpressionSet} as returned by
-\code{getSimScores} and returns a numeric matrix of similarity scores with
-rows labeled by age, and columns labeled by structure_acronym.
+This function takes a similarity vector as returned by \code{getSimScores}
+and returns a numeric matrix of similarity scores with rows labeled by age,
+and columns labeled by structure_acronym.
 }
 \examples{
 myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 myGeneSet <- getRelevantGenes(myGenes)
-myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
-myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
-myCosineMatrix <- getSimMatrix(myGeneSet, similarity_method = "cosine")
-myEuclideanMatrix <- getSimMatrix(myGeneSet, similarity_method = "euclidean")
+myCosScore <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
+myEucScore <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
+myCosineMatrix <- getSimMatrix(myCosScore, myGeneSet)
+myEuclideanMatrix <- getSimMatrix(myEucScore, myGeneSet)
 }

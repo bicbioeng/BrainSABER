@@ -1,7 +1,9 @@
 #' getExternalVector
 #'
-#' Get a sample vector from an outside Biobase ExpressionSet, for use in
-#' creating subsets of AIBSARNA with \code{getRelevantGenes}
+#' Get a named vector of gene expression values from a single sample in an
+#' outside Biobase ExpressionSet, for use in creating subsets of AIBSARNA with
+#'  \code{getRelevantGenes} and comparison with that subset with
+#'  \code{getSimScores}
 #'
 #' @param dataSet a Biobase ExpressionSet
 #' @param index the integer index of the sample of dataSet to be used
@@ -11,7 +13,7 @@
 #'     comparable to dataSetColName.  One of "gene_id", "ensembl_gene_id",
 #'     "gene_symbol", "entrez_id", "refseq_ids"
 #'
-#' @return
+#' @return a named vector of gene expression values
 #' @export
 #' @import Biobase
 #'

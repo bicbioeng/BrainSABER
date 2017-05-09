@@ -17,3 +17,7 @@ This function returns a named example vector of gene expression values for
 the specified genes, taken from the 1st row of AIBSARNA, for use in
 demonstrating getSimScores.
 }
+\examples{
+myGenes <- c("TNFRSF1A", "BCL3", "NEFH")
+myExampleVector <- getExampleVector(myGenes)
+}

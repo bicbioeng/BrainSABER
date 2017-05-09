@@ -9,7 +9,7 @@
 #' @return a named character vector of gene-expression values
 #' @import Biobase
 #' @export
-#' @example
+#' @examples
 #' myGenes <- c("TNFRSF1A", "BCL3", "NEFH")
 #' myExampleVector <- getExampleVector(myGenes)
 

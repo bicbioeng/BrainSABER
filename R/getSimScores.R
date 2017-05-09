@@ -11,16 +11,15 @@
 #' @param similarity_method currently supported similarity methods are "cosine"
 #'     and "euclidean", defaults to "cosine"
 #'
-#' @return relevantGenes, with similarity scores stored as part of the sample
-#'     data (phenoData)
+#' @return vector of similarity scores for each sample in relevantGenes
 #' @import Biobase
 #' @export
 #' @examples
 #' myGenes <- c(4.484885, 0.121902, 0.510035)
 #' names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 #' myGeneSet <- getRelevantGenes(myGenes)
-#' myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
-#' myGeneSet <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
+#' CosScores <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
+#' EucScores <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
 
 getSimScores <- function(v, relevantGenes, similarity_method = "cosine"){
   #get row length
@@ -28,27 +27,29 @@ getSimScores <- function(v, relevantGenes, similarity_method = "cosine"){
   if (similarity_method == "euclidean"){
     #initialize Similarity_Score vector
     euclidean_similarity <- euclideanSim(exprs(relevantGenes)[, 1], v)
-    #get similarity score of v with each gene of relevantGenes
+    #get similarity score of v with each sample of relevantGenes
     for(i in 2:ncols){
       euclidean_similarity <- c(euclidean_similarity, euclideanSim(exprs(
         relevantGenes)[, i], v))
     }
     #bind euclidean_similarity to relevantGenes
-    phenoData(relevantGenes)@data <- cbind(phenoData(relevantGenes)@data,
-                                           euclidean_similarity)
+    #phenoData(relevantGenes)@data <- cbind(phenoData(relevantGenes)@data,
+    #                                       euclidean_similarity)
+    return(euclidean_similarity)
   } else {
     #initialize Similarity_Score vector
     cosine_similarity <- lsa::cosine(exprs(relevantGenes)[, 1], v)
-    #get similarity score of v with each gene of relevantGenes
+    #get similarity score of v with each sample of relevantGenes
     for(i in 2:ncols){
         cosine_similarity <- c(cosine_similarity, lsa::cosine(exprs(
           relevantGenes)[, i], v))
     }
     #bind cosine_similarity to relevantGenes
-    phenoData(relevantGenes)@data <- cbind(phenoData(relevantGenes)@data,
-                                           cosine_similarity)
+    #phenoData(relevantGenes)@data <- cbind(phenoData(relevantGenes)@data,
+    #                                       cosine_similarity)
+    return(cosine_similarity)
   }
-  return(relevantGenes)
+  #return(relevantGenes)
 }
 
 #helper function
