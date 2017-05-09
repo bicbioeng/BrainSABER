@@ -1,14 +1,21 @@
 #' getUNDmatrix
 #'
 #' This function returns a matrix showing whether gene expression values in
-#'  \code{dataSet} are up-regulated, down-regulated, or normal. \code{method = "discrete"} requires \code{up_threshold} and \code{down_threshold} to be defined.
+#'  \code{dataSet} are up-regulated, down-regulated, or normal.
+#'  \code{method = "discrete"} will function on any data set, while
+#'  \code{method = "log2FC"} requires a trimmed data set as returned by
+#'  \code{getTrimmedExternalSet} and subset of AIBSARNA as returned by
+#'  \code{getRelevantGenes}.
 #'
 #' @param dataSet a Biobase ExpressionSet
-#' @param method currently only "discrete" is available
+#' @param relevantGenes (optional) an ExpressionSet that is a subset of AIBSARNA
+#' @param method "discrete" applies thresholds directly to expression data.
+#'     "log2FC" applies thresholds to the log2 fold-change between the expression
+#'     data from dataSet and AIBSARNA.
 #' @param up_threshold a numerical value defining the lower bound (inclusive) by
-#'     which to consider a gene up-regulated
+#'     which to consider a gene up-regulated, defaults to 0.5
 #' @param down_threshold a numerical value defining the lower bound (inclusive)
-#'     by which to consider a gene down-regulated
+#'     by which to consider a gene down-regulated, defaults to -0.5
 #' @param matrix_type either "num" for a numerical matrix with -1 indicating
 #'     down-regulation, 1 indicating up-regulation, and 0 indicating normal, or
 #'     "char" for a character matrix with "D" indicating down-regulation, "U"
@@ -26,8 +33,9 @@
 #' myUNDcharacterMatrix <- getUNDmatrix(myGeneSet, method = "discrete",
 #'     up_threshold = 3, down_threshold = 1, matrix_type = "char")
 
-getUNDmatrix <- function(dataSet, method = "discrete", up_threshold,
-                         down_threshold, matrix_type = c("num", "char")){
+getUNDmatrix <- function(dataSet, relevantGenes = NULL,
+                         method = c("discrete", "log2FC"), up_threshold = 0.5,
+                         down_threshold = -0.5, matrix_type = c("num", "char")){
   # get expression matrix from dataSet
   exprs <- Biobase::exprs(dataSet)
   # set up und vector for type of matrix
@@ -47,6 +55,16 @@ getUNDmatrix <- function(dataSet, method = "discrete", up_threshold,
         if (exprs[r, c] >= up_threshold){
           mat[r, c] <- und[3] # 1 or "U", depending on matrix type
         } else if (exprs[r, c] <= down_threshold)
+          mat[r, c] <- und[1] # -1 or "D", depending on matrix type
+      }
+    }
+  } else {
+    for(r in 1:nrows){
+      for(c in 1:ncols){
+        val <- log2(exprs[r, c]) - log2(exprs(relevantGenes)[r, c])
+        if (is.finite(val) && val >= up_threshold){
+          mat[r, c] <- und[3] # 1 or "U", depending on matrix type
+        } else if (is.finite(val) && val <= down_threshold)
           mat[r, c] <- und[1] # -1 or "D", depending on matrix type
       }
     }

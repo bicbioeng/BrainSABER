@@ -4,19 +4,24 @@
 \alias{getUNDmatrix}
 \title{getUNDmatrix}
 \usage{
-getUNDmatrix(dataSet, method = "discrete", up_threshold, down_threshold,
+getUNDmatrix(dataSet, relevantGenes = NULL, method = c("discrete",
+  "log2FC"), up_threshold = 0.5, down_threshold = -0.5,
   matrix_type = c("num", "char"))
 }
 \arguments{
 \item{dataSet}{a Biobase ExpressionSet}
 
-\item{method}{currently only "discrete" is available}
+\item{relevantGenes}{(optional) an ExpressionSet that is a subset of AIBSARNA}
+
+\item{method}{"discrete" applies thresholds directly to expression data.
+"log2FC" applies thresholds to the log2 fold-change between the expression
+data from dataSet and AIBSARNA.}
 
 \item{up_threshold}{a numerical value defining the lower bound (inclusive) by
-which to consider a gene up-regulated}
+which to consider a gene up-regulated, defaults to 0.5}
 
 \item{down_threshold}{a numerical value defining the lower bound (inclusive)
-by which to consider a gene down-regulated}
+by which to consider a gene down-regulated, defaults to -0.5}
 
 \item{matrix_type}{either "num" for a numerical matrix with -1 indicating
 down-regulation, 1 indicating up-regulation, and 0 indicating normal, or
@@ -28,7 +33,11 @@ either a numerical or character matrix
 }
 \description{
 This function returns a matrix showing whether gene expression values in
- \code{dataSet} are up-regulated, down-regulated, or normal. \code{method = "discrete"} requires \code{up_threshold} and \code{down_threshold} to be defined.
+ \code{dataSet} are up-regulated, down-regulated, or normal.
+ \code{method = "discrete"} will function on any data set, while
+ \code{method = "log2FC"} requires a trimmed data set as returned by
+ \code{getTrimmedExternalSet} and subset of AIBSARNA as returned by
+ \code{getRelevantGenes}.
 }
 \examples{
 myGenes <- c(4.484885, 0.121902, 0.510035)
