@@ -7,10 +7,10 @@
 #'
 #' @param dataSet a Biobase ExpressionSet
 #' @param index the integer index of the sample of dataSet to be used
-#' @param dataSetColName the name of the column of fData(dataSet) to be used as
-#'     the sample vector's names, defaults to "gene_symbol"
-#' @param AIBSARNAcolName the name of the column of fData(AIBSARNA) that is
-#'     comparable to dataSetColName.  One of "gene_id", "ensembl_gene_id",
+#' @param dataSetId the name of the column of gene identifiers in fData(dataSet)
+#'     to be used to compare dataSet to AIBSARNA.
+#' @param AIBSARNAid the name of the column of fData(AIBSARNA) that is
+#'     comparable to dataSetId.  One of "gene_id", "ensembl_gene_id",
 #'     "gene_symbol", "entrez_id", "refseq_ids"
 #'
 #' @return a named vector of gene expression values
@@ -22,19 +22,19 @@
 #' names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 #' myGeneSet <- getRelevantGenes(myGenes, gene_names = "HGNC")
 #' myGeneSampleVector <- getExternalVector(myGeneSet, index = 1,
-#'      dataSetColName = "gene_symbol", AIBSARNAcolName = "gene_symbol")
+#'      dataSetId = "gene_symbol", AIBSARNAid = "gene_symbol")
 #'
-getExternalVector <- function(dataSet, index = 1, dataSetColName = "gene_symbol",
-                              AIBSARNAcolName = c("gene_id", "ensembl_gene_id",
+getExternalVector <- function(dataSet, index = 1, dataSetId = "gene_symbol",
+                              AIBSARNAid = c("gene_id", "ensembl_gene_id",
                                                   "gene_symbol", "entrez_id",
                                                   "refseq_ids")){
   v <- exprs(dataSet)[, index]
-  names(v) <- as.character(fData(dataSet)[[dataSetColName]])
+  names(v) <- as.character(fData(dataSet)[[dataSetId]])
   # get gene identifiers common to v and AIBSARNA
-  vInAIBSARNA <- which(fData(AIBSARNA::AIBSARNA)[[AIBSARNAcolName]] %in%
+  vInAIBSARNA <- which(fData(AIBSARNA::AIBSARNA)[[AIBSARNAid]] %in%
                          names(v), arr.ind = TRUE)
   vInAIBSARNA <- as.character(
-                      fData(AIBSARNA::AIBSARNA)[[AIBSARNAcolName]][vInAIBSARNA])
+                      fData(AIBSARNA::AIBSARNA)[[AIBSARNAid]][vInAIBSARNA])
   # get indices of v that are present in vInAIBSARNA
   genesToKeep <- which(names(v) %in% vInAIBSARNA, arr.ind = TRUE)
   # update v to only include comparable genes (genes in vInAIBSARNA)

@@ -4,20 +4,20 @@
 \alias{getExternalVector}
 \title{getExternalVector}
 \usage{
-getExternalVector(dataSet, index = 1, dataSetColName = "gene_symbol",
-  AIBSARNAcolName = c("gene_id", "ensembl_gene_id", "gene_symbol",
-  "entrez_id", "refseq_ids"))
+getExternalVector(dataSet, index = 1, dataSetId = "gene_symbol",
+  AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol", "entrez_id",
+  "refseq_ids"))
 }
 \arguments{
 \item{dataSet}{a Biobase ExpressionSet}
 
 \item{index}{the integer index of the sample of dataSet to be used}
 
-\item{dataSetColName}{the name of the column of fData(dataSet) to be used as
-the sample vector's names, defaults to "gene_symbol"}
+\item{dataSetId}{the name of the column of gene identifiers in fData(dataSet)
+to be used to compare dataSet to AIBSARNA.}
 
-\item{AIBSARNAcolName}{the name of the column of fData(AIBSARNA) that is
-comparable to dataSetColName.  One of "gene_id", "ensembl_gene_id",
+\item{AIBSARNAid}{the name of the column of fData(AIBSARNA) that is
+comparable to dataSetId.  One of "gene_id", "ensembl_gene_id",
 "gene_symbol", "entrez_id", "refseq_ids"}
 }
 \value{
@@ -34,6 +34,6 @@ myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 myGeneSet <- getRelevantGenes(myGenes, gene_names = "HGNC")
 myGeneSampleVector <- getExternalVector(myGeneSet, index = 1,
-     dataSetColName = "gene_symbol", AIBSARNAcolName = "gene_symbol")
+     dataSetId = "gene_symbol", AIBSARNAid = "gene_symbol")
 
 }

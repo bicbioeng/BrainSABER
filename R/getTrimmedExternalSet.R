@@ -4,10 +4,10 @@
 #' genes that are present in AIBSARNA, for use in \code{getUNDmatrix}.
 #'
 #' @param dataSet a Biobase ExpressionSet
-#' @param dataSetColName the name of the column of fData(dataSet) to be used as
-#'     the sample vector's names, defaults to "gene_symbol"
-#' @param AIBSARNAcolName the name of the column of fData(AIBSARNA) that is
-#'     comparable to dataSetColName.  One of "gene_id", "ensembl_gene_id",
+#' @param dataSetId the name of the column of gene identifiers in fData(dataSet)
+#'     to be used to compare dataSet to AIBSARNA.
+#' @param AIBSARNAid the name of the column of fData(AIBSARNA) that is
+#'     comparable to dataSetId.  One of "gene_id", "ensembl_gene_id",
 #'     "gene_symbol", "entrez_id", "refseq_ids"
 #'
 #' @return a Biobase ExpressionSet
@@ -18,25 +18,27 @@
 #' names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 #' myGeneSet <- getRelevantGenes(myGenes, gene_names = "HGNC")
 #' myTrimmedGeneSet <- getTrimmedExternalSet(myGeneSet,
-#'      dataSetColName = "gene_symbol", AIBSARNAcolName = "gene_symbol")
+#'      dataSetId = "gene_symbol", AIBSARNAid = "gene_symbol")
 
-getTrimmedExternalSet <- function(dataSet, dataSetColName = "gene_symbol",
-                           AIBSARNAcolName = c("gene_id", "ensembl_gene_id",
+getTrimmedExternalSet <- function(dataSet, dataSetId = "gene_symbol",
+                           AIBSARNAid = c("gene_id", "ensembl_gene_id",
                             "gene_symbol", "entrez_id", "refseq_ids")){
   # get a trimmed vector faciliate things
-  v <- getExternalVector(dataSet = dataSet, index = 1, dataSetColName = dataSetColName, AIBSARNAcolName = AIBSARNAcolName)
+  v <- getExternalVector(dataSet = dataSet, index = 1, dataSetId = dataSetId, AIBSARNAid = AIBSARNAid)
 
-  vInd <- which(fData(dataSet)[[dataSetColName]] %in% names(v),
+  vInd <- which(fData(dataSet)[[dataSetId]] %in% names(v),
                 arr.ind = TRUE)
   # subset feature data
   relfd <- fData(dataSet)[vInd, ]
   # get index(es) of any duplicates
-  dup <- anyDuplicated(relfd[[dataSetColName]])
+  dup <- anyDuplicated(relfd[[dataSetId]])
   # if there are duplicates, remove them from vInd and regenerate relfd
   if (dup > 0) {
     vInd <- vInd[-dup]
     relfd <- fData(dataSet)[vInd, ]
   }
+  # remove any unused factor levels
+  relfd <- as.data.frame(apply(relfd, 2, function(x) {x[drop = TRUE]}))
   # convert to Annotated Data Frame
   relfd <- new("AnnotatedDataFrame", data = relfd)
   # subset exprs
