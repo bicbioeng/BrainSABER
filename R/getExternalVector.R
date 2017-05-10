@@ -16,11 +16,12 @@
 #' @return a named vector of gene expression values
 #' @export
 #' @import Biobase
+#' @import AIBSARNA
 #'
 #' @examples
 #' myGenes <- c(4.484885, 0.121902, 0.510035)
 #' names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
-#' myGeneSet <- getRelevantGenes(myGenes, gene_names = "HGNC")
+#' myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
 #' myGeneSampleVector <- getExternalVector(myGeneSet, index = 1,
 #'      dataSetId = "gene_symbol", AIBSARNAid = "gene_symbol")
 #'

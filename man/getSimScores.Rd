@@ -32,7 +32,7 @@ obtained by \code{getRelevantGenes}.
 \examples{
 myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
-myGeneSet <- getRelevantGenes(myGenes)
+myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
 CosScores <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
 EucScores <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
 myCosSimFrame <- getSimScores(myGeneSet, myGeneSet)

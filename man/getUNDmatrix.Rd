@@ -34,15 +34,15 @@ either a numerical or character matrix
 \description{
 This function returns a matrix showing whether gene expression values in
  \code{dataSet} are up-regulated, down-regulated, or normal.
- \code{method = "discrete"} will function on any data set, while
+ \code{method = "discrete"} will function on any ExpressionSet, while
  \code{method = "log2FC"} requires a trimmed data set as returned by
- \code{getTrimmedExternalSet} and subset of AIBSARNA as returned by
+ \code{getTrimmedExternalSet} and a matching subset of AIBSARNA as returned by
  \code{getRelevantGenes}.
 }
 \examples{
 myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
-myGeneSet <- getRelevantGenes(myGenes, gene_names = "HGNC")
+myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
 myUNDnumericalMatrix <- getUNDmatrix(myGeneSet, method = "discrete",
     up_threshold = 3, down_threshold = 1, matrix_type = "num")
 myUNDcharacterMatrix <- getUNDmatrix(myGeneSet, method = "discrete",

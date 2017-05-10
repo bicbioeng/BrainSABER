@@ -15,7 +15,7 @@ a named character vector of gene-expression values
 \description{
 This function returns a named example vector of gene expression values for
 the specified genes, taken from the 1st row of AIBSARNA, for use in
-demonstrating getSimScores.
+demonstrating \code{getSimScores}.
 }
 \examples{
 myGenes <- c("TNFRSF1A", "BCL3", "NEFH")

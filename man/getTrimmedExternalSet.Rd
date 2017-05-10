@@ -9,7 +9,7 @@ getTrimmedExternalSet(dataSet, dataSetId = "gene_symbol",
   "refseq_ids"))
 }
 \arguments{
-\item{dataSet}{a Biobase ExpressionSet}
+\item{dataSet}{a Biobase ExpressionSet compatible data set}
 
 \item{dataSetId}{the name of the column of gene identifiers in fData(dataSet)
 to be used to compare dataSet to AIBSARNA.}
@@ -23,12 +23,13 @@ a Biobase ExpressionSet
 }
 \description{
 Returns an ExpressionSet that is a subset of \code{dataSet} containing only
-genes that are present in AIBSARNA, for use in \code{getUNDmatrix}.
+genes that are present in AIBSARNA, for use in \code{getSimScores} or
+\code{getUNDmatrix}.
 }
 \examples{
 myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
-myGeneSet <- getRelevantGenes(myGenes, gene_names = "HGNC")
+myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
 myTrimmedGeneSet <- getTrimmedExternalSet(myGeneSet,
      dataSetId = "gene_symbol", AIBSARNAid = "gene_symbol")
 }

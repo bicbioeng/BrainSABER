@@ -4,27 +4,35 @@
 \alias{getRelevantGenes}
 \title{Get a subset of AIBSARNA using a Gene Expression Vector}
 \usage{
-getRelevantGenes(v, gene_names = "HGNC")
+getRelevantGenes(data, dataSetId = NULL, AIBSARNAid = c("gene_id",
+  "ensembl_gene_id", "gene_symbol", "entrez_id", "refseq_ids"))
 }
 \arguments{
-\item{v}{a vector of HGNC-conformant or RefSeq ID named gene expression values}
+\item{data}{a vector of named gene expression values, or a compatible data set}
 
-\item{gene_names}{either "HGNC" or "RefSeq", defaults to "HGNC"}
+\item{dataSetId}{(Optional) If \code{data} is not a vector, the name of the
+column of gene identifiers in fData(dataSet) to be used to compare
+\code{data} to AIBSARNA.}
+
+\item{AIBSARNAid}{the name of the column of fData(AIBSARNA) that is
+comparable to dataSetId.  One of "gene_id", "ensembl_gene_id",
+"gene_symbol", "entrez_id", "refseq_ids"}
 }
 \value{
 a Biobase ExpressionSet consisting of genes in v
 }
 \description{
 This function returns a subset of the AIBSARNA dataset, containing only
-the genes listed in the parameter vector, v.  The vector must consist of
-numerical gene expression values named with HGNC-conformant gene names for
-\code{gene_names = "HGNC"}, or named with RefSeq IDs for \code{gene_names =
-"RefSeq"}.
+the genes \code{data}, which may be a vector or a Biobase ExpressionSet, or a
+derivative of ExpressionSet that supports the Biobase methods \code{exprs()}
+and \code{fData()}.  If a vector is used, it must consist of numerical gene
+expression values with names comparable to one columns of identifiers present
+in AIBSARNA.
 }
 \examples{
 
 myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
-myGeneSet <- getRelevantGenes(myGenes, gene_names = "HGNC")
+myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
 
 }

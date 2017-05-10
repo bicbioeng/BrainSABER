@@ -2,9 +2,9 @@
 #'
 #' This function returns a matrix showing whether gene expression values in
 #'  \code{dataSet} are up-regulated, down-regulated, or normal.
-#'  \code{method = "discrete"} will function on any data set, while
+#'  \code{method = "discrete"} will function on any ExpressionSet, while
 #'  \code{method = "log2FC"} requires a trimmed data set as returned by
-#'  \code{getTrimmedExternalSet} and subset of AIBSARNA as returned by
+#'  \code{getTrimmedExternalSet} and a matching subset of AIBSARNA as returned by
 #'  \code{getRelevantGenes}.
 #'
 #' @param dataSet a Biobase ExpressionSet
@@ -27,7 +27,7 @@
 #' @examples
 #' myGenes <- c(4.484885, 0.121902, 0.510035)
 #' names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
-#' myGeneSet <- getRelevantGenes(myGenes, gene_names = "HGNC")
+#' myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
 #' myUNDnumericalMatrix <- getUNDmatrix(myGeneSet, method = "discrete",
 #'     up_threshold = 3, down_threshold = 1, matrix_type = "num")
 #' myUNDcharacterMatrix <- getUNDmatrix(myGeneSet, method = "discrete",
@@ -50,15 +50,28 @@ getUNDmatrix <- function(dataSet, relevantGenes = NULL,
   mat <- matrix(data = rep(und[2], nrows * ncols), nrow = nrows,
                 ncol = ncols)
   if (method == "discrete"){
-    for(r in 1:nrows){
-      for(c in 1:ncols){
-        if (exprs[r, c] >= up_threshold){
-          mat[r, c] <- und[3] # 1 or "U", depending on matrix type
-        } else if (exprs[r, c] <= down_threshold)
-          mat[r, c] <- und[1] # -1 or "D", depending on matrix type
-      }
-    }
+    mat <- as.matrix(apply(X = exprs, MARGIN = c(1,2), FUN = classifyValue,
+                           und = und, u = up_threshold, d = down_threshold))
+
+    #for(r in 1:nrows){
+     # for(c in 1:ncols){
+      #  if (exprs[r, c] >= up_threshold){
+       #   mat[r, c] <- und[3] # 1 or "U", depending on matrix type
+      #  } else if (exprs[r, c] <= down_threshold)
+       #   mat[r, c] <- und[1] # -1 or "D", depending on matrix type
+      #}
+    #}
   } else {
+    mat <- apply(X = exprs, MARGIN = c(1,2),
+                 FUN = function(x, und, u, d, rgexprs){
+                   if (x >= u){
+                     return(und[3])
+                   } else if (x <= d){
+                     return(und[1])
+                   } else {
+                     return(und[2])
+                   }
+                 }, und = und, u = up_threshold, d = down_threshold)
     for(r in 1:nrows){
       for(c in 1:ncols){
         val <- log2(exprs[r, c]) - log2(exprs(relevantGenes)[r, c])
@@ -70,4 +83,15 @@ getUNDmatrix <- function(dataSet, relevantGenes = NULL,
     }
   }
   return(mat)
+}
+
+#helper function
+classifyValue <- function(x, und, u, d){
+  if (x >= u){
+    return(und[3])
+  } else if (x <= d){
+    return(und[1])
+  } else {
+    return(und[2])
+  }
 }
