@@ -18,9 +18,10 @@ and "euclidean", defaults to "cosine"}
 }
 \value{
 If \code{data} is a vector, returns a vector of similarity scores for
-    each sample in relevantGenes. Otherwise, returns a data frame, with
-    columns containing the similarity scores for and named after each sample
-    in \code{data}, and rows named after each sample in \code{relevantGenes}
+    each sample in relevantGenes. If \code{data} is an ExpressionSet, returns
+    a data frame, with columns containing the similarity scores for and named
+    after each sample in \code{data}, and rows named after each sample in
+    \code{relevantGenes}
 }
 \description{
 This function computes the similarity score of a gene expression

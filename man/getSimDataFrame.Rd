@@ -7,7 +7,7 @@
 getSimDataFrame(sim_score, relevantGenes, similarity_method = "cosine")
 }
 \arguments{
-\item{sim_score}{a vector of similarity scores}
+\item{sim_score}{a vector or data frame of similarity scores}
 
 \item{relevantGenes}{a Biobase Expression set}
 
@@ -15,13 +15,15 @@ getSimDataFrame(sim_score, relevantGenes, similarity_method = "cosine")
 and "euclidean", defaults to "cosine"}
 }
 \value{
-a three-column data.frame
+a three-column data.frame or list of data frames
 }
 \description{
-This function takes a similarity vector as returned by \code{getSimScores}
-and constructs a \code{data.frame} with columns age, structure_acroynym,
-and either cosine_similarity or euclidean_similarity, sorted by similarity
-score in decreasing order.
+This function takes a similarity vector or data frame as returned by
+\code{getSimScores} and a subset of AIBSARNA as returned by
+\code{getRelevantGenes} and constructs a \code{data.frame} with columns age,
+structure_acroynym, and either cosine_similarity or euclidean_similarity,
+sorted by similarity score in decreasing order.  In the case of a similarity
+data frame, a list of data frames is returned.
 }
 \examples{
 myGenes <- c(4.484885, 0.121902, 0.510035)

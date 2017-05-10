@@ -29,43 +29,20 @@
 
 getSimScores <- function(data, relevantGenes, similarity_method = "cosine"){
   if (is.vector(data)){
-    # get number of samples in relevantGenes
-    nRGsamples <- length(sampleNames(relevantGenes))
     if (similarity_method == "euclidean"){
-      #initialize Similarity_Score vector
-      euclidean_similarity <- euclideanSim(exprs(relevantGenes)[, 1], data)
-      #get similarity score of v with each sample of relevantGenes
-      for(i in 2:nRGsamples){
-        euclidean_similarity <- c(euclidean_similarity, euclideanSim(exprs(
-          relevantGenes)[, i], data))
-      }
+      euclidean_similarity <- apply(X = exprs(relevantGenes), MARGIN = 2,
+                                    FUN = euclideanSim, y = data)
       return(euclidean_similarity)
     } else {
-      #initialize Similarity_Score vector
-      cosine_similarity <- lsa::cosine(exprs(relevantGenes)[, 1], data)
-      #get similarity score of v with each sample of relevantGenes
-      for(i in 2:nRGsamples){
-        cosine_similarity <- c(cosine_similarity, lsa::cosine(exprs(
-          relevantGenes)[, i], data))
-      }
+      cosine_similarity <- apply(X = exprs(relevantGenes), MARGIN = 2,
+                                 FUN = lsa::cosine, y = data)
       return(cosine_similarity)
     }
   } else {
-    # get number of samples in data
-    nDataSamples <- length(sampleNames(data))
-    # initialize data frame
-    simScore <- getSimScores(exprs(data)[, 1], relevantGenes,
-                             similarity_method = similarity_method)
-    simFrame <- data.frame(simScore)
-    for(i in 2:nDataSamples){
-      simScore <- getSimScores(exprs(data)[, i],
-                                          relevantGenes,
-                                          similarity_method = similarity_method)
-      simFrame <- cbind(simFrame, simScore)
-    }
-    # set names
-    colnames(simFrame) <- sampleNames(data)
-    rownames(simFrame) <- sampleNames(relevantGenes)
+    simFrame <- as.data.frame(apply(X = exprs(data), MARGIN = 2,
+                                    FUN = getSimScores,
+                                    relevantGenes = relevantGenes,
+                                    similarity_method = similarity_method))
     return(simFrame)
   }
 }

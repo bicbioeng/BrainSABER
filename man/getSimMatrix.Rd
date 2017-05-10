@@ -7,17 +7,18 @@
 getSimMatrix(sim_score, relevantGenes)
 }
 \arguments{
-\item{sim_score}{a vector of similarity scores}
+\item{sim_score}{a vector or data frame of similarity scores}
 
 \item{relevantGenes}{a Biobase ExpressionSet}
 }
 \value{
-a numeric matrix of similarity scores
+a numeric matrix of similarity scores, or a list of matrices
 }
 \description{
-This function takes a similarity vector as returned by \code{getSimScores}
-and returns a numeric matrix of similarity scores with rows labeled by age,
-and columns labeled by structure_acronym.
+This function takes a similarity vector or data frame as returned by
+\code{getSimScores} and returns a numeric matrix or list of matrices of
+similarity scores with rows labeled by age, and columns labeled by
+structure_acronym.
 }
 \examples{
 myGenes <- c(4.484885, 0.121902, 0.510035)
