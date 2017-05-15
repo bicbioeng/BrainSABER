@@ -13,27 +13,29 @@ getSimScores(data, relevantGenes, similarity_method = "cosine")
 
 \item{relevantGenes}{an ExpressionSet returned by \code{getRelevantGenes}}
 
-\item{similarity_method}{currently supported similarity methods are "cosine"
-and "euclidean", defaults to "cosine"}
+\item{similarity_method}{currently supported similarity methods are
+"cosine" and "euclidean", defaults to "cosine"}
 }
 \value{
-If \code{data} is a vector, returns a vector of similarity scores for
-    each sample in relevantGenes. If \code{data} is an ExpressionSet, returns
-    a data frame, with columns containing the similarity scores for and named
-    after each sample in \code{data}, and rows named after each sample in
-    \code{relevantGenes}
+If \code{data} is a vector, returns a vector of similarity scores
+    for each sample in relevantGenes. If \code{data} is an ExpressionSet,
+    returns a data frame, with columns containing the similarity scores
+    for and named after each sample in \code{data}, and rows named after
+    each sample in \code{relevantGenes}
 }
 \description{
 This function computes the similarity score of a gene expression
-vector returned by \code{getExternalVector} or a trimmed data set returned by
-\code{getTrimmedExternalSet}, compared to a subset of AIBSARNA,
+vector returned by \code{getExternalVector} or a trimmed data set returned
+by \code{getTrimmedExternalSet}, compared to a subset of AIBSARNA,
 obtained by \code{getRelevantGenes}.
 }
 \examples{
 myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
-CosScores <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
-EucScores <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
+CosScores <- getSimScores(myGenes, myGeneSet,
+                          similarity_method = "cosine")
+EucScores <- getSimScores(myGenes, myGeneSet,
+                          similarity_method = "euclidean")
 myCosSimFrame <- getSimScores(myGeneSet, myGeneSet)
 }
