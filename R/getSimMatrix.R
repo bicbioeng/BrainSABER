@@ -54,8 +54,12 @@ getSimMatrix <- function(sim_score, relevantGenes){
 
     return(mat)
   } else {
-    matList <- as.list(apply(X = sim_score, MARGIN = 2,
-                             FUN = getSimMatrix, relevantGenes = relevantGenes))
+    nSamples <- length(sim_score[1, ])
+    # initialize matList
+    matList <- vector("list", nSamples)
+    for (i in 1:nSamples){
+      matList[[i]] <- getSimMatrix(sim_score[, i], relevantGenes)
+    }
     return(matList)
   }
 }

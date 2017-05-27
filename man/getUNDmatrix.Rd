@@ -13,31 +13,39 @@ getUNDmatrix(dataSet, relevantGenes = NULL, method = c("discrete",
 
 \item{relevantGenes}{(optional) an ExpressionSet that is a subset of AIBSARNA}
 
-\item{method}{"discrete" applies thresholds directly to expression data.
-"log2FC" applies thresholds to the log2 fold-change between the expression
-data from dataSet and AIBSARNA.}
+\item{method}{\code{"discrete"} applies thresholds directly to expression
+data. \code{"log2FC"} applies thresholds to the log2 fold-change
+between the expression data of each sample from \code{dataSet} and
+\code{relevantGenes}.}
 
-\item{up_threshold}{a numerical value defining the lower bound (inclusive) by
-which to consider a gene up-regulated, defaults to 0.5}
+\item{up_threshold}{a numerical value defining the lower bound
+(inclusive) by which to consider a gene up-regulated, defaults to 0.5}
 
-\item{down_threshold}{a numerical value defining the lower bound (inclusive)
-by which to consider a gene down-regulated, defaults to -0.5}
+\item{down_threshold}{a numerical value defining the upper bound
+(inclusive) by which to consider a gene down-regulated, defaults
+to -0.5}
 
-\item{matrix_type}{either "num" for a numerical matrix with -1 indicating
-down-regulation, 1 indicating up-regulation, and 0 indicating normal, or
-"char" for a character matrix with "D" indicating down-regulation, "U"
-indicating up-regulation, and "N" indicating normal}
+\item{matrix_type}{either \code{"num"} for a numerical matrix with -1
+indicating down-regulation, 1 indicating up-regulation, and 0
+indicating normal, or \code{"char"} for a character matrix with "D"
+indicating down-regulation, "U" indicating up-regulation, and
+"N" indicating normal}
 }
 \value{
-either a numerical or character matrix
+for \code{method = "discrete"} either a numerical or character
+    matrix with as many rows as genes in \code{dataSet} and as many
+    columns as samples in \code{dataSet} or, for \code{method = "log2FC"},
+    a list containing as many numerical or character matrices as samples
+    in \code{dataSet}, with each matrix having as many rows as genes in
+    \code{dataSet} and as many columns as samples in \code{relevantGenes}
 }
 \description{
 This function returns a matrix showing whether gene expression values in
  \code{dataSet} are up-regulated, down-regulated, or normal.
  \code{method = "discrete"} will function on any ExpressionSet, while
  \code{method = "log2FC"} requires a trimmed data set as returned by
- \code{getTrimmedExternalSet} and a matching subset of AIBSARNA as returned by
- \code{getRelevantGenes}.
+ \code{getTrimmedExternalSet} and a matching subset of AIBSARNA as
+ returned by \code{getRelevantGenes}.
 }
 \examples{
 myGenes <- c(4.484885, 0.121902, 0.510035)

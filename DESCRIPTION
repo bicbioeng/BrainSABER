@@ -1,7 +1,7 @@
 Package: BrainSABER
 Type: Package
 Title: Brain Span Atlas in Biobase Expressionset R toolset
-Version: 0.0.1.9004
+Version: 0.0.1.9005
 Author: Carrie Minette
 Maintainer: Carrie Minette <carrie.minette@coyotes.usd.edu>
 Description: Tools to compare gene expression data to data from The Allen 

@@ -8,10 +8,11 @@ getRelevantGenes(data, dataSetId = NULL, AIBSARNAid = c("gene_id",
   "ensembl_gene_id", "gene_symbol", "entrez_id", "refseq_ids"))
 }
 \arguments{
-\item{data}{a vector of named gene expression values, or a compatible data set}
+\item{data}{a vector of named gene expression values, or a compatible
+data set}
 
-\item{dataSetId}{(Optional) If \code{data} is not a vector, the name of the
-column of gene identifiers in fData(dataSet) to be used to compare
+\item{dataSetId}{(Optional) If \code{data} is not a vector, the name of
+the column of gene identifiers in fData(dataSet) to be used to compare
 \code{data} to AIBSARNA.}
 
 \item{AIBSARNAid}{the name of the column of fData(AIBSARNA) that is
@@ -19,15 +20,16 @@ comparable to dataSetId.  One of "gene_id", "ensembl_gene_id",
 "gene_symbol", "entrez_id", "refseq_ids"}
 }
 \value{
-a Biobase ExpressionSet consisting of genes in v
+a Biobase ExpressionSet consisting of genes in \code{data}, sorted
+    to match the order of the genes in \code{data}
 }
 \description{
 This function returns a subset of the AIBSARNA dataset, containing only
-the genes \code{data}, which may be a vector or a Biobase ExpressionSet, or a
-derivative of ExpressionSet that supports the Biobase methods \code{exprs()}
-and \code{fData()}.  If a vector is used, it must consist of numerical gene
-expression values with names comparable to one columns of identifiers present
-in AIBSARNA.
+the genes \code{data}, which may be a vector or a Biobase ExpressionSet,
+or a derivative of ExpressionSet that supports the Biobase methods
+\code{exprs()} and \code{fData()}.  If a vector is used, it must consist
+of numerical gene expression values with names comparable to one columns
+of identifiers present in AIBSARNA.
 }
 \examples{
 
