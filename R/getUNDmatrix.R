@@ -62,6 +62,8 @@ getUNDmatrix <- function(dataSet, relevantGenes = NULL,
                   ncol = ncols)
     mat <- as.matrix(apply(X = exprs, MARGIN = c(1,2), FUN = classifyValue,
                            und = und, u = up_threshold, d = down_threshold))
+    rownames(mat) <- rownames(exprs)
+    colnames(mat) <- colnames(exprs)
     return(mat)
   } else {
     dataExprs <- exprs(dataSet)
@@ -70,7 +72,8 @@ getUNDmatrix <- function(dataSet, relevantGenes = NULL,
     # initialize matList
     matList <- vector("list", nSamples)
     for(i in 1:nSamples){
-      # populate matrix with log2 fold change against each sample of relExprs
+      # populate matrix with log2 fold change against each sample
+      # of relExprs
       matList[[i]] <- as.matrix(apply(X = relExprs, MARGIN = 2,
                                       FUN = function(x, v){
                                         log2(v) - log2(x)
@@ -79,6 +82,8 @@ getUNDmatrix <- function(dataSet, relevantGenes = NULL,
       matList[[i]] <- as.matrix(apply(X = matList[[i]], MARGIN = c(1,2),
                                       FUN = classifyValue, und = und,
                                       u = up_threshold, d = down_threshold))
+      rownames(matList[[i]]) <- rownames(dataExprs)
+      colnames(matList[[i]]) <- colnames(relExprs)
     }
     return(matList)
   }

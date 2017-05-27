@@ -32,17 +32,20 @@ indicating down-regulation, "U" indicating up-regulation, and
 "N" indicating normal}
 }
 \value{
-either a numerical or character matrix for \code{method =
-     "discrete"} or a list of numerical or character matrices for
-      \code{method = "log2FC"}
+for \code{method = "discrete"} either a numerical or character
+    matrix with as many rows as genes in \code{dataSet} and as many
+    columns as samples in \code{dataSet} or, for \code{method = "log2FC"},
+    a list containing as many numerical or character matrices as samples
+    in \code{dataSet}, with each matrix having as many rows as genes in
+    \code{dataSet} and as many columns as samples in \code{relevantGenes}
 }
 \description{
 This function returns a matrix showing whether gene expression values in
  \code{dataSet} are up-regulated, down-regulated, or normal.
  \code{method = "discrete"} will function on any ExpressionSet, while
  \code{method = "log2FC"} requires a trimmed data set as returned by
- \code{getTrimmedExternalSet} and a matching subset of AIBSARNA as returned by
- \code{getRelevantGenes}.
+ \code{getTrimmedExternalSet} and a matching subset of AIBSARNA as
+ returned by \code{getRelevantGenes}.
 }
 \examples{
 myGenes <- c(4.484885, 0.121902, 0.510035)
