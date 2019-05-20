@@ -1,0 +1,148 @@
+---
+title: "Installing and Using BrainSABER"
+author: "Carrie Minette"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+ %\VignetteIndexEntry{BrainSABER} 
+  %\VignetteEncoding{UTF-8} 
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Installing BrainSABER
+
+## Installing R
+
+To run BrainSABER requires R 3.4.0 or higher.  To install R, follow the directions for your system on the website, https://cloud.r-project.org. RStudio, an IDE (interactive development environment) is not required, but is highly recommended.  To download RStudio, please visit https://www.rstudio.com/products/rstudio/download3/ and download and install the appropriate version for your system.  For any additional help, please visit https://www.rstudio.com/online-learning/ for help with R, or use the help menu in RStudio.
+
+## Installing CRAN Dependencies
+
+After installing R, install the CRAN packages required by BrainSABER using command below in R, or use the Install button in the Packages pane in RStudio to install the following packages: 
+lsa, shiny, shinydashboard, fastcluster, heatmaply, plotly
+
+```{r, eval=FALSE}
+# required for BrainSABER CLI
+install.packages("lsa")
+
+# required for ShinyBrainSABER app
+install.packages(c("shiny", "shinydashboard", "fastcluster", "heatmaply", 
+                   "plotly"))
+```
+
+
+## Installing Bioconductor
+
+BrainSABER requires Bioconductor 3.5 or higher.  For more information on Bioconductor, please see their website at https://bioconductor.org.  To install Bioconductor, run the following commands in R or RStudio:
+
+```{r, eval=FALSE}
+# for R version >= 3.5
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install()
+```
+
+```{r, eval=FALSE}
+# for R version < 3.5
+source("https://bioconductor.org/biocLite.R")
+biocLite()
+```
+
+
+## Installing AIBSARNA
+
+The Allen Institute's Brain Atlas gene expression data has been gathered into a Biobase ExpressionSet data package named AIBSARNA. AIBSARNA is formated to make it possible for BrainSABER to compare it with other data.  BrainSABER cannot be used without first installing AIBSARNA, however, AIBSARNA is currently a private project, and not available on any public repository, so it must be installed from a source package.  To install AIBSARNA in RStudio, click on the Packages tab and click "Install" to open the Install Packages window. Under "Install From:" select "Package Archive File (.tgz; .tar.gz)" from the dropdown box, and if necessary click "Browse".  Then find the saved file "AIBSARNA_(version number).tar.gz" on your computer, select it, and click "Install".  Alternatively, run the following command in R, replacing "/path/to/AIBSARNA" with the full file path, including the file name.
+
+```{r, eval=FALSE}
+install.packages("/path/to/AIBSARNA", repos = NULL, type = "source")
+```
+
+
+## Installing the BrainSABER package
+
+The preceding steps ensure that all the dependencies are installed, which means we can now install BrainSABER. Currently, BrainSABER is a private project, and not available on any public repository, so to install BrainSABER in RStudio, click on the Packages tab and click "Install" to open the Install Packages window. Under "Install From:" select "Package Archive File (.tgz; .tar.gz)" from the dropdown box, and if necessary click "Browse".  Then find the saved file "BrainSABER_(version number).tar.gz" on your computer, select it, and click "Install".  Alternatively, run the following command in R, replacing "/path/to/BrainSABER" with the full file path, including the file name.
+
+```{r, eval=FALSE}
+install.packages("/path/to/BrainSABER", repos = NULL, 
+                  type = "source")
+```
+
+
+After installing, attach the BrainSABER package with the following command:
+
+```{r loadCTG, message=FALSE, warning=FALSE, results='hide'}
+library(BrainSABER)
+```
+
+
+# Preparing an ExpressionSet object
+
+The BrainSABER workflow is based around an instance of Biobase ExpressionSet class, which provides a common interface familiar to those who have analyzed microarray experiments with Bioconductor. The class requires the following three input files:
+
+1. AssayData, a numeric matrix of expression values, where rows are genes, and columns are cells/samples
+
+2. phenoData, an AnnotatedDataFrame object, where rows are cells/samples, and columns are cell/sample attributes (such as cell type, culture condition, day captured, etc.)
+
+3. featureData, an AnnotatedDataFrame object, where rows are features (e.g. genes), and columns are gene attributes, such as gene identifiers, gc content, etc.
+
+The expression value matrix must have the same number of columns as the phenoData has rows, and it must have the same number of rows as the featureData data frame has rows. Row names of the phenoData object should match the column names of the expression matrix. Row names of the featureData object should match row names of the expression matrix.  
+
+## Loading the Data
+
+For this vignette, we will construct a toy ExpressionSet object by extracting 50 samples and 200 genes from AIBSARNA, using the code below:
+
+```{r getSampleData, message=FALSE, warning=FALSE, results='hide'}
+# load AIBSARNA data package 
+library(AIBSARNA)
+data("AIBSARNA")
+
+# Obtain the sample indexes to use for subsetting (not random)
+sample_idx <- 1:50 * 10 - 1
+# Set the RNG seed for repeatable results
+set.seed(8)
+# Get the total number of genes available
+totalGenes <- nrow(AIBSARNA)
+# Sample the indices of 200 random genes
+gene_idx <- sample.int(totalGenes, 200)
+
+# Subset AIBSARNA
+toy_exprs <- exprs(AIBSARNA)[gene_idx, sample_idx]
+toy_fd <- fData(AIBSARNA)[gene_idx, ]
+toy_pd <- pData(AIBSARNA)[sample_idx, ]
+
+# Convert feature and pheno data to AnnotatedDataFrame required by ExpressionSet
+
+toy_featureData <- AnnotatedDataFrame(data = toy_fd)
+toy_phenoData <- AnnotatedDataFrame(data = toy_pd)
+
+# Create toy ExpressionSet
+toySet <- ExpressionSet(assayData = toy_exprs,
+                        featureData = toy_featureData,
+                        phenoData = toy_phenoData)
+
+```
+
+
+# The BrainSABER Workflow (Shiny app)
+
+BrainSABER comes with a Shiny app that runs the entire BrainSABER workflow, and also generates heatmaps based on the similarity matrices produced by BrainSABER.  This Shiny app requires three .CSV files containing the data required to construct an ExpressionSet.  We can save the toy data we subsetted earlier as .CSV files to use with the Shiny app.  The following code will save these files in your current working directory.
+
+```{r saveCSV}
+write.csv(toy_exprs, file = "toy_expression_matrix.csv")
+write.csv(as.data.frame(toy_fd), file = "toy_gene_identification_data.csv")
+write.csv(as.data.frame(toy_pd), file = "toy_sample_information_data.csv")
+```
+
+
+Once these files are saved, we can run the Shiny app.  The app will guide us through the BrainSABER workflow.
+```{r runShinyBrainsABER, eval=FALSE}
+runShinyBrainSABER()
+```
+
+## Session Info
+```{r sessionInfo}
+sessionInfo()
+```

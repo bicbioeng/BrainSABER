@@ -68,7 +68,7 @@ getRelevantGenes <- function(data, dataSetId = NULL,
   # convert relexprs back to a matrix, remove the added column
   relexprs <- as.matrix(relexprs[, -525])
   # convert to Annotated Data Frame
-  relfd <- new("AnnotatedDataFrame", data = relfd)
+  relfd <- AnnotatedDataFrame(data = relfd)
   # put together ExpressionSet
   relevantGenes <- ExpressionSet(assayData = relexprs,
                                  phenoData = phenoData(AIBSARNA::AIBSARNA),

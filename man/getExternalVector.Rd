@@ -5,8 +5,8 @@
 \title{getExternalVector}
 \usage{
 getExternalVector(dataSet, index = 1, dataSetId = "gene_symbol",
-  AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol", "entrez_id",
-  "refseq_ids"))
+  AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol",
+  "entrez_id", "refseq_ids"))
 }
 \arguments{
 \item{dataSet}{a Biobase ExpressionSet}

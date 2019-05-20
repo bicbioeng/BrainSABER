@@ -44,7 +44,7 @@ getTrimmedExternalSet <- function(dataSet, dataSetId = "gene_symbol",
   # remove any unused factor levels
   relfd <- as.data.frame(apply(relfd, 2, function(x) {x[drop = TRUE]}))
   # convert to Annotated Data Frame
-  relfd <- new("AnnotatedDataFrame", data = relfd)
+  relfd <- AnnotatedDataFrame(data = relfd)
   # subset exprs
   relexprs <- exprs(dataSet)[vInd, ]
   # put together ExpressionSet

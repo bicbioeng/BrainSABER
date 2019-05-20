@@ -5,8 +5,8 @@
 \title{Get a trimmed version of an external data set}
 \usage{
 getTrimmedExternalSet(dataSet, dataSetId = "gene_symbol",
-  AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol", "entrez_id",
-  "refseq_ids"))
+  AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol",
+  "entrez_id", "refseq_ids"))
 }
 \arguments{
 \item{dataSet}{a Biobase ExpressionSet compatible data set}
