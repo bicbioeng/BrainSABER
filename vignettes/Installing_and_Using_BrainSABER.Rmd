@@ -15,65 +15,20 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Installing BrainSABER
 
-## Installing R
-
-To run BrainSABER requires R 3.4.0 or higher.  To install R, follow the directions for your system on the website, https://cloud.r-project.org. RStudio, an IDE (interactive development environment) is not required, but is highly recommended.  To download RStudio, please visit https://www.rstudio.com/products/rstudio/download3/ and download and install the appropriate version for your system.  For any additional help, please visit https://www.rstudio.com/online-learning/ for help with R, or use the help menu in RStudio.
-
-## Installing CRAN Dependencies
-
-After installing R, install the CRAN packages required by BrainSABER using command below in R, or use the Install button in the Packages pane in RStudio to install the following packages: 
-lsa, shiny, shinydashboard, fastcluster, heatmaply, plotly
-
-```{r, eval=FALSE}
-# required for BrainSABER CLI
-install.packages("lsa")
-
-# required for ShinyBrainSABER app
-install.packages(c("shiny", "shinydashboard", "fastcluster", "heatmaply", 
-                   "plotly"))
-```
-
-
-## Installing Bioconductor
-
-BrainSABER requires Bioconductor 3.5 or higher.  For more information on Bioconductor, please see their website at https://bioconductor.org.  To install Bioconductor, run the following commands in R or RStudio:
+BrainSABER requires Bioconductor 3.11 or higher, and the AIBSARNA data package, which contains the Allen Institute's Brain Atlas gene expression data gathered into a Biobase ExpressionSet.  For more information on Bioconductor, please see their website at https://bioconductor.org.  To install Bioconductor, AIBSARNA, and BrainSABER, run the following commands in R or RStudio:
 
 ```{r, eval=FALSE}
 # for R version >= 3.5
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install()
-```
-
-```{r, eval=FALSE}
-# for R version < 3.5
-source("https://bioconductor.org/biocLite.R")
-biocLite()
-```
-
-
-## Installing AIBSARNA
-
-The Allen Institute's Brain Atlas gene expression data has been gathered into a Biobase ExpressionSet data package named AIBSARNA. AIBSARNA is formated to make it possible for BrainSABER to compare it with other data.  BrainSABER cannot be used without first installing AIBSARNA, however, AIBSARNA is currently a private project, and not available on any public repository, so it must be installed from a source package.  To install AIBSARNA in RStudio, click on the Packages tab and click "Install" to open the Install Packages window. Under "Install From:" select "Package Archive File (.tgz; .tar.gz)" from the dropdown box, and if necessary click "Browse".  Then find the saved file "AIBSARNA_(version number).tar.gz" on your computer, select it, and click "Install".  Alternatively, run the following command in R, replacing "/path/to/AIBSARNA" with the full file path, including the file name.
-
-```{r, eval=FALSE}
-install.packages("/path/to/AIBSARNA", repos = NULL, type = "source")
-```
-
-
-## Installing the BrainSABER package
-
-The preceding steps ensure that all the dependencies are installed, which means we can now install BrainSABER. Currently, BrainSABER is a private project, and not available on any public repository, so to install BrainSABER in RStudio, click on the Packages tab and click "Install" to open the Install Packages window. Under "Install From:" select "Package Archive File (.tgz; .tar.gz)" from the dropdown box, and if necessary click "Browse".  Then find the saved file "BrainSABER_(version number).tar.gz" on your computer, select it, and click "Install".  Alternatively, run the following command in R, replacing "/path/to/BrainSABER" with the full file path, including the file name.
-
-```{r, eval=FALSE}
-install.packages("/path/to/BrainSABER", repos = NULL, 
-                  type = "source")
+BiocManager::install("AIBSARNA")
+BiocManager::install("BrainSABER")
 ```
 
 
 After installing, attach the BrainSABER package with the following command:
 
-```{r loadCTG, message=FALSE, warning=FALSE, results='hide'}
+```{r loadpkg, message=FALSE, warning=FALSE, results='hide'}
 library(BrainSABER)
 ```
 

@@ -6,12 +6,16 @@
 \usage{
 runShinyBrainSABER()
 }
+\value{
+NULL (Invisibly)
+}
 \description{
 This function runs the Shiny app for the BrainSABER workflow.
 }
 \examples{
-\dontrun{
-  library(BrainSABER)
-  runShinyBrainSABER()
+## Only run this example in interactive R sessions
+if (interactive()) {
+    options(device.ask.default = FALSE)
+    runShinyBrainSABER()
 }
 }

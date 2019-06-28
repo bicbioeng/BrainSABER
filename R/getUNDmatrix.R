@@ -41,61 +41,51 @@
 #' myUNDcharacterMatrix <- getUNDmatrix(myGeneSet, method = "discrete",
 #'     up_threshold = 3, down_threshold = 1, matrix_type = "char")
 
-getUNDmatrix <- function(dataSet, relevantGenes = NULL,
-                         method = c("discrete", "log2FC"),
-                         up_threshold = 0.5,
-                         down_threshold = -0.5,
-                         matrix_type = c("num", "char")){
-  # set up und vector for type of matrix
-  if (matrix_type == "char"){
-    und <- c("U", "N", "D")
-  } else {
-    und <- c(-1, 0, 1)
-  }
-  if (method == "discrete"){
-    # get expression matrix from dataSet
-    exprs <- Biobase::exprs(dataSet)
-    # create empty matrix
-    nrows <- length(exprs[ , 1])
-    ncols <- length(exprs[1, ])
-    mat <- matrix(data = rep(und[2], nrows * ncols), nrow = nrows,
-                  ncol = ncols)
-    mat <- as.matrix(apply(X = exprs, MARGIN = c(1,2), FUN = classifyValue,
-                           und = und, u = up_threshold, d = down_threshold))
-    rownames(mat) <- rownames(exprs)
-    colnames(mat) <- colnames(exprs)
-    return(mat)
-  } else {
-    dataExprs <- exprs(dataSet)
-    relExprs <- exprs(relevantGenes)
-    nSamples <- length(dataExprs[1, ])
-    # initialize matList
-    matList <- vector("list", nSamples)
-    for(i in 1:nSamples){
-      # populate matrix with log2 fold change against each sample
-      # of relExprs
-      matList[[i]] <- as.matrix(apply(X = relExprs, MARGIN = 2,
-                                      FUN = function(x, v){
-                                        log2(v) - log2(x)
-                                      }, v = dataExprs[, i]))
-      # convert log2 fold change matrix to UND
-      matList[[i]] <- as.matrix(apply(X = matList[[i]], MARGIN = c(1,2),
-                                      FUN = classifyValue, und = und,
-                                      u = up_threshold, d = down_threshold))
-      rownames(matList[[i]]) <- rownames(dataExprs)
-      colnames(matList[[i]]) <- colnames(relExprs)
+getUNDmatrix <- function(dataSet, relevantGenes = NULL, 
+        method=c("discrete", "log2FC"), up_threshold=0.5, down_threshold=-0.5,
+        matrix_type = c("num", "char")) {
+    # set up und vector for type of matrix
+    if (matrix_type == "char") {
+        und <- c("U", "N", "D")
+    } else {
+        und <- c(-1, 0, 1)
     }
-    return(matList)
-  }
+    if (method == "discrete") {
+        # get expression matrix from dataSet
+        exprs <- Biobase::exprs(dataSet)
+        # create empty matrix
+        nrows <- length(exprs[, 1])
+        ncols <- length(exprs[1,])
+        mat <- matrix(data=rep(und[2], nrows * ncols), nrow=nrows, ncol=ncols)
+        mat <-as.matrix(apply(X = exprs, MARGIN = c(1, 2), FUN = classifyValue,
+                                und=und, u=up_threshold, d=down_threshold))
+        rownames(mat) <- rownames(exprs)
+        colnames(mat) <- colnames(exprs)
+        return(mat)
+    } else {
+        dataExprs <- exprs(dataSet)
+        relExprs <- exprs(relevantGenes)
+        nSamples <- length(dataExprs[1,])
+        # initialize matList
+        matList <- lapply(seq_len(nSamples), FUN = function(z){
+            ret <- as.matrix(apply(X=relExprs, MARGIN=2,
+                                FUN=function(x, v){log2(v) - log2(x)},
+                                v = dataExprs[, z]))
+            rownames(ret) <- rownames(dataExprs)
+            colnames(ret) <- colnames(relExprs)
+            return()
+        })
+        return(matList)
+    }
 }
 
 #helper function
-classifyValue <- function(x, und, u, d){
-  if (is.finite(x) && x >= u){
-    return(und[3])
-  } else if (is.finite(x) && x <= d){
-    return(und[1])
-  } else {
-    return(und[2])
-  }
+classifyValue <- function(x, und, u, d) {
+    if (is.finite(x) && x >= u) {
+        return(und[3])
+    } else if (is.finite(x) && x <= d) {
+        return(und[1])
+    } else {
+        return(und[2])
+    }
 }

@@ -23,25 +23,27 @@
 #' names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 #' myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
 #' myGeneSampleVector <- getExternalVector(myGeneSet, index = 1,
-#'      dataSetId = "gene_symbol", AIBSARNAid = "gene_symbol")
+#'     dataSetId = "gene_symbol", AIBSARNAid = "gene_symbol")
 #'
-getExternalVector <- function(dataSet, index = 1, dataSetId = "gene_symbol",
-                              AIBSARNAid = c("gene_id", "ensembl_gene_id",
-                                                  "gene_symbol", "entrez_id",
-                                                  "refseq_ids")){
-  v <- exprs(dataSet)[, index]
-  names(v) <- as.character(fData(dataSet)[[dataSetId]])
-  # get gene identifiers common to v and AIBSARNA
-  vInAIBSARNA <- which(fData(AIBSARNA::AIBSARNA)[[AIBSARNAid]] %in%
-                         names(v), arr.ind = TRUE)
-  vInAIBSARNA <- as.character(
-                      fData(AIBSARNA::AIBSARNA)[[AIBSARNAid]][vInAIBSARNA])
-  # get indices of v that are present in vInAIBSARNA
-  genesToKeep <- which(names(v) %in% vInAIBSARNA, arr.ind = TRUE)
-  # update v to only include comparable genes (genes in vInAIBSARNA)
-  v <- v[genesToKeep]
-  # remove any duplicate genes
-  genesToKeep <- unique(names(v))
-  v <- v[genesToKeep]
-  return(v)
-}
+getExternalVector <- function(dataSet, index = 1, dataSetId,
+            AIBSARNAid = c("gene_id",
+                            "ensembl_gene_id",
+                            "gene_symbol",
+                            "entrez_id",
+                            "refseq_ids")) {
+        v <- exprs(dataSet)[, index]
+        names(v) <- as.character(fData(dataSet)[[dataSetId]])
+        # get gene identifiers common to v and AIBSARNA
+        vInAIBSARNA <- which(fData(AIBSARNA::AIBSARNA)[[AIBSARNAid]] %in%
+                                names(v), arr.ind = TRUE)
+        vInAIBSARNA <- 
+            as.character(fData(AIBSARNA::AIBSARNA)[[AIBSARNAid]][vInAIBSARNA])
+        # get indices of v that are present in vInAIBSARNA
+        genesToKeep <- which(names(v) %in% vInAIBSARNA, arr.ind = TRUE)
+        # update v to only include comparable genes (genes in vInAIBSARNA)
+        v <- v[genesToKeep]
+        # remove any duplicate genes
+        genesToKeep <- unique(names(v))
+        v <- v[genesToKeep]
+        return(v)
+    }

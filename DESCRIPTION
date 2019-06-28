@@ -1,7 +1,7 @@
 Package: BrainSABER
 Type: Package
 Title: Brain Span Atlas in Biobase Expressionset R toolset
-Version: 0.0.2
+Version: 0.0.3
 Author: Carrie Minette
 Maintainer: Carrie Minette <carrie.minette@coyotes.usd.edu>
 Description: Tools to compare gene expression data to data from The Allen 
@@ -9,12 +9,13 @@ Description: Tools to compare gene expression data to data from The Allen
     AIBSARNA package.  For more information, please see the vignette.
 License: Artistic-2.0
 Encoding: UTF-8
-LazyData: true
-Depends: R (>= 2.10),
+Depends: R (>= 3.6),
     Biobase,
     AIBSARNA
-Imports: lsa
+Imports: lsa,
+    methods
 RoxygenNote: 6.1.1
+biocViews: GeneExpression, Visualization
 VignetteBuilder: knitr
 Suggests: 
     ComplexHeatmap,

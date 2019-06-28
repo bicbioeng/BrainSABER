@@ -29,30 +29,28 @@
 #'                           similarity_method = "euclidean")
 #' myCosSimFrame <- getSimScores(myGeneSet, myGeneSet)
 
-getSimScores <- function(data, relevantGenes, similarity_method = "cosine"){
-  if (is.vector(data)){
-    if (similarity_method == "euclidean"){
-      euclidean_similarity <- as.vector(apply(X = exprs(relevantGenes),
-                                              MARGIN = 2,
-                                              FUN = euclideanSim, y = data))
-      return(euclidean_similarity)
-    } else {
-      cosine_similarity <- as.vector(apply(X = exprs(relevantGenes),
-                                           MARGIN = 2,
-                                           FUN = lsa::cosine, y = data))
-      return(cosine_similarity)
+getSimScores <-
+    function(data, relevantGenes, similarity_method = "cosine") {
+        if (is.vector(data)) {
+            if (similarity_method == "euclidean") {
+                euclidean_similarity <- as.vector(apply(X=exprs(relevantGenes),
+                    MARGIN = 2, FUN = euclideanSim, y = data))
+                return(euclidean_similarity)
+            } else {
+                cosine_similarity <- as.vector(apply(X = exprs(relevantGenes),
+                    MARGIN = 2, FUN = lsa::cosine,y = data))
+                return(cosine_similarity)
+            }
+        } else {
+            simFrame <- as.data.frame(apply(X = exprs(data), MARGIN = 2,
+                FUN = getSimScores, relevantGenes = relevantGenes,
+                similarity_method = similarity_method))
+            return(simFrame)
+        }
     }
-  } else {
-    simFrame <- as.data.frame(apply(X = exprs(data), MARGIN = 2,
-                                    FUN = getSimScores,
-                                    relevantGenes = relevantGenes,
-                                    similarity_method = similarity_method))
-    return(simFrame)
-  }
-}
 
 #helper function
-euclideanSim <- function(x,y){
-  tmp <- sqrt(sum((x-y)^2))
-  return(1/(1+tmp))
+euclideanSim <- function(x, y) {
+    tmp <- sqrt(sum((x - y) ^ 2))
+    return(1 / (1 + tmp))
 }

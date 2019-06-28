@@ -24,32 +24,29 @@
 #'      dataSetId = "gene_symbol", AIBSARNAid = "gene_symbol")
 
 getTrimmedExternalSet <- function(dataSet, dataSetId = "gene_symbol",
-                           AIBSARNAid = c("gene_id", "ensembl_gene_id",
-                            "gene_symbol", "entrez_id", "refseq_ids")){
-  # get a trimmed vector faciliate things
-  v <- getExternalVector(dataSet = dataSet, index = 1, dataSetId = dataSetId,
-                         AIBSARNAid = AIBSARNAid)
-
-  vInd <- which(fData(dataSet)[[dataSetId]] %in% names(v),
-                arr.ind = TRUE)
-  # subset feature data
-  relfd <- fData(dataSet)[vInd, ]
-  # get index(es) of any duplicates
-  dup <- anyDuplicated(relfd[[dataSetId]])
-  # if there are duplicates, remove them from vInd and regenerate relfd
-  if (dup > 0) {
-    vInd <- vInd[-dup]
-    relfd <- fData(dataSet)[vInd, ]
-  }
-  # remove any unused factor levels
-  relfd <- as.data.frame(apply(relfd, 2, function(x) {x[drop = TRUE]}))
-  # convert to Annotated Data Frame
-  relfd <- AnnotatedDataFrame(data = relfd)
-  # subset exprs
-  relexprs <- exprs(dataSet)[vInd, ]
-  # put together ExpressionSet
-  relevantGenes <- ExpressionSet(assayData = relexprs,
-                               phenoData = phenoData(dataSet),
-                               featureData = relfd)
-  return(relevantGenes)
+    AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol", "entrez_id",
+                    "refseq_ids")) {
+    # get a trimmed vector faciliate things
+    v <- getExternalVector(dataSet = dataSet, index = 1, dataSetId = dataSetId,
+                AIBSARNAid = AIBSARNAid)
+    vInd <- which(fData(dataSet)[[dataSetId]] %in% names(v), arr.ind = TRUE)
+    # subset feature data
+    relfd <- fData(dataSet)[vInd,]
+    # get index(es) of any duplicates
+    dup <- which(duplicated(relfd[[dataSetId]]), arr.ind = TRUE)
+    # if there are duplicates, remove them from vInd and regenerate relfd
+    if (length(dup) > 0) {
+        vInd <- vInd[-dup]
+        relfd <- fData(dataSet)[vInd,]
+    }
+    # remove any unused factor levels
+    relfd <- as.data.frame(apply(relfd, 2, function(x) {x[drop = TRUE]}))
+    # convert to Annotated Data Frame
+    relfd <- AnnotatedDataFrame(data = relfd)
+    # subset exprs
+    relexprs <- exprs(dataSet)[vInd,]
+    # put together ExpressionSet
+    relevantGenes <- ExpressionSet(assayData = relexprs,
+                        phenoData = phenoData(dataSet), featureData = relfd)
+    return(relevantGenes)
 }

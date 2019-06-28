@@ -15,13 +15,13 @@
 #' myExampleVector <- getExampleVector(myGenes)
 
 getExampleVector <- function(genes) {
-  #get relevant genes
-  names(genes) <- genes
-  relevantGenes <- getRelevantGenes(genes, AIBSARNAid = "gene_symbol")
-  #get 8pcw exprs
-  v <- as.vector(exprs(relevantGenes[, 1]))
-  #name v
-  names(v) <- as.character(fData(relevantGenes)$gene_symbol)
-  #return v
-  return(v)
+    #get relevant genes
+    names(genes) <- genes
+    relevantGenes <- getRelevantGenes(genes, AIBSARNAid = "gene_symbol")
+    #get 8pcw exprs
+    v <- as.vector(exprs(relevantGenes[, 1]))
+    #name v
+    names(v) <- as.character(fData(relevantGenes)$gene_symbol)
+    #return v
+    return(v)
 }

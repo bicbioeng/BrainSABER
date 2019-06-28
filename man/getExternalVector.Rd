@@ -4,7 +4,7 @@
 \alias{getExternalVector}
 \title{getExternalVector}
 \usage{
-getExternalVector(dataSet, index = 1, dataSetId = "gene_symbol",
+getExternalVector(dataSet, index = 1, dataSetId,
   AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol",
   "entrez_id", "refseq_ids"))
 }
@@ -34,6 +34,6 @@ myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
 myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
 myGeneSampleVector <- getExternalVector(myGeneSet, index = 1,
-     dataSetId = "gene_symbol", AIBSARNAid = "gene_symbol")
+    dataSetId = "gene_symbol", AIBSARNAid = "gene_symbol")
 
 }

@@ -14,6 +14,7 @@
 #'
 #' @return a three-column data.frame or list of data frames
 #' @import Biobase
+#' @importFrom methods is
 #' @export
 #' @examples
 #' myGenes <- c(4.484885, 0.121902, 0.510035)
@@ -27,37 +28,37 @@
 #'   similarity_method = "euclidean")
 
 getSimDataFrame <- function(sim_score, relevantGenes,
-                            similarity_method = "cosine"){
-  # sanity checks
-  stopifnot(is.vector(sim_score) || is.data.frame(sim_score))
-  stopifnot(class(relevantGenes) == "ExpressionSet")
-  if(is.vector(sim_score)){
-    #get column numbers to allow comparison to original dataset
-    column_num <- phenoData(relevantGenes)$column_num
-    #get data vectors
-    age <- phenoData(relevantGenes)$age
-    structure_acronym <- phenoData(relevantGenes)$structure_acronym
-    if (similarity_method == "euclidean"){
-      euclidean_similarity <- sim_score
-      #construct data frame, using column_num as rownames
-      df <- data.frame(age, structure_acronym, euclidean_similarity,
-                       row.names = column_num)
-      #sort df by euclidean_similarity
-      df <- df[order(df$euclidean_similarity, decreasing = TRUE), ]
+                            similarity_method = "cosine") {
+    # sanity checks
+    stopifnot(is.vector(sim_score) || is.data.frame(sim_score))
+    stopifnot(is(relevantGenes, "ExpressionSet"))
+    if (is.vector(sim_score)) {
+        #get column numbers to allow comparison to original dataset
+        column_num <- phenoData(relevantGenes)$column_num
+        #get data vectors
+        age <- phenoData(relevantGenes)$age
+        structure_acronym <- phenoData(relevantGenes)$structure_acronym
+        if (similarity_method == "euclidean") {
+            euclidean_similarity <- sim_score
+            #construct data frame, using column_num as rownames
+            df <- data.frame(age, structure_acronym, euclidean_similarity,
+                                row.names = column_num)
+            #sort df by euclidean_similarity
+            df <- df[order(df$euclidean_similarity, decreasing = TRUE),]
+        } else {
+            cosine_similarity <- sim_score
+            #construct data frame, using column_num as rownames
+            df <- data.frame(age, structure_acronym, cosine_similarity,
+                                row.names = column_num)
+            #sort df by cosine_similarity
+            df <- df[order(df$cosine_similarity, decreasing = TRUE),]
+        }
+        return(df)
     } else {
-    cosine_similarity <- sim_score
-    #construct data frame, using column_num as rownames
-    df <- data.frame(age, structure_acronym, cosine_similarity,
-                     row.names = column_num)
-    #sort df by cosine_similarity
-    df <- df[order(df$cosine_similarity, decreasing = TRUE), ]
+        dfList <- as.list(apply(X = sim_score, MARGIN = 2,
+                                FUN = getSimDataFrame,
+                                relevantGenes = relevantGenes,
+                                similarity_method = similarity_method))
+        return(dfList)
     }
-    return(df)
-  } else {
-    dfList <- as.list(apply(X = sim_score, MARGIN = 2,
-                            FUN = getSimDataFrame,
-                            relevantGenes = relevantGenes,
-                            similarity_method = similarity_method))
-    return(dfList)
-  }
 }

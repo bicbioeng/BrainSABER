@@ -25,10 +25,10 @@ a Biobase ExpressionSet consisting of genes in \code{data}, sorted
 }
 \description{
 This function returns a subset of the AIBSARNA dataset, containing only
-the genes \code{data}, which may be a vector or a Biobase ExpressionSet,
+the genes in \code{data}, which may be a vector or a Biobase ExpressionSet,
 or a derivative of ExpressionSet that supports the Biobase methods
 \code{exprs()} and \code{fData()}.  If a vector is used, it must consist
-of numerical gene expression values with names comparable to one columns
+of numerical gene expression values with names comparable to one column
 of identifiers present in AIBSARNA.
 }
 \examples{

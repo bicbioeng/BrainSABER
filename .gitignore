@@ -3,5 +3,8 @@
 .RData
 .Ruserdata
 .Rbuildignore
-BrainSpan_RefSeq_IDs.txt
 BrainSABER.Rproj
+packrat/lib*/
+vignettes/toy_expression_matrix.csv
+vignettes/toy_gene_identification_data.csv
+vignettes/toy_sample_information_data.csv
