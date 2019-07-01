@@ -13,6 +13,22 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Introduction
+
+The Allen Institute for Brain Science provides an 
+RNA sequencing (RNA-Seq) data resource for studying 
+transcriptional mechanisms involved in human brain 
+development known as BrainSpan. This resource serves as an 
+additional control in research involving RNA sequencing of 
+human brain tissue. BrainSABER facilitates comparisons of user data
+with the various developmental stages and brain structures found in
+the BrainSpan atlas through an R Shiny interface. BrainSABER utilizes the Bioconductor
+ExpressionSet class as a self-validating container for user data
+and produces similarity matrices containing samples of the user’s data
+analyzed against each sample in the BrainSpan database. These matrices 
+are presented as dynamic heat maps, and include both cosine and Euclidean 
+similarity methods.
+
 # Installing BrainSABER
 
 BrainSABER requires Bioconductor 3.11 or higher, and the AIBSARNA data package, which contains the Allen Institute's Brain Atlas gene expression data gathered into a Biobase ExpressionSet.  For more information on Bioconductor, please see their website at https://bioconductor.org.  To install Bioconductor, AIBSARNA, and BrainSABER, run the following commands in R or RStudio:
