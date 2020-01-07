@@ -2,11 +2,10 @@
 title: "Installing and Using BrainSABER"
 author: "Carrie Minette"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
- %\VignetteIndexEntry{BrainSABER} 
-  %\VignetteEncoding{UTF-8} 
-  %\VignetteEngine{knitr::rmarkdown}
+output:
+  html_document: BiocStyle::html_document
+  pdf_document: default
+vignette: "%\\VignetteIndexEntry{BrainSABER} \n %\\VignetteEncoding{UTF-8} \n %\\VignetteEngine{knitr::rmarkdown}\n"
 ---
 
 ```{r setup, include=FALSE}
@@ -31,13 +30,12 @@ similarity methods.
 
 # Installing BrainSABER
 
-BrainSABER requires Bioconductor 3.11 or higher, and the AIBSARNA data package, which contains the Allen Institute's Brain Atlas gene expression data gathered into a Biobase ExpressionSet.  For more information on Bioconductor, please see their website at https://bioconductor.org.  To install Bioconductor, AIBSARNA, and BrainSABER, run the following commands in R or RStudio:
+BrainSABER requires Bioconductor 3.11 or higher.  For more information on Bioconductor, please see their website at https://bioconductor.org.  To install Bioconductor and BrainSABER, run the following commands in R or RStudio:
 
 ```{r, eval=FALSE}
 # for R version >= 3.5
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install("AIBSARNA")
 BiocManager::install("BrainSABER")
 ```
 
@@ -48,10 +46,29 @@ After installing, attach the BrainSABER package with the following command:
 library(BrainSABER)
 ```
 
+# Dynamically Constructing the AIBSARNA Reference Dataset
 
-# Preparing an ExpressionSet object
+To leverage the Allen Institute for Brain Science Brain Atlas RNA sequence 
+data, BrainSABER includes a function, buildAIBSARNA, that will download the 
+data, format it into an ExpressionSet, and use biomaRt to add RefSeq 
+identifiers.  This function requires an active internet connection.  
 
-The BrainSABER workflow is based around an instance of Biobase ExpressionSet class, which provides a common interface familiar to those who have analyzed microarray experiments with Bioconductor. The class requires the following three input files:
+```{r, buildAIB}
+AIBSARNA <- buildAIBSARNA()
+```
+
+Once AIBSARNA has been build, this function does not need to be run again for 
+subsequent work unless the AIBSARNA variable is removed or a new R session is 
+started.  If desired, AIBSARNA can be saved as an R data object and reloaded 
+for future work without the need to rebuild it.
+
+# The BrainSABER Workflow (R Console)
+
+The BrainSABER workflow can be run either through the R console, or through a Shiny app discussed further below.  In the R console, BrainSABER can be used to compare the Allen Institute data to a Biobase ExpressionSet.  
+
+## Preparing an ExpressionSet object
+
+Biobase ExpressionSet class provides a common interface familiar to those who have analyzed microarray experiments with Bioconductor. The class requires the following three input files:
 
 1. AssayData, a numeric matrix of expression values, where rows are genes, and columns are cells/samples
 
@@ -61,15 +78,9 @@ The BrainSABER workflow is based around an instance of Biobase ExpressionSet cla
 
 The expression value matrix must have the same number of columns as the phenoData has rows, and it must have the same number of rows as the featureData data frame has rows. Row names of the phenoData object should match the column names of the expression matrix. Row names of the featureData object should match row names of the expression matrix.  
 
-## Loading the Data
-
 For this vignette, we will construct a toy ExpressionSet object by extracting 50 samples and 200 genes from AIBSARNA, using the code below:
 
 ```{r getSampleData, message=FALSE, warning=FALSE, results='hide'}
-# load AIBSARNA data package 
-library(AIBSARNA)
-data("AIBSARNA")
-
 # Obtain the sample indexes to use for subsetting (not random)
 sample_idx <- 1:50 * 10 - 1
 # Set the RNG seed for repeatable results
@@ -96,10 +107,121 @@ toySet <- ExpressionSet(assayData = toy_exprs,
 
 ```
 
+## Select Gene Identifiers
+
+Before we can compare our data to the Allen Institute data, we must remove any genes that are not present in the Allen Institute data.  To accomplish that, we need to explore different combinations of gene identifiers for our data and the Allen Institute data to find which combination yields the most matched genes.  We can use BrainSABER's "getExternalVector()" function to extract trimmed vectors from our toySet, and compare lengths to find which one contains the most matches.
+
+```{r selectid1}
+# Try comparing different identifiers
+length(getExternalVector(toySet, index = 1, AIBSARNA = AIBSARNA, 
+                         dataSetId = "gene_id", AIBSARNAid = "gene_id"))
+```
+```{r selectid2}
+length(getExternalVector(toySet, index = 1, AIBSARNA = AIBSARNA, 
+                         dataSetId = "ensembl_gene_id", 
+                         AIBSARNAid = "ensembl_gene_id"))
+```
+```{r selectid3}
+length(getExternalVector(toySet, index = 1, AIBSARNA = AIBSARNA, 
+                         dataSetId = "gene_symbol", 
+                         AIBSARNAid = "gene_symbol"))
+```
+```{r selectid4}
+length(getExternalVector(toySet, index = 1, AIBSARNA = AIBSARNA, 
+                         dataSetId = "entrez_id", AIBSARNAid = "entrez_id"))
+```
+```{r selectid5}
+length(getExternalVector(toySet, index = 1, AIBSARNA = AIBSARNA, 
+                         dataSetId = "refseq_ids", AIBSARNAid = "refseq_ids"))
+
+```
+
+
+Because the Allen Institute data was originally sequenced using Ensembl identifiers, the "ensembl_id" column of AIBSARNA is the only column with no missing values, making it the ideal choice if the user data also contains ensembl identifiers.  If not, the Allen Institute data contains other identifiers.  More information is available at their website, http://brainspan.org.
+
+### Filter the Data
+
+Before we can compare our data to the Allen Institute data, we must remove any genes that are not present in the Allen Institute data.  BrainSABER includes a function to trim down user data, which returns a new ExpressionSet.  We will use the "ensembl_gene_id" columns to trim by, as they showed the most matches in the previous step.
+
+```{r filterData}
+trimmed_toySet <- getTrimmedExternalSet(dataSet = toySet, 
+                                        dataSetId = "ensembl_gene_id",
+                                        AIBSARNA = AIBSARNA, 
+                                        AIBSARNAid = "ensembl_gene_id")
+```
+
+We must also filter AIBSARNA to obtain only the genes present in our data set, using BrainSABER's "getRelevantGenes()" function.  Again, we will use the "ensembl_gene_id" columns.
+
+```{r getRelevantGenes}
+trimmed_AIBSARNA <- getRelevantGenes(data = toySet, 
+                                     dataSetId = "ensembl_gene_id",
+                                     AIBSARNA = AIBSARNA,
+                                     AIBSARNAid = "ensembl_gene_id")
+```
+
+### Generate Similarity Scores
+
+Once we have filtered the data to contain only genes present in both the user data and the Allen Institute data, we can obtain a data frame containing similarity scores comparing each sample in the user data to each sample in the Allen Institute data.  The getSimScores() function currently supports scoring based on either euclidean distance or cosine similarity.  The scores range from 0 to 1, where 1 is a perfect match, and 0 is completely dissimilar.
+
+```{r getSimScores}
+euc_sim <- getSimScores(data = trimmed_toySet, 
+                         relevantGenes = trimmed_AIBSARNA,
+                         similarity_method = "euclidean")
+cos_sim <- getSimScores(data = trimmed_toySet, 
+                         relevantGenes = trimmed_AIBSARNA,
+                         similarity_method = "cosine")
+```
+
+### Generate Age x Structure Matrices or Data Frames
+
+We can use the similarity scores generated in the previous step to generate a matrix or data frame for each sample in our data to identify which ages and brain structures from the Allen Institute data that sample most closely matches.  The getSimMatrix function will return single list which contains the matrices for all samples, and the getSimDataFrame function will return a single list containing data frames for all samples, sorted by the highest score.
+
+```{r getAS}
+euc_mats <- getSimMatrix(sim_score = euc_sim, relevantGenes = trimmed_AIBSARNA)
+euc_df <- getSimDataFrame(sim_score = euc_sim, 
+                          relevantGenes = trimmed_AIBSARNA,
+                          similarity_method = "euclidean")
+cos_mats <- getSimMatrix(sim_score = cos_sim, relevantGenes = trimmed_AIBSARNA)
+cos_df <- getSimDataFrame(sim_score = cos_sim, 
+                          relevantGenes = trimmed_AIBSARNA,
+                          similarity_method = "cosine")
+```
+
+Using R's head() function, we can see the best matches for a sample in our list of data frames:
+```{r viewsimdf}
+head(cos_df[[1]])
+```
+
+The matrices can be fed into a heatmapping function to produce graphics displaying the similarity for a sample.  we will use the heatmaply package to generate an interactive heatmap:
+
+```{r genHeatmap}
+library(heatmaply)
+heatmaply(euc_mats[[1]])
+```
+
+### Generate Up-Regulated / Down-Regulated / Normal Matrices
+
+In addition to similarity scoring, BrainSABER can also be used to create a list of matrices, one for each sample, indicating whether genes are up-reglated, down-regulated, or normal as compared to the Allen Institute data.  The getUNDmatrix() function compares the two data sets, either directly with the "discrete" option, or using the log2 fold-change via "log2fc", and returns either a numerical  matrix or a character matrix where '-1' or 'D' indicates down-regulation, '1' or 'U' indicates up-regulation, and '0' or 'N' indicates normal.  The rows of these matrices will be named with the rownames of the user's trimmed gene expression matrix, and so correspond to the genes of the user data, while the columns of the matrices will be named for the columns in the trimmed Allen Institute data gene expression matrix, and thus correspond to each sample in the Allen Institute data
+
+```{r getundnum}
+und_num <- getUNDmatrix(dataSet = trimmed_toySet, 
+                        relevantGenes = trimmed_AIBSARNA, 
+                        method = "log2fc",
+                        matrix_type = "num")
+und_num[[1]][1:10, 1:10]
+```
+```{r getundchar}
+und_char <- getUNDmatrix(dataSet = trimmed_toySet, 
+                        relevantGenes = trimmed_AIBSARNA, 
+                        method = "log2fc",
+                        matrix_type = "char")
+und_char[[1]][1:10, 1:10]
+```
+
 
 # The BrainSABER Workflow (Shiny app)
 
-BrainSABER comes with a Shiny app that runs the entire BrainSABER workflow, and also generates heatmaps based on the similarity matrices produced by BrainSABER.  This Shiny app requires three .CSV files containing the data required to construct an ExpressionSet.  We can save the toy data we subsetted earlier as .CSV files to use with the Shiny app.  The following code will save these files in your current working directory.
+BrainSABER comes with a Shiny app that runs most of the BrainSABER workflow, and also generates heatmaps based on the similarity matrices produced by BrainSABER.  This Shiny app requires three .CSV files containing the data required to construct an ExpressionSet.  We can save the toy data we subsetted earlier as .CSV files to use with the Shiny app.  The following code will save these files in your current working directory.
 
 ```{r saveCSV}
 write.csv(toy_exprs, file = "toy_expression_matrix.csv")

@@ -75,6 +75,7 @@ shinyServer(function(input, output) {
   }
   
   values <- reactiveValues()
+  AIBSARNA <- buildAIBSARNA()
   getExprsD <- reactive({
     inFile <- input$exprsD
     if (is.null(inFile)) return(NULL)
@@ -149,7 +150,7 @@ shinyServer(function(input, output) {
   })
   
   output$AIBSARNAidSelector<- renderUI({
-    AIBSARNAids <- colnames(fData(AIBSARNA::AIBSARNA))
+    AIBSARNAids <- colnames(fData(AIBSARNA))
     selectInput("AIBSARNAid", 
                 label = "Choose a gene identifier from Brain Atlas",
                 choices = AIBSARNAids)
@@ -172,6 +173,7 @@ shinyServer(function(input, output) {
         getExternalVector(dataSet = getExpressionSet(),
                           index = 1,
                           dataSetId = as.character(input$dataSetID),
+                          AIBSARNA = AIBSARNA,
                           AIBSARNAid = as.character(input$AIBSARNAid))), 
       icon = icon("check"), color = "green", width = 12
     )
@@ -180,7 +182,7 @@ shinyServer(function(input, output) {
   output$numAIBSARNAgenes <- renderInfoBox({
     infoBox(
       "Genes in Brain Atlas:", 
-      length(fData(AIBSARNA::AIBSARNA)[, 1]), 
+      length(fData(AIBSARNA)[, 1]), 
       icon = icon("arrow-up"), color = "yellow", width = 6
     )
   })
@@ -193,13 +195,15 @@ shinyServer(function(input, output) {
       values$dataSetID <- input$dataSetID
       values$AIBSARNAid <- input$AIBSARNAid
       values$relevantGenes <- getRelevantGenes(values$eset, input$dataSetID,
+                                               AIBSARNA = AIBSARNA,
                                                input$AIBSARNAid)
       incProgress(amount = .9)
     })
     withProgress(message = 'Trimming data genes to match Brain Atlas genes', 
       value = .1, {
-        values$eset <- getTrimmedExternalSet(values$eset, input$dataSetID,
-                                               input$AIBSARNAid)
+        # values$eset <- getTrimmedExternalSet(values$eset, input$dataSetID,
+        #                                      AIBSARNA = AIBSARNA,
+        #                                        input$AIBSARNAid)
         incProgress(amount = .9)
     })
   })
@@ -275,11 +279,11 @@ shinyServer(function(input, output) {
       if(isTruthy(input$sampleA)){
         withProgress(message = 'Getting similarity vectors for Sample A',
           value = .1, {
-            values$sampleAidx <- which(
-              rownames(pData(values$eset)) %in% input$sampleA, arr.ind = TRUE)
+            values$sampleAidx <- which(match(
+              rownames(pData(values$eset)), input$sampleA, nomatch = 0) > 0, arr.ind = TRUE)
             values$sampleA <- getExternalVector(values$eset, 
-              index = values$sampleAidx, dataSetId = values$dataSetID,
-              AIBSARNAid = values$AIBSARNAid)
+              index = values$sampleAidx, AIBSARNA = AIBSARNA, 
+              dataSetId = values$dataSetID, AIBSARNAid = values$AIBSARNAid)
             incProgress(amount = .3)
             values$sampleAeuc <- getSimScores(values$sampleA, 
               relevantGenes = values$relevantGenes, 
@@ -295,11 +299,11 @@ shinyServer(function(input, output) {
       if(isTruthy(input$sampleB)){
         withProgress(message = 'Getting similarity vectors for Sample B',
           value = .1, {
-            values$sampleBidx <- which(
-              rownames(pData(values$eset)) %in% input$sampleB, arr.ind = TRUE)
+            values$sampleBidx <- which(match(
+                rownames(pData(values$eset)), input$sampleB, nomatch = 0) > 0, arr.ind = TRUE)
             values$sampleB <- getExternalVector(values$eset, 
-              index = values$sampleBidx, dataSetId = values$dataSetID,
-              AIBSARNAid = values$AIBSARNAid)
+              index = values$sampleBidx, AIBSARNA = AIBSARNA, 
+              dataSetId = values$dataSetID, AIBSARNAid = values$AIBSARNAid)
             incProgress(amount = .3)
             values$sampleBeuc <- getSimScores(values$sampleB, 
               relevantGenes = values$relevantGenes, 
@@ -315,11 +319,11 @@ shinyServer(function(input, output) {
       if(isTruthy(input$sampleC)){
         withProgress(message = 'Getting similarity vectors for Sample C',
           value = .1, {
-            values$sampleCidx <- which(
-              rownames(pData(values$eset)) %in% input$sampleC, arr.ind = TRUE)
+            values$sampleCidx <- which(match(
+                rownames(pData(values$eset)), input$sampleC, nomatch = 0) > 0, arr.ind = TRUE)
             values$sampleC <- getExternalVector(values$eset, 
-              index = values$sampleCidx, dataSetId = values$dataSetID,
-              AIBSARNAid = values$AIBSARNAid)
+              index = values$sampleCidx, AIBSARNA = AIBSARNA, 
+              dataSetId = values$dataSetID, AIBSARNAid = values$AIBSARNAid)
             incProgress(amount = .3)
             values$sampleCeuc <- getSimScores(values$sampleC, 
               relevantGenes = values$relevantGenes, 

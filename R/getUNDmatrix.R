@@ -33,9 +33,11 @@
 #' @export
 #'
 #' @examples
+#' AIBSARNA <- buildAIBSARNA(mini = TRUE)
 #' myGenes <- c(4.484885, 0.121902, 0.510035)
-#' names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
-#' myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
+#' names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
+#' myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA,
+#'     AIBSARNAid = "gene_symbol")
 #' myUNDnumericalMatrix <- getUNDmatrix(myGeneSet, method = "discrete",
 #'     up_threshold = 3, down_threshold = 1, matrix_type = "num")
 #' myUNDcharacterMatrix <- getUNDmatrix(myGeneSet, method = "discrete",
@@ -73,7 +75,7 @@ getUNDmatrix <- function(dataSet, relevantGenes = NULL,
                                 v = dataExprs[, z]))
             rownames(ret) <- rownames(dataExprs)
             colnames(ret) <- colnames(relExprs)
-            return()
+            return(ret)
         })
         return(matList)
     }

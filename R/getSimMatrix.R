@@ -6,18 +6,22 @@
 #' structure_acronym.
 #'
 #' @param sim_score a vector or data frame of similarity scores
-#' @param relevantGenes a Biobase ExpressionSet
+#' @param relevantGenes a Biobase Expression set created using the 
+#'     \code{getRelevantGenes()} function
 #'
 #' @return a numeric matrix of similarity scores, or a list of matrices
 #' @import Biobase
 #' @importFrom methods is
 #' @export
 #' @examples
+#' AIBSARNA <- buildAIBSARNA(mini = TRUE)
 #' myGenes <- c(4.484885, 0.121902, 0.510035)
-#' names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
-#' myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
+#' names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
+#' myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA, 
+#'     AIBSARNAid = "gene_symbol")
 #' myCosScore <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
-#' myEucScore <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
+#' myEucScore <- getSimScores(myGenes, myGeneSet, 
+#'     similarity_method = "euclidean")
 #' myCosineMatrix <- getSimMatrix(myCosScore, myGeneSet)
 #' myEuclideanMatrix <- getSimMatrix(myEucScore, myGeneSet)
 
@@ -42,23 +46,25 @@ getSimMatrix <- function(sim_score, relevantGenes) {
             s <- as.character(structure_acronym[i])
             mat[a, s] <- sim_score[i]
         }
-        # the following columns and rows are removed because they have 3 or less
-        # values in them, crashing heatmaps later on
-        badcols <- c("CB", "CGE", "DTH", "LGE", "M1C-S1C", "MGE", "Ocx", "PCx",
-                        "TCx", "URL")
-        badrows <- c("25 pcw", "26 pcw", "35 pcw")
-        inn <- which(colnames(mat) %in% badcols, arr.ind = TRUE)
-        inr <- which(rownames(mat) %in% badrows, arr.ind = TRUE)
-        mat <- mat[, -inn]
-        mat <- mat[-inr, ]
+        if(length(age) > 5){
+            # the following columns and rows are removed because they have 
+            # 3 or less values in them, crashing heatmaps later on
+            badcols <- c("CB", "CGE", "DTH", "LGE", "M1C-S1C", "MGE", 
+                        "Ocx", "PCx", "TCx", "URL")
+            badrows <- c("25 pcw", "26 pcw", "35 pcw")
+            inn <- which(colnames(mat) %in% badcols, arr.ind = TRUE)
+            inr <- which(rownames(mat) %in% badrows, arr.ind = TRUE)
+            mat <- mat[, -inn]
+            mat <- mat[-inr, ]
+        }
         return(mat)
     } else {
         nSamples <- length(sim_score[1,])
         # initialize matList
         matList <- vector("list", nSamples)
-        vapply(seq_len(nSamples), FUN = function(x) {
-                matList[[x]] <- getSimMatrix(sim_score[, x], relevantGenes)
-            }, FUN.VALUE = "matrix")
+        for(x in seq_len(nSamples)){
+            matList[[x]] <- getSimMatrix(sim_score[, x], relevantGenes)
+        }
         return(matList)
     }
 }

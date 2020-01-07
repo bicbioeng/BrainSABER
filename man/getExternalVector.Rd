@@ -4,14 +4,21 @@
 \alias{getExternalVector}
 \title{getExternalVector}
 \usage{
-getExternalVector(dataSet, index = 1, dataSetId,
-  AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol",
-  "entrez_id", "refseq_ids"))
+getExternalVector(
+  dataSet,
+  index = 1,
+  AIBSARNA = NULL,
+  dataSetId,
+  AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol", "entrez_id", "refseq_ids")
+)
 }
 \arguments{
 \item{dataSet}{a Biobase ExpressionSet}
 
 \item{index}{the integer index of the sample of dataSet to be used}
+
+\item{AIBSARNA}{an instance of the AIBSARNA dataset, built using the 
+\code{buildAIBSARNA()} function}
 
 \item{dataSetId}{the name of the column of gene identifiers in fData(dataSet)
 to be used to compare dataSet to AIBSARNA.}
@@ -30,10 +37,12 @@ outside Biobase ExpressionSet, for use in creating subsets of AIBSARNA with
  \code{getSimScores}
 }
 \examples{
+miniAIBSARNA <- buildAIBSARNA(mini = TRUE)
 myGenes <- c(4.484885, 0.121902, 0.510035)
-names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
-myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
-myGeneSampleVector <- getExternalVector(myGeneSet, index = 1,
+names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
+myGeneSet <- getRelevantGenes(myGenes, "gene_symbol", miniAIBSARNA,
+    AIBSARNAid = "gene_symbol")
+myGeneSampleVector <- getExternalVector(myGeneSet, index = 1, miniAIBSARNA,
     dataSetId = "gene_symbol", AIBSARNAid = "gene_symbol")
 
 }

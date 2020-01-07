@@ -4,9 +4,14 @@
 \alias{getUNDmatrix}
 \title{getUNDmatrix}
 \usage{
-getUNDmatrix(dataSet, relevantGenes = NULL, method = c("discrete",
-  "log2FC"), up_threshold = 0.5, down_threshold = -0.5,
-  matrix_type = c("num", "char"))
+getUNDmatrix(
+  dataSet,
+  relevantGenes = NULL,
+  method = c("discrete", "log2FC"),
+  up_threshold = 0.5,
+  down_threshold = -0.5,
+  matrix_type = c("num", "char")
+)
 }
 \arguments{
 \item{dataSet}{a Biobase ExpressionSet}
@@ -48,9 +53,11 @@ This function returns a matrix showing whether gene expression values in
  returned by \code{getRelevantGenes}.
 }
 \examples{
+AIBSARNA <- buildAIBSARNA(mini = TRUE)
 myGenes <- c(4.484885, 0.121902, 0.510035)
-names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
-myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
+names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
+myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA,
+    AIBSARNAid = "gene_symbol")
 myUNDnumericalMatrix <- getUNDmatrix(myGeneSet, method = "discrete",
     up_threshold = 3, down_threshold = 1, matrix_type = "num")
 myUNDcharacterMatrix <- getUNDmatrix(myGeneSet, method = "discrete",

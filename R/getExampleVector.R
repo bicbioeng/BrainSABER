@@ -5,19 +5,27 @@
 #' demonstrating \code{getSimScores}.
 #'
 #' @param genes a character vector of HGNC-compliant gene names
+#' @param AIBSARNA an instance of the AIBSARNA dataset, built using the 
+#'     \code{buildAIBSARNA()} function
 #'
 #' @return a named character vector of gene-expression values
 #' @import Biobase
-#' @import AIBSARNA
 #' @export
 #' @examples
-#' myGenes <- c("TNFRSF1A", "BCL3", "NEFH")
-#' myExampleVector <- getExampleVector(myGenes)
+#' AIBSARNA <- buildAIBSARNA(mini = TRUE)
+#' myGenes <- c("TSPAN6", "DPM1", "C1orf112")
+#' myExampleVector <- getExampleVector(myGenes, AIBSARNA)
 
-getExampleVector <- function(genes) {
+getExampleVector <- function(genes, AIBSARNA = NULL) {
+    if(is.null(AIBSARNA)){
+        em <-
+            "AIBSARNA is required and must be built using buildAIBSARNA()."
+        stop(em)
+    }
     #get relevant genes
     names(genes) <- genes
-    relevantGenes <- getRelevantGenes(genes, AIBSARNAid = "gene_symbol")
+    relevantGenes <- getRelevantGenes(genes, AIBSARNA = AIBSARNA, 
+                                        AIBSARNAid = "gene_symbol")
     #get 8pcw exprs
     v <- as.vector(exprs(relevantGenes[, 1]))
     #name v

@@ -9,7 +9,8 @@ getSimMatrix(sim_score, relevantGenes)
 \arguments{
 \item{sim_score}{a vector or data frame of similarity scores}
 
-\item{relevantGenes}{a Biobase ExpressionSet}
+\item{relevantGenes}{a Biobase Expression set created using the 
+\code{getRelevantGenes()} function}
 }
 \value{
 a numeric matrix of similarity scores, or a list of matrices
@@ -21,11 +22,14 @@ similarity scores with rows labeled by age, and columns labeled by
 structure_acronym.
 }
 \examples{
+AIBSARNA <- buildAIBSARNA(mini = TRUE)
 myGenes <- c(4.484885, 0.121902, 0.510035)
-names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
-myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
+names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
+myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA, 
+    AIBSARNAid = "gene_symbol")
 myCosScore <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
-myEucScore <- getSimScores(myGenes, myGeneSet, similarity_method = "euclidean")
+myEucScore <- getSimScores(myGenes, myGeneSet, 
+    similarity_method = "euclidean")
 myCosineMatrix <- getSimMatrix(myCosScore, myGeneSet)
 myEuclideanMatrix <- getSimMatrix(myEucScore, myGeneSet)
 }
