@@ -4,15 +4,21 @@
 \alias{getTrimmedExternalSet}
 \title{Get a trimmed version of an external data set}
 \usage{
-getTrimmedExternalSet(dataSet, dataSetId = "gene_symbol",
-  AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol",
-  "entrez_id", "refseq_ids"))
+getTrimmedExternalSet(
+  dataSet,
+  dataSetId = "gene_symbol",
+  AIBSARNA = NULL,
+  AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol", "entrez_id", "refseq_ids")
+)
 }
 \arguments{
 \item{dataSet}{a Biobase ExpressionSet compatible data set}
 
-\item{dataSetId}{the name of the column of gene identifiers in fData(dataSet)
-to be used to compare dataSet to AIBSARNA.}
+\item{dataSetId}{the name of the column of gene identifiers in 
+fData(dataSet) to be used to compare dataSet to AIBSARNA.}
+
+\item{AIBSARNA}{an instance of the AIBSARNA dataset, built using the 
+\code{buildAIBSARNA()} function}
 
 \item{AIBSARNAid}{the name of the column of fData(AIBSARNA) that is
 comparable to dataSetId.  One of "gene_id", "ensembl_gene_id",
@@ -27,9 +33,11 @@ genes that are present in AIBSARNA, for use in \code{getSimScores} or
 \code{getUNDmatrix}.
 }
 \examples{
+AIBSARNA <- buildAIBSARNA(mini = TRUE)
 myGenes <- c(4.484885, 0.121902, 0.510035)
-names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
-myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
+names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
+myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA,
+    AIBSARNAid = "gene_symbol")
 myTrimmedGeneSet <- getTrimmedExternalSet(myGeneSet,
-     dataSetId = "gene_symbol", AIBSARNAid = "gene_symbol")
+    dataSetId = "gene_symbol", AIBSARNA, AIBSARNAid = "gene_symbol")
 }

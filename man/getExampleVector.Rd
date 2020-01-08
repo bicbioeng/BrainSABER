@@ -4,10 +4,13 @@
 \alias{getExampleVector}
 \title{Get an example vector for specified genes}
 \usage{
-getExampleVector(genes)
+getExampleVector(genes, AIBSARNA = NULL)
 }
 \arguments{
 \item{genes}{a character vector of HGNC-compliant gene names}
+
+\item{AIBSARNA}{an instance of the AIBSARNA dataset, built using the 
+\code{buildAIBSARNA()} function}
 }
 \value{
 a named character vector of gene-expression values
@@ -18,6 +21,7 @@ the specified genes, taken from the 1st row of AIBSARNA, for use in
 demonstrating \code{getSimScores}.
 }
 \examples{
-myGenes <- c("TNFRSF1A", "BCL3", "NEFH")
-myExampleVector <- getExampleVector(myGenes)
+AIBSARNA <- buildAIBSARNA(mini = TRUE)
+myGenes <- c("TSPAN6", "DPM1", "C1orf112")
+myExampleVector <- getExampleVector(myGenes, AIBSARNA)
 }

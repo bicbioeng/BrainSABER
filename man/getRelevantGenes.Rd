@@ -4,8 +4,12 @@
 \alias{getRelevantGenes}
 \title{Get a subset of AIBSARNA using a Gene Expression Vector}
 \usage{
-getRelevantGenes(data, dataSetId = NULL, AIBSARNAid = c("gene_id",
-  "ensembl_gene_id", "gene_symbol", "entrez_id", "refseq_ids"))
+getRelevantGenes(
+  data,
+  dataSetId = NULL,
+  AIBSARNA = NULL,
+  AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol", "entrez_id", "refseq_ids")
+)
 }
 \arguments{
 \item{data}{a vector of named gene expression values, or a compatible
@@ -14,6 +18,9 @@ data set}
 \item{dataSetId}{(Optional) If \code{data} is not a vector, the name of
 the column of gene identifiers in fData(dataSet) to be used to compare
 \code{data} to AIBSARNA.}
+
+\item{AIBSARNA}{an instance of the AIBSARNA dataset, built using the 
+\code{buildAIBSARNA()} function}
 
 \item{AIBSARNAid}{the name of the column of fData(AIBSARNA) that is
 comparable to dataSetId.  One of "gene_id", "ensembl_gene_id",
@@ -32,9 +39,10 @@ of numerical gene expression values with names comparable to one column
 of identifiers present in AIBSARNA.
 }
 \examples{
-
+AIBSARNA <- buildAIBSARNA(mini = TRUE)
 myGenes <- c(4.484885, 0.121902, 0.510035)
-names(myGenes) <- c("TNFRSF1A", "BCL3", "NEFH")
-myGeneSet <- getRelevantGenes(myGenes, AIBSARNAid = "gene_symbol")
+names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
+myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA, 
+    AIBSARNAid = "gene_symbol")
 
 }
