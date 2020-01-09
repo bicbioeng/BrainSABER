@@ -62,9 +62,9 @@ subsequent work unless the AIBSARNA variable is removed or a new R session is
 started.  If desired, AIBSARNA can be saved as an R data object and reloaded 
 for future work without the need to rebuild it.
 
-# The BrainSABER Workflow (R Console)
+# The BrainSABER Workflow
 
-The BrainSABER workflow can be run either through the R console, or through a Shiny app discussed further below.  In the R console, BrainSABER can be used to compare the Allen Institute data to a Biobase ExpressionSet.  
+The BrainSABER workflow can be used to compare the Allen Institute data to a Biobase ExpressionSet.  
 
 ## Preparing an ExpressionSet object
 
@@ -219,21 +219,6 @@ und_char[[1]][1:10, 1:10]
 ```
 
 
-# The BrainSABER Workflow (Shiny app)
-
-BrainSABER comes with a Shiny app that runs most of the BrainSABER workflow, and also generates heatmaps based on the similarity matrices produced by BrainSABER.  This Shiny app requires three .CSV files containing the data required to construct an ExpressionSet.  We can save the toy data we subsetted earlier as .CSV files to use with the Shiny app.  The following code will save these files in your current working directory.
-
-```{r saveCSV}
-write.csv(toy_exprs, file = "toy_expression_matrix.csv")
-write.csv(as.data.frame(toy_fd), file = "toy_gene_identification_data.csv")
-write.csv(as.data.frame(toy_pd), file = "toy_sample_information_data.csv")
-```
-
-
-Once these files are saved, we can run the Shiny app.  The app will guide us through the BrainSABER workflow.
-```{r runShinyBrainsABER, eval=FALSE}
-runShinyBrainSABER()
-```
 
 ## Session Info
 ```{r sessionInfo}
