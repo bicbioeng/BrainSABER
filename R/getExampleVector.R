@@ -9,11 +9,7 @@
 #'     \code{buildAIBSARNA()} function
 #'
 #' @return a named character vector of gene-expression values
-<<<<<<< HEAD
 #' @import SummarizedExperiment
-=======
-#' @import Biobase
->>>>>>> refs/remotes/origin/master
 #' @export
 #' @examples
 #' AIBSARNA <- buildAIBSARNA(mini = TRUE)
@@ -31,15 +27,9 @@ getExampleVector <- function(genes, AIBSARNA = NULL) {
     relevantGenes <- getRelevantGenes(genes, AIBSARNA = AIBSARNA, 
                                         AIBSARNAid = "gene_symbol")
     #get 8pcw exprs
-<<<<<<< HEAD
     v <- as.vector(assay(relevantGenes[, 1]))
     #name v
     names(v) <- as.character(rowData(relevantGenes)$gene_symbol)
-=======
-    v <- as.vector(exprs(relevantGenes[, 1]))
-    #name v
-    names(v) <- as.character(fData(relevantGenes)$gene_symbol)
->>>>>>> refs/remotes/origin/master
     #return v
     return(v)
 }

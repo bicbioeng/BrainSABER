@@ -2,7 +2,6 @@
 % Please edit documentation in R/CellScabbard-methods.R
 \name{CellScabbard-methods}
 \alias{CellScabbard-methods}
-<<<<<<< HEAD
 \alias{dataSetId}
 \alias{CellScabbard,ANY,ANY-method}
 \alias{dataSetId<-}
@@ -47,81 +46,10 @@ similarityMatrices(cs) <- value
 UNDmatrices(cs)
 
 UNDmatrices(cs) <- value
-=======
-\alias{cellTreeInfo}
-\alias{CellScabbard,ANY,ANY-method}
-\alias{cellTreeInfo<-}
-\alias{monocleInfo}
-\alias{monocleInfo<-}
-\alias{TSCANinfo}
-\alias{TSCANinfo<-}
-\alias{sincellInfo}
-\alias{sincellInfo<-}
-\alias{oncoNEMdata}
-\alias{oncoNEMdata<-}
-\alias{CanopyData}
-\alias{CanopyData<-}
-\alias{cellscapeData}
-\alias{cellscapeData<-}
-\alias{timescapeData}
-\alias{timescapeData<-}
-\alias{mapscapeData}
-\alias{mapscapeData<-}
-\alias{treeList}
-\alias{treeList<-}
-\alias{originalTrees}
-\alias{originalTrees<-}
-\title{Methods for the CellScabbard class}
-\usage{
-cellTreeInfo(cs)
-
-cellTreeInfo(cs) <- value
-
-monocleInfo(cs)
-
-monocleInfo(cs) <- value
-
-TSCANinfo(cs)
-
-TSCANinfo(cs) <- value
-
-sincellInfo(cs)
-
-sincellInfo(cs, pt) <- value
-
-oncoNEMdata(cs)
-
-oncoNEMdata(cs) <- value
-
-CanopyData(cs)
-
-CanopyData(cs) <- value
-
-cellscapeData(cs)
-
-cellscapeData(cs, pt) <- value
-
-timescapeData(cs)
-
-timescapeData(cs, pt) <- value
-
-mapscapeData(cs)
-
-mapscapeData(cs, pt) <- value
-
-treeList(cs)
-
-treeList(cs, tt) <- value
-
-originalTrees(cs)
-
-originalTrees(cs, tt) <- value
->>>>>>> refs/remotes/origin/master
 }
 \arguments{
 \item{cs}{A CellScabbard object}
 
-<<<<<<< HEAD
 \item{value}{data type, any of matrix, data.frame,list, or SimpleList}
 }
 \value{
@@ -157,57 +85,3 @@ similarityMatrices(myGenes)
 similarityDFs(myGenes)
 UNDmatrices(myGenes)
 }
-=======
-\item{value}{\code{cellTreeInfo(cs)<-}: A character vector of the name of the
-      column of \code{phenoData()} to use for grouping data in the
-      \pkg{cellTreeGenerator} workflow.
-
-   \code{monocleInfo(cs)<-}: A charater vector of parameters used by
-      \code{generate_tree(treeType = "monocle")} in the
-      \pkg{cellTreeGenerator} workflow.
-
-   \code{TSCANinfo(cs)<-}: A character vector of the row name of a
-      single gene in \code{exprs()} to use for a single gene vs.
-      pseudotime plot for \code{generate_tree(treeType = "TSCAN")} in the
-      \pkg{cellTreeGenerator} workflow.
-
-   \code{sincellInfo(cs)<-}: The value to use as a named parameter for
-      sincell, used by \code{generate_tree(treeType = "sincell")} in the
-      \pkg{cellTreeGenerator} workflow
-
-   \code{oncoNEMdata(cs)<-}: A matrix containing the data to be used
-      by \code{generate_tree(treeType = "oncoNEM")} in the
-      \pkg{cellTreeGenerator} workflow.
-
-   \code{CanopyData(cs)<-}: A list containing the data to be used by
-      \code{generate_tree(treeType = "Canopy")} in the
-      \pkg{cellTreeGenerator} workflow.
-
-   \code{cellscapeData(cs, pt)<-}: The value to use as a named parameter for
-      cellscape, used by \code{generate_tree(treeType = "cellscape")} in the
-      \pkg{cellTreeGenerator} workflow
-
-   \code{timescapeData(cs, pt)<-}: The value to use as a named parameter for
-      timescape used by \code{generate_tree(treeType = "timescape")} in the
-      \pkg{cellTreeGenerator} workflow
-
-   \code{mapscapeData(cs)<-}: The value to use as a named parameter for
-      mapscape, used by \code{generate_tree(treeType = "mapscape")} in the
-      \pkg{cellTreeGenerator} workflow}
-
-\item{pt}{The name of the \pkg{sincell}, \pkg{cellscape}, \pkg{timescape}, or
-\pkg{mapscape} parameter to store}
-
-\item{tt}{The type of tree being stored}
-}
-\value{
-An updated CellScabbard object, or the contents of a slot of the
-     CellScabbard object
-}
-\description{
-These methods operate on CellScabbard objects. Please note that
-treeList<- and originalTrees<- are not intended to be
-called directly.
-}
-\keyword{internal}
->>>>>>> refs/remotes/origin/master

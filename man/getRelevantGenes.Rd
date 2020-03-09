@@ -16,35 +16,22 @@ getRelevantGenes(
 data set}
 
 \item{dataSetId}{(Optional) If \code{data} is not a vector, the name of
-<<<<<<< HEAD
 the column of gene identifiers in rowData(dataSet) to be used to compare
-=======
-the column of gene identifiers in fData(dataSet) to be used to compare
->>>>>>> refs/remotes/origin/master
 \code{data} to AIBSARNA.}
 
 \item{AIBSARNA}{an instance of the AIBSARNA dataset, built using the 
 \code{buildAIBSARNA()} function}
 
-<<<<<<< HEAD
 \item{AIBSARNAid}{the name of the column of rowData(AIBSARNA) that is
-=======
-\item{AIBSARNAid}{the name of the column of fData(AIBSARNA) that is
->>>>>>> refs/remotes/origin/master
 comparable to dataSetId.  One of "gene_id", "ensembl_gene_id",
 "gene_symbol", "entrez_id", "refseq_ids"}
 }
 \value{
-<<<<<<< HEAD
 a SummarizedExperiment consisting of genes in \code{data}, sorted
-=======
-a Biobase ExpressionSet consisting of genes in \code{data}, sorted
->>>>>>> refs/remotes/origin/master
     to match the order of the genes in \code{data}
 }
 \description{
 This function returns a subset of the AIBSARNA dataset, containing only
-<<<<<<< HEAD
 the genes in \code{data}, which may be a vector, a SummarizedExperiment
 or derivative \code{assay()} and \code{rowData()}, or a CellScabbard.  
 If a vector is used, it must consist of numerical gene expression values 
@@ -69,16 +56,6 @@ myGenes <- CellScabbard(exprsData = exprs, phenoData = pd, featureData = fd,
 relevantGenes(myGenes)
 
 # Example 2 - manual gene selection and relevant gene extraction
-=======
-the genes in \code{data}, which may be a vector or a Biobase ExpressionSet,
-or a derivative of ExpressionSet that supports the Biobase methods
-\code{exprs()} and \code{fData()}.  If a vector is used, it must consist
-of numerical gene expression values with names comparable to one column
-of identifiers present in AIBSARNA.
-}
-\examples{
-AIBSARNA <- buildAIBSARNA(mini = TRUE)
->>>>>>> refs/remotes/origin/master
 myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
 myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA, 

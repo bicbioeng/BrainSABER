@@ -4,7 +4,6 @@
 \alias{getSimDataFrame}
 \title{Get Age, Structure Acronym, and Similarity Scores Data Frame}
 \usage{
-<<<<<<< HEAD
 getSimDataFrame(
   data = NULL,
   sim_score = NULL,
@@ -20,14 +19,6 @@ similarityScores slots, or a SummarizedExperiment created using the
 \item{sim_score}{a vector or data frame of similarity scores}
 
 \item{relevantGenes}{a SummarizedExperiment object created using the
-=======
-getSimDataFrame(sim_score, relevantGenes, similarity_method = "cosine")
-}
-\arguments{
-\item{sim_score}{a vector or data frame of similarity scores}
-
-\item{relevantGenes}{a Biobase Expression set created using the 
->>>>>>> refs/remotes/origin/master
 \code{getRelevantGenes()} function}
 
 \item{similarity_method}{currently supported similarity methods are "cosine"
@@ -37,7 +28,6 @@ and "euclidean", defaults to "cosine"}
 a three-column data.frame or list of data frames
 }
 \description{
-<<<<<<< HEAD
 This function takes in a CellScabbard object, or both a similarity vector
 or data frame as returned by \code{getSimScores} and a subset of AIBSARNA
 as returned by \code{getRelevantGenes}. Constructs a \code{data.frame}
@@ -73,22 +63,10 @@ similarityDFs(myGenes) <- getSimDataFrame(data = myGenes,
 similarityDFs(myGenes)
 
 # Example 2 - manual gene selection and relevant gene extraction
-=======
-This function takes a similarity vector or data frame as returned by
-\code{getSimScores} and a subset of AIBSARNA as returned by
-\code{getRelevantGenes} and constructs a \code{data.frame} with columns age,
-structure_acroynym, and either cosine_similarity or euclidean_similarity,
-sorted by similarity score in decreasing order.  In the case of a similarity
-data frame, a list of data frames is returned.
-}
-\examples{
-AIBSARNA <- buildAIBSARNA(mini = TRUE)
->>>>>>> refs/remotes/origin/master
 myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
 myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA,
     AIBSARNAid = "gene_symbol")
-<<<<<<< HEAD
 myCosScore <- getSimScores(myGenes, relevantGenes = myGeneSet,
                            similarity_method = "cosine")
 myEucScore <- getSimScores(myGenes, relevantGenes = myGeneSet,
@@ -99,13 +77,4 @@ myCosineDF <- getSimDataFrame(sim_score = myCosScore,
 myEuclideanDF <- getSimDataFrame(sim_score = myEucScore,
                                  relevantGenes = myGeneSet,
                                  similarity_method = "euclidean")
-=======
-myCosScore <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
-myEucScore <- getSimScores(myGenes, myGeneSet, 
-    similarity_method = "euclidean")
-myCosineDF <- getSimDataFrame(myCosScore, myGeneSet,
-    similarity_method = "cosine")
-myEuclideanDF <- getSimDataFrame(myEucScore, myGeneSet,
-    similarity_method = "euclidean")
->>>>>>> refs/remotes/origin/master
 }

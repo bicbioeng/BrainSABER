@@ -8,7 +8,6 @@ packrat/lib*/
 vignettes/toy_expression_matrix.csv
 vignettes/toy_gene_identification_data.csv
 vignettes/toy_sample_information_data.csv
-<<<<<<< HEAD
 inst/shiny-examples/shiny_brainsaber/server.R
 inst/shiny-examples/shiny_brainsaber/ui.R
 man/runShinyBrainSABER.Rd
@@ -20,5 +19,3 @@ bioccheck.txt
 doc
 Meta
 vignettes/Rplot001.jpg
-=======
->>>>>>> refs/remotes/origin/master

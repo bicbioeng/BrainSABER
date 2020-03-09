@@ -4,7 +4,6 @@
 \alias{getSimScores}
 \title{Get Similarity Scoring for a Gene Expression Vector}
 \usage{
-<<<<<<< HEAD
 getSimScores(data, relevantGenes = NULL, similarity_method = "cosine")
 }
 \arguments{
@@ -13,16 +12,6 @@ getSimScores(data, relevantGenes = NULL, similarity_method = "cosine")
 \code{getTrimmedExternalSet}, or a CellScabbard object.}
 
 \item{relevantGenes}{a SummarizedExperiment object created using the
-=======
-getSimScores(data, relevantGenes, similarity_method = "cosine")
-}
-\arguments{
-\item{data}{a named vector of gene expression values returned by
-\code{getExternalVector}, or an ExpressionSet returned by
-\code{getTrimmedExternalSet}}
-
-\item{relevantGenes}{a Biobase Expression set created using the 
->>>>>>> refs/remotes/origin/master
 \code{getRelevantGenes()} function}
 
 \item{similarity_method}{currently supported similarity methods are
@@ -30,18 +19,11 @@ getSimScores(data, relevantGenes, similarity_method = "cosine")
 }
 \value{
 If \code{data} is a vector, returns a vector of similarity scores
-<<<<<<< HEAD
     for each sample in relevantGenes. If \code{data} is a
     SummarizedExperiment, returns a data frame, with columns containing  the
     similarity scores for and named after each sample in \code{data}, and
     rows named after each sample in \code{relevantGenes}. If \code{data} is
     a CellScabbard, the results will be stored in its similarityScores slot.
-=======
-    for each sample in relevantGenes. If \code{data} is an ExpressionSet,
-    returns a data frame, with columns containing the similarity scores
-    for and named after each sample in \code{data}, and rows named after
-    each sample in \code{relevantGenes}
->>>>>>> refs/remotes/origin/master
 }
 \description{
 This function computes the similarity score of a gene expression
@@ -51,7 +33,6 @@ obtained by \code{getRelevantGenes}.
 }
 \examples{
 AIBSARNA <- buildAIBSARNA(mini = TRUE)
-<<<<<<< HEAD
 # Example 1 - using CellScabbard class
 # get a random sample of 3 genes
 totalGenes <- nrow(AIBSARNA)
@@ -72,8 +53,6 @@ similarityScores(myGenes) <- getSimScores(data = myGenes,
 similarityScores(myGenes)
 
 # Example 2 - manual gene selection and relevant gene extraction
-=======
->>>>>>> refs/remotes/origin/master
 myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
 myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA,
@@ -82,8 +61,4 @@ CosScores <- getSimScores(myGenes, myGeneSet,
     similarity_method = "cosine")
 EucScores <- getSimScores(myGenes, myGeneSet,
     similarity_method = "euclidean")
-<<<<<<< HEAD
-=======
-myCosSimFrame <- getSimScores(myGeneSet, myGeneSet)
->>>>>>> refs/remotes/origin/master
 }

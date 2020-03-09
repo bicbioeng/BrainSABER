@@ -1,25 +1,16 @@
 #' Get a subset of AIBSARNA using a Gene Expression Vector
 #'
 #' This function returns a subset of the AIBSARNA dataset, containing only
-<<<<<<< HEAD
 #' the genes in \code{data}, which may be a vector, a SummarizedExperiment
 #' or derivative \code{assay()} and \code{rowData()}, or a CellScabbard.  
 #' If a vector is used, it must consist of numerical gene expression values 
 #' with names comparable to one column of identifiers present in AIBSARNA.
 #' If \code{data} is a CellScabbard, results are stored in the relevantGenes
 #' slot of the object.
-=======
-#' the genes in \code{data}, which may be a vector or a Biobase ExpressionSet,
-#' or a derivative of ExpressionSet that supports the Biobase methods
-#' \code{exprs()} and \code{fData()}.  If a vector is used, it must consist
-#' of numerical gene expression values with names comparable to one column
-#' of identifiers present in AIBSARNA.
->>>>>>> refs/remotes/origin/master
 #'
 #' @param data a vector of named gene expression values, or a compatible
 #'     data set
 #' @param dataSetId (Optional) If \code{data} is not a vector, the name of
-<<<<<<< HEAD
 #'     the column of gene identifiers in rowData(dataSet) to be used to compare
 #'     \code{data} to AIBSARNA.
 #' @param AIBSARNA an instance of the AIBSARNA dataset, built using the 
@@ -51,22 +42,6 @@
 #' relevantGenes(myGenes)
 #' 
 #' # Example 2 - manual gene selection and relevant gene extraction
-=======
-#'     the column of gene identifiers in fData(dataSet) to be used to compare
-#'     \code{data} to AIBSARNA.
-#' @param AIBSARNA an instance of the AIBSARNA dataset, built using the 
-#'     \code{buildAIBSARNA()} function
-#' @param AIBSARNAid the name of the column of fData(AIBSARNA) that is
-#'     comparable to dataSetId.  One of "gene_id", "ensembl_gene_id",
-#'     "gene_symbol", "entrez_id", "refseq_ids"
-#'
-#' @return a Biobase ExpressionSet consisting of genes in \code{data}, sorted
-#'     to match the order of the genes in \code{data}
-#' @import Biobase
-#' @export
-#' @examples
-#' AIBSARNA <- buildAIBSARNA(mini = TRUE)
->>>>>>> refs/remotes/origin/master
 #' myGenes <- c(4.484885, 0.121902, 0.510035)
 #' names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
 #' myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA, 
@@ -92,32 +67,18 @@ getRelevantGenes <- function(data, dataSetId = NULL, AIBSARNA = NULL,
     }
     #relevantGenes <- subset of AIBSARNA containing only genes specified in v
     # get indices of genes common to v and AIBSARNA
-<<<<<<< HEAD
     vInd <- which(match(rowData(AIBSARNA)[[AIBSARNAid]], 
                         names(v), nomatch = 0, incomparables = c(NA, "")) > 0)
     relfd <- rowData(AIBSARNA)[vInd,] # subset feature data
-=======
-    vInd <- which(match(fData(AIBSARNA)[[AIBSARNAid]], 
-                        names(v), nomatch = 0, incomparables = c(NA, "")) > 0)
-    relfd <- fData(AIBSARNA)[vInd,] # subset feature data
->>>>>>> refs/remotes/origin/master
     # get indices of any duplicates, remove them from vInd and regenerate relfd
     dup <- which(duplicated(relfd[[AIBSARNAid]]), arr.ind = TRUE)
     if (length(dup) > 0) {
         vInd <- vInd[-dup]
-<<<<<<< HEAD
         relfd <- rowData(AIBSARNA)[vInd,]
     }
     # remove any unused factor levels
     relfd <- as.data.frame(apply(relfd, 2, function(x) {x[drop = TRUE]}))
     relexprs <- assay(AIBSARNA)[vInd,] # subset exprs
-=======
-        relfd <- fData(AIBSARNA)[vInd,]
-    }
-    # remove any unused factor levels
-    relfd <- as.data.frame(apply(relfd, 2, function(x) {x[drop = TRUE]}))
-    relexprs <- exprs(AIBSARNA)[vInd,] # subset exprs
->>>>>>> refs/remotes/origin/master
     # sort relfd and relexprs so the genes are in the same order as dataSet
     relfd[[AIBSARNAid]] <- factor(relfd[[AIBSARNAid]], levels=unique(names(v)))
     relfd <- relfd[order(relfd[[AIBSARNAid]]), ]
@@ -133,16 +94,8 @@ getRelevantGenes <- function(data, dataSetId = NULL, AIBSARNA = NULL,
     # convert relexprs back to a matrix, remove the added column
     lastcol <- length(relexprs[1,])
     relexprs <- as.matrix(relexprs[,-lastcol])
-<<<<<<< HEAD
     # put together SummarizedExperiment
     relevantGenes <- SummarizedExperiment(assays = SimpleList(relexprs),
         colData = colData(AIBSARNA), rowData = relfd)
-=======
-    # convert to Annotated Data Frame
-    relfd <- AnnotatedDataFrame(data = relfd)
-    # put together ExpressionSet
-    relevantGenes <- ExpressionSet(assayData = relexprs,
-        phenoData = phenoData(AIBSARNA), featureData = relfd)
->>>>>>> refs/remotes/origin/master
     return(relevantGenes)
 }
