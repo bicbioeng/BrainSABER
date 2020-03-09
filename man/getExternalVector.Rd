@@ -13,17 +13,28 @@ getExternalVector(
 )
 }
 \arguments{
+<<<<<<< HEAD
 \item{dataSet}{a CellScabbard or SummarizedExperiment object}
+=======
+\item{dataSet}{a Biobase ExpressionSet}
+>>>>>>> refs/remotes/origin/master
 
 \item{index}{the integer index of the sample of dataSet to be used}
 
 \item{AIBSARNA}{an instance of the AIBSARNA dataset, built using the 
 \code{buildAIBSARNA()} function}
 
+<<<<<<< HEAD
 \item{dataSetId}{the name of the column of gene identifiers in 
 rowData(dataSet) to be used to compare dataSet to AIBSARNA.}
 
 \item{AIBSARNAid}{the name of the column of rowData(AIBSARNA) that is
+=======
+\item{dataSetId}{the name of the column of gene identifiers in fData(dataSet)
+to be used to compare dataSet to AIBSARNA.}
+
+\item{AIBSARNAid}{the name of the column of fData(AIBSARNA) that is
+>>>>>>> refs/remotes/origin/master
 comparable to dataSetId.  One of "gene_id", "ensembl_gene_id",
 "gene_symbol", "entrez_id", "refseq_ids"}
 }
@@ -32,7 +43,11 @@ a named vector of gene expression values
 }
 \description{
 Get a named vector of gene expression values from a single sample in an
+<<<<<<< HEAD
 outside SummarizedExperiment, for use in creating subsets of AIBSARNA with
+=======
+outside Biobase ExpressionSet, for use in creating subsets of AIBSARNA with
+>>>>>>> refs/remotes/origin/master
  \code{getRelevantGenes} and comparison with that subset with
  \code{getSimScores}
 }

@@ -12,6 +12,7 @@ getTrimmedExternalSet(
 )
 }
 \arguments{
+<<<<<<< HEAD
 \item{dataSet}{a CellScabbard or SummarizedExperiment object}
 
 \item{dataSetId}{the name of the column of gene identifiers in
@@ -21,19 +22,39 @@ rowData(dataSet) to be used to compare dataSet to AIBSARNA.}
 \code{buildAIBSARNA()} function}
 
 \item{AIBSARNAid}{the name of the column of rowData(AIBSARNA) that is
+=======
+\item{dataSet}{a Biobase ExpressionSet compatible data set}
+
+\item{dataSetId}{the name of the column of gene identifiers in 
+fData(dataSet) to be used to compare dataSet to AIBSARNA.}
+
+\item{AIBSARNA}{an instance of the AIBSARNA dataset, built using the 
+\code{buildAIBSARNA()} function}
+
+\item{AIBSARNAid}{the name of the column of fData(AIBSARNA) that is
+>>>>>>> refs/remotes/origin/master
 comparable to dataSetId.  One of "gene_id", "ensembl_gene_id",
 "gene_symbol", "entrez_id", "refseq_ids"}
 }
 \value{
+<<<<<<< HEAD
 a SummarizedExperiment object containing trimmed data set
 }
 \description{
 Returns a SummarizedExperiment that is a subset of \code{dataSet} containing
 only genes that are present in AIBSARNA, for use in \code{getSimScores} or
+=======
+a Biobase ExpressionSet
+}
+\description{
+Returns an ExpressionSet that is a subset of \code{dataSet} containing only
+genes that are present in AIBSARNA, for use in \code{getSimScores} or
+>>>>>>> refs/remotes/origin/master
 \code{getUNDmatrix}.
 }
 \examples{
 AIBSARNA <- buildAIBSARNA(mini = TRUE)
+<<<<<<< HEAD
 # Example 1 - using CellScabbard class
 # get a random sample of 3 genes
 totalGenes <- nrow(AIBSARNA)
@@ -53,6 +74,8 @@ myTrimmedGeneSet <- getTrimmedExternalSet(myGenes,
     dataSetId = dataSetId, AIBSARNA, AIBSARNAid = AIBSARNAid)
 
 # Example 2 - manual gene selection and relevant gene extraction
+=======
+>>>>>>> refs/remotes/origin/master
 myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
 myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA,

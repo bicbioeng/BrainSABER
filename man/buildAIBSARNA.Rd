@@ -2,16 +2,25 @@
 % Please edit documentation in R/buildAIBSARNA.R
 \name{buildAIBSARNA}
 \alias{buildAIBSARNA}
+<<<<<<< HEAD
 \title{Function to create a SummarizedExperiment containing BrainSpan Data}
+=======
+\title{Function to create an ExpressionSet containing BrainSpan Data}
+>>>>>>> refs/remotes/origin/master
 \usage{
 buildAIBSARNA(mini = FALSE)
 }
 \arguments{
+<<<<<<< HEAD
 \item{mini}{Default is FALSE.  If \code{mini=TRUE}, build a miniature
+=======
+\item{mini}{Default is FALSE.  If \code{mini=TRUE}, build a miniature 
+>>>>>>> refs/remotes/origin/master
 version of AIBSARNA that does not require internet connectivity and is
 suitable for example purposes only}
 }
 \value{
+<<<<<<< HEAD
 A SummarizedExperiment containing BrainSpan data, with the addition
     of RefSeq IDs via biomaRt
 }
@@ -20,6 +29,16 @@ This function is used to build the AIBSARNA SummarizedExperiment object, and
 must be run  prior to running any other function in \pkg{BrainSABER}. This
 function will download the data from http://brainspan.org and may take
 several minutes, depending on internet connection speeds.
+=======
+A Biobase ExpressionSet containing BrainSpan data, with the addition
+    of RefSeq IDs via biomaRt
+}
+\description{
+This function is used to build the AIBSARNA ExpressionSet, and must be run 
+prior to running any other function in \pkg{BrainSABER}. This function 
+will download the data from http://brainspan.org and may take several 
+minutes, depending on internet connection speeds.
+>>>>>>> refs/remotes/origin/master
 }
 \examples{
 AIBSARNA <- buildAIBSARNA(mini = TRUE)

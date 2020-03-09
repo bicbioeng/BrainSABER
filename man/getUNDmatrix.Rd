@@ -14,9 +14,15 @@ getUNDmatrix(
 )
 }
 \arguments{
+<<<<<<< HEAD
 \item{dataSet}{a CellScabbard or SummarizedExperiment object}
 
 \item{relevantGenes}{(optional) a SummarizedExperiment and subset of AIBSARNA}
+=======
+\item{dataSet}{a Biobase ExpressionSet}
+
+\item{relevantGenes}{(optional) an ExpressionSet that is a subset of AIBSARNA}
+>>>>>>> refs/remotes/origin/master
 
 \item{method}{\code{"discrete"} applies thresholds directly to expression
 data. \code{"log2FC"} applies thresholds to the log2 fold-change
@@ -37,13 +43,21 @@ indicating down-regulation, "U" indicating up-regulation, and
 "N" indicating normal}
 }
 \value{
+<<<<<<< HEAD
 a list containing as many numerical or character matrices as samples
+=======
+for \code{method = "discrete"} either a numerical or character
+    matrix with as many rows as genes in \code{dataSet} and as many
+    columns as samples in \code{dataSet} or, for \code{method = "log2FC"},
+    a list containing as many numerical or character matrices as samples
+>>>>>>> refs/remotes/origin/master
     in \code{dataSet}, with each matrix having as many rows as genes in
     \code{dataSet} and as many columns as samples in \code{relevantGenes}
 }
 \description{
 This function returns a matrix showing whether gene expression values in
  \code{dataSet} are up-regulated, down-regulated, or normal.
+<<<<<<< HEAD
  \code{method = "discrete"} will function on any CellScabbard object, while
  \code{method = "log2FC"} requires a trimmed data set as returned by
  \code{getTrimmedExternalSet} and a matching subset of AIBSARNA as
@@ -74,15 +88,30 @@ down_threshold = 1, matrix_type = "num")
 UNDmatrices(myGenes)
 
 # Example 2 - manual gene selection and relevant gene extraction
+=======
+ \code{method = "discrete"} will function on any ExpressionSet, while
+ \code{method = "log2FC"} requires a trimmed data set as returned by
+ \code{getTrimmedExternalSet} and a matching subset of AIBSARNA as
+ returned by \code{getRelevantGenes}.
+}
+\examples{
+AIBSARNA <- buildAIBSARNA(mini = TRUE)
+>>>>>>> refs/remotes/origin/master
 myGenes <- c(4.484885, 0.121902, 0.510035)
 names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
 myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA,
     AIBSARNAid = "gene_symbol")
+<<<<<<< HEAD
 myTrimmedGeneSet <- getTrimmedExternalSet(myGeneSet,
     dataSetId = "gene_symbol", AIBSARNA, AIBSARNAid = "gene_symbol")
 myUNDnumericalMatrix <- getUNDmatrix(myTrimmedGeneSet, method = "discrete",
     up_threshold = 3, down_threshold = 1, matrix_type = "num")
 myUNDcharacterMatrix <- getUNDmatrix(myTrimmedGeneSet, myGeneSet,
                                      method = "log2FC",
+=======
+myUNDnumericalMatrix <- getUNDmatrix(myGeneSet, method = "discrete",
+    up_threshold = 3, down_threshold = 1, matrix_type = "num")
+myUNDcharacterMatrix <- getUNDmatrix(myGeneSet, method = "discrete",
+>>>>>>> refs/remotes/origin/master
     up_threshold = 3, down_threshold = 1, matrix_type = "char")
 }

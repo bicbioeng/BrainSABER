@@ -1,7 +1,11 @@
 Package: BrainSABER
 Type: Package
 Title: Brain Span Atlas in Biobase Expressionset R toolset
+<<<<<<< HEAD
 Version: 0.99.0
+=======
+Version: 0.99.1
+>>>>>>> refs/remotes/origin/master
 Author: Carrie Minette
 Maintainer: USD Biomedical Engineering <bicbioeng@gmail.com>
 Description: Tools to compare gene expression data to data from The Allen 
@@ -9,6 +13,7 @@ Description: Tools to compare gene expression data to data from The Allen
     AIBSARNA package.  For more information, please see the vignette.
 License: Artistic-2.0
 Encoding: UTF-8
+<<<<<<< HEAD
 Depends: R (>= 4.0),
     Biobase,
     biomaRt,
@@ -19,6 +24,13 @@ Imports:
     methods,
     S4Vectors,
     utils
+=======
+Depends: R (>= 3.6),
+    Biobase,
+    biomaRt
+Imports: lsa,
+    methods
+>>>>>>> refs/remotes/origin/master
 RoxygenNote: 7.0.2
 biocViews: GeneExpression, Visualization
 VignetteBuilder: knitr
@@ -28,4 +40,10 @@ Suggests:
     fastcluster,
     heatmaply,
     knitr,
+<<<<<<< HEAD
     plotly
+=======
+    plotly,
+    shiny,
+    shinydashboard
+>>>>>>> refs/remotes/origin/master

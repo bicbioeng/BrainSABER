@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #' Function to create a SummarizedExperiment containing BrainSpan Data
 #'
 #' This function is used to build the AIBSARNA SummarizedExperiment object, and
@@ -10,6 +11,20 @@
 #' @return A SummarizedExperiment containing BrainSpan data, with the addition
 #'     of RefSeq IDs via biomaRt
 #' @import SummarizedExperiment
+=======
+#' Function to create an ExpressionSet containing BrainSpan Data
+#'
+#' This function is used to build the AIBSARNA ExpressionSet, and must be run 
+#' prior to running any other function in \pkg{BrainSABER}. This function 
+#' will download the data from http://brainspan.org and may take several 
+#' minutes, depending on internet connection speeds.
+#' @param mini Default is FALSE.  If \code{mini=TRUE}, build a miniature 
+#'     version of AIBSARNA that does not require internet connectivity and is
+#'     suitable for example purposes only
+#' @return A Biobase ExpressionSet containing BrainSpan data, with the addition
+#'     of RefSeq IDs via biomaRt
+#' @import Biobase
+>>>>>>> refs/remotes/origin/master
 #' @importFrom utils download.file read.csv
 #' @importFrom biomaRt useEnsembl getBM
 #' @export
@@ -46,9 +61,16 @@ buildAIBSARNA <- function(mini = FALSE){
         colnames(minipd) <- c("column_num", "donor_id", "donor_name",
                         "age", "gender", "structure_id", "structure_acronym")
         rownames(minipd) <- c("1", "2", "3", "4", "5")
+<<<<<<< HEAD
         miniAIB <- SummarizedExperiment(assays = SimpleList(miniexprs),
                                         colData = minipd,
                                         rowData = minifd)
+=======
+        minifd <- AnnotatedDataFrame(minifd)
+        minipd <- AnnotatedDataFrame(minipd)
+        miniAIB <- ExpressionSet(assayData = miniexprs, phenoData = minipd,
+                                 featureData = minifd)
+>>>>>>> refs/remotes/origin/master
         return(miniAIB)
     }
     # download AIBSARNA
@@ -61,21 +83,40 @@ buildAIBSARNA <- function(mini = FALSE){
         file=unz(temp, "expression_matrix.csv"),
         header=FALSE, sep=","))
     exprs <- exprs[, 2:525]
+<<<<<<< HEAD
     colnames(exprs) <- paste0("Sample_",as.character(c(seq(1,524))))
     rownames(exprs) <- paste0("Gene_",as.character(c(seq(1,length(exprs[,1])))))
+=======
+    colnames(exprs) <- c(1:524)
+>>>>>>> refs/remotes/origin/master
     pd <- read.csv(file=unz(temp, "columns_metadata.csv"),
                    header=TRUE, sep=",")
     #reorder factor levels in pd$age so they are interpreted chronologically
     pd$age <- factor(pd$age, levels = unique(pd$age))
+<<<<<<< HEAD
     rownames(pd) <- colnames(exprs)
     fd <- read.csv(file=unz(temp, "rows_metadata.csv"),
                    header=TRUE, sep=",", stringsAsFactors = FALSE)
     rownames(fd) <- rownames(exprs)
+=======
+    fd <- read.csv(file=unz(temp, "rows_metadata.csv"),
+                   header=TRUE, sep=",", stringsAsFactors = FALSE)
+    #convert pd and fd to AnnotatedDataFrame
+    pData <- new("AnnotatedDataFrame", data=pd)
+    fData <- new("AnnotatedDataFrame", data=fd)
+    #create ExpressionSet
+    AIBSARNA <- Biobase::ExpressionSet(assayData=exprs, phenoData=pData,
+                                       featureData=fData)
+>>>>>>> refs/remotes/origin/master
     #set up bioMaRt
     ensembl <- biomaRt::useEnsembl("ensembl", dataset = "hsapiens_gene_ensembl",
                                 version = 67)
     #get ensembl.ids from AIBSARNA
+<<<<<<< HEAD
     ensemblIds <- as.character(fd$ensembl_gene_id)
+=======
+    ensemblIds <- as.character(Biobase::fData(AIBSARNA)$ensembl_gene_id)
+>>>>>>> refs/remotes/origin/master
     #get map of applicable refseq_mrna ids
     geneMap <- biomaRt::getBM(attributes = c("ensembl_gene_id", "refseq_mrna"),
                               filters = "ensembl_gene_id",
@@ -83,6 +124,7 @@ buildAIBSARNA <- function(mini = FALSE){
                               mart = ensembl)
     idx <- match(ensemblIds, geneMap$ensembl_gene_id)
     refseq_ids <- geneMap$refseq_mrna[idx]
+<<<<<<< HEAD
     #bind refseq_ids to AIBSARNA rowData
     fd <- cbind(fd, refseq_ids)
     #create SummarizedExperiment
@@ -91,3 +133,11 @@ buildAIBSARNA <- function(mini = FALSE){
     #return AIBSARNA
     return(AIBSARNA)
 }
+=======
+    #bind refseq_ids to AIBSARNA featureData
+    featureData(AIBSARNA)@data <- cbind(featureData(AIBSARNA)@data,
+                                        refseq_ids)
+    #return AIBSARNA
+    return(AIBSARNA)
+}
+>>>>>>> refs/remotes/origin/master

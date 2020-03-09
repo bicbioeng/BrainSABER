@@ -4,6 +4,7 @@
 \alias{getSimMatrix}
 \title{Get Age, Structure Acronym, and Similarity Score Matrix}
 \usage{
+<<<<<<< HEAD
 getSimMatrix(data = NULL, sim_score = NULL, relevantGenes = NULL)
 }
 \arguments{
@@ -12,6 +13,14 @@ getSimMatrix(data = NULL, sim_score = NULL, relevantGenes = NULL)
 \item{sim_score}{a vector or data frame of similarity scores}
 
 \item{relevantGenes}{a SummarizedExperiment created using the
+=======
+getSimMatrix(sim_score, relevantGenes)
+}
+\arguments{
+\item{sim_score}{a vector or data frame of similarity scores}
+
+\item{relevantGenes}{a Biobase Expression set created using the 
+>>>>>>> refs/remotes/origin/master
 \code{getRelevantGenes()} function}
 }
 \value{
@@ -19,6 +28,7 @@ a numeric matrix of similarity scores, or a list of matrices
 }
 \description{
 This function takes a similarity vector or data frame as returned by
+<<<<<<< HEAD
 \code{getSimScores} and either a CellScabbard object or a subset of AIBSARNA
 as returned by \code{getRelevantGenes}. Returns a numeric matrix or list
 of matrices of similarity scores with rows labeled by age, and columns
@@ -59,4 +69,21 @@ myCosineMatrix <- getSimMatrix(sim_score = myCosScore,
                                relevantGenes = myGeneSet)
 myEuclideanMatrix <- getSimMatrix(sim_score = myEucScore,
                                   relevantGenes = myGeneSet)
+=======
+\code{getSimScores} and returns a numeric matrix or list of matrices of
+similarity scores with rows labeled by age, and columns labeled by
+structure_acronym.
+}
+\examples{
+AIBSARNA <- buildAIBSARNA(mini = TRUE)
+myGenes <- c(4.484885, 0.121902, 0.510035)
+names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
+myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA, 
+    AIBSARNAid = "gene_symbol")
+myCosScore <- getSimScores(myGenes, myGeneSet, similarity_method = "cosine")
+myEucScore <- getSimScores(myGenes, myGeneSet, 
+    similarity_method = "euclidean")
+myCosineMatrix <- getSimMatrix(myCosScore, myGeneSet)
+myEuclideanMatrix <- getSimMatrix(myEucScore, myGeneSet)
+>>>>>>> refs/remotes/origin/master
 }

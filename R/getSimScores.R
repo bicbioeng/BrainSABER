@@ -6,14 +6,21 @@
 #' obtained by \code{getRelevantGenes}.
 #'
 #' @param data a named vector of gene expression values returned by
+<<<<<<< HEAD
 #'     \code{getExternalVector}, a SummarizedExperiment returned by
 #'     \code{getTrimmedExternalSet}, or a CellScabbard object.
 #' @param relevantGenes a SummarizedExperiment object created using the
+=======
+#'     \code{getExternalVector}, or an ExpressionSet returned by
+#'     \code{getTrimmedExternalSet}
+#' @param relevantGenes a Biobase Expression set created using the 
+>>>>>>> refs/remotes/origin/master
 #'     \code{getRelevantGenes()} function
 #' @param similarity_method currently supported similarity methods are
 #'     "cosine" and "euclidean", defaults to "cosine"
 #'
 #' @return If \code{data} is a vector, returns a vector of similarity scores
+<<<<<<< HEAD
 #'     for each sample in relevantGenes. If \code{data} is a
 #'     SummarizedExperiment, returns a data frame, with columns containing  the
 #'     similarity scores for and named after each sample in \code{data}, and
@@ -45,6 +52,16 @@
 #' similarityScores(myGenes)
 #'
 #' # Example 2 - manual gene selection and relevant gene extraction
+=======
+#'     for each sample in relevantGenes. If \code{data} is an ExpressionSet,
+#'     returns a data frame, with columns containing the similarity scores
+#'     for and named after each sample in \code{data}, and rows named after
+#'     each sample in \code{relevantGenes}
+#' @import Biobase
+#' @export
+#' @examples
+#' AIBSARNA <- buildAIBSARNA(mini = TRUE)
+>>>>>>> refs/remotes/origin/master
 #' myGenes <- c(4.484885, 0.121902, 0.510035)
 #' names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
 #' myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA,
@@ -53,6 +70,7 @@
 #'     similarity_method = "cosine")
 #' EucScores <- getSimScores(myGenes, myGeneSet,
 #'     similarity_method = "euclidean")
+<<<<<<< HEAD
 
 getSimScores <-
     function(data, relevantGenes = NULL, similarity_method = "cosine") {
@@ -77,12 +95,29 @@ getSimScores <-
             } else {
                 # cosine_similarity <- as.vector(apply(X = exprs(relevantGenes),
                 cosine_similarity <- as.vector(apply(X = assay(relevantGenes),
+=======
+#' myCosSimFrame <- getSimScores(myGeneSet, myGeneSet)
+
+getSimScores <-
+    function(data, relevantGenes, similarity_method = "cosine") {
+        if (is.vector(data)) {
+            if (similarity_method == "euclidean") {
+                euclidean_similarity <- as.vector(apply(X=exprs(relevantGenes),
+                    MARGIN = 2, FUN = euclideanDist, y = data))
+                return(euclidean_similarity)
+            } else {
+                cosine_similarity <- as.vector(apply(X = exprs(relevantGenes),
+>>>>>>> refs/remotes/origin/master
                     MARGIN = 2, FUN = lsa::cosine,y = data))
                 return(cosine_similarity)
             }
         } else {
+<<<<<<< HEAD
             # simFrame <- as.data.frame(apply(X = exprs(data), MARGIN = 2,
             simFrame <- as.data.frame(apply(X = assay(data), MARGIN = 2,
+=======
+            simFrame <- as.data.frame(apply(X = exprs(data), MARGIN = 2,
+>>>>>>> refs/remotes/origin/master
                 FUN = getSimScores, relevantGenes = relevantGenes,
                 similarity_method = similarity_method))
             return(simFrame)

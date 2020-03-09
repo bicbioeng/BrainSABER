@@ -2,6 +2,7 @@
 #'
 #' This function returns a matrix showing whether gene expression values in
 #'  \code{dataSet} are up-regulated, down-regulated, or normal.
+<<<<<<< HEAD
 #'  \code{method = "discrete"} will function on any CellScabbard object, while
 #'  \code{method = "log2FC"} requires a trimmed data set as returned by
 #'  \code{getTrimmedExternalSet} and a matching subset of AIBSARNA as
@@ -10,6 +11,15 @@
 #'
 #' @param dataSet a CellScabbard or SummarizedExperiment object
 #' @param relevantGenes (optional) a SummarizedExperiment and subset of AIBSARNA
+=======
+#'  \code{method = "discrete"} will function on any ExpressionSet, while
+#'  \code{method = "log2FC"} requires a trimmed data set as returned by
+#'  \code{getTrimmedExternalSet} and a matching subset of AIBSARNA as
+#'  returned by \code{getRelevantGenes}.
+#'
+#' @param dataSet a Biobase ExpressionSet
+#' @param relevantGenes (optional) an ExpressionSet that is a subset of AIBSARNA
+>>>>>>> refs/remotes/origin/master
 #' @param method \code{"discrete"} applies thresholds directly to expression
 #'     data. \code{"log2FC"} applies thresholds to the log2 fold-change
 #'     between the expression data of each sample from \code{dataSet} and
@@ -25,6 +35,7 @@
 #'     indicating down-regulation, "U" indicating up-regulation, and
 #'     "N" indicating normal
 #'
+<<<<<<< HEAD
 #' @return a list containing as many numerical or character matrices as samples
 #'     in \code{dataSet}, with each matrix having as many rows as genes in
 #'     \code{dataSet} and as many columns as samples in \code{relevantGenes}
@@ -57,10 +68,23 @@
 #' UNDmatrices(myGenes)
 #'
 #' # Example 2 - manual gene selection and relevant gene extraction
+=======
+#' @return for \code{method = "discrete"} either a numerical or character
+#'     matrix with as many rows as genes in \code{dataSet} and as many
+#'     columns as samples in \code{dataSet} or, for \code{method = "log2FC"},
+#'     a list containing as many numerical or character matrices as samples
+#'     in \code{dataSet}, with each matrix having as many rows as genes in
+#'     \code{dataSet} and as many columns as samples in \code{relevantGenes}
+#' @export
+#'
+#' @examples
+#' AIBSARNA <- buildAIBSARNA(mini = TRUE)
+>>>>>>> refs/remotes/origin/master
 #' myGenes <- c(4.484885, 0.121902, 0.510035)
 #' names(myGenes) <- c("TSPAN6", "DPM1", "C1orf112")
 #' myGeneSet <- getRelevantGenes(myGenes, AIBSARNA = AIBSARNA,
 #'     AIBSARNAid = "gene_symbol")
+<<<<<<< HEAD
 #' myTrimmedGeneSet <- getTrimmedExternalSet(myGeneSet,
 #'     dataSetId = "gene_symbol", AIBSARNA, AIBSARNAid = "gene_symbol")
 #' myUNDnumericalMatrix <- getUNDmatrix(myTrimmedGeneSet, method = "discrete",
@@ -70,6 +94,14 @@
 #'     up_threshold = 3, down_threshold = 1, matrix_type = "char")
 
 getUNDmatrix <- function(dataSet, relevantGenes = NULL,
+=======
+#' myUNDnumericalMatrix <- getUNDmatrix(myGeneSet, method = "discrete",
+#'     up_threshold = 3, down_threshold = 1, matrix_type = "num")
+#' myUNDcharacterMatrix <- getUNDmatrix(myGeneSet, method = "discrete",
+#'     up_threshold = 3, down_threshold = 1, matrix_type = "char")
+
+getUNDmatrix <- function(dataSet, relevantGenes = NULL, 
+>>>>>>> refs/remotes/origin/master
         method=c("discrete", "log2FC"), up_threshold=0.5, down_threshold=-0.5,
         matrix_type = c("num", "char")) {
     # set up und vector for type of matrix
@@ -80,8 +112,12 @@ getUNDmatrix <- function(dataSet, relevantGenes = NULL,
     }
     if (method == "discrete") {
         # get expression matrix from dataSet
+<<<<<<< HEAD
         # exprs <- Biobase::exprs(dataSet)
         exprs <- assay(dataSet)
+=======
+        exprs <- Biobase::exprs(dataSet)
+>>>>>>> refs/remotes/origin/master
         # create empty matrix
         nrows <- length(exprs[, 1])
         ncols <- length(exprs[1,])
@@ -90,6 +126,7 @@ getUNDmatrix <- function(dataSet, relevantGenes = NULL,
                                 und=und, u=up_threshold, d=down_threshold))
         rownames(mat) <- rownames(exprs)
         colnames(mat) <- colnames(exprs)
+<<<<<<< HEAD
         matList <- SimpleList(mat)
         return(matList)
     } else {
@@ -107,6 +144,12 @@ getUNDmatrix <- function(dataSet, relevantGenes = NULL,
         }
         dataExprs <- assay(dataSet)
         relExprs <- assay(relevantGenes)
+=======
+        return(mat)
+    } else {
+        dataExprs <- exprs(dataSet)
+        relExprs <- exprs(relevantGenes)
+>>>>>>> refs/remotes/origin/master
         nSamples <- length(dataExprs[1,])
         # initialize matList
         matList <- lapply(seq_len(nSamples), FUN = function(z){
@@ -117,7 +160,10 @@ getUNDmatrix <- function(dataSet, relevantGenes = NULL,
             colnames(ret) <- colnames(relExprs)
             return(ret)
         })
+<<<<<<< HEAD
         matList <- SimpleList(matList)
+=======
+>>>>>>> refs/remotes/origin/master
         return(matList)
     }
 }
