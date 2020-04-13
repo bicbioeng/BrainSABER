@@ -16,7 +16,11 @@
 #' @examples
 #' AIBSARNA <- buildAIBSARNA(mini = TRUE)
 buildAIBSARNA <- function(mini = FALSE){
-    if(mini == TRUE){
+    # validate appropriate input
+    if(!is.logical(mini)){
+        stop("argument must be a logical")
+    }
+    if(mini){
         miniexprs <- matrix(
             data = c(36.447128, 24.251253, 19.330479, 27.668607, 19.998231,
                      0.044081, 0.067338, 0.000000, 0.145466, 0.185188,

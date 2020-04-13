@@ -72,6 +72,14 @@
 getUNDmatrix <- function(dataSet, relevantGenes = NULL,
         method=c("discrete", "log2FC"), up_threshold=0.5, down_threshold=-0.5,
         matrix_type = c("num", "char")) {
+    # check for proper data input
+    if(!is(dataSet,"SummarizedExperiment")){
+        stop("dataSet must be a CellScabbard or other SummarizedExperiment object")
+    }
+    if(!is.numeric(up_threshold) | !is.numeric(down_threshold)){
+        stop("up and down thresholds must be a number")
+    }
+    
     # set up und vector for type of matrix
     if (matrix_type == "char") {
         und <- c("U", "N", "D")

@@ -50,11 +50,16 @@
 getRelevantGenes <- function(data, dataSetId = NULL, AIBSARNA = NULL,
                     AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol",
                                     "entrez_id", "refseq_ids")) {
+    # check for proper input
     if(is.null(AIBSARNA)){
         em <-
             "AIBSARNA is required and must be built using buildAIBSARNA()."
         stop(em)
     }
+    if(!is.character(AIBSARNAid)){
+        stop("AIBSARNAid must be a character")
+    }
+    
     # get a single sample vector if data is not a vector
     if (is.vector(data)) {
         v <- data

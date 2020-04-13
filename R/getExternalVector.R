@@ -17,7 +17,6 @@
 #'
 #' @return a named vector of gene expression values
 #' @export
-#' @import Biobase
 #' @import SummarizedExperiment
 #'
 #' @examples
@@ -35,29 +34,37 @@ getExternalVector <- function(dataSet, index = 1, AIBSARNA = NULL, dataSetId,
                             "gene_symbol",
                             "entrez_id",
                             "refseq_ids")) {
-        if(is(dataSet, "CellScabbard")){ # extract id's from CellScabbard object
-          dataSetId <- dataSetId(dataSet)
-          AIBSARNAid <- AIBSARNAid(dataSet)
-        }
-        if(is.null(AIBSARNA)){
-            em <-
-                "AIBSARNA is required and must be built using buildAIBSARNA()."
-            stop(em)
-        }
-        v <- assay(dataSet)[, index]
-        names(v) <- as.character(rowData(dataSet)[[dataSetId]])
-        # get gene identifiers common to v and AIBSARNA
-        matchIdx <- which(match(rowData(AIBSARNA)[[AIBSARNAid]], 
-                        names(v), nomatch = 0, incomparables = c(NA, "")) > 0)
-        vInAIBSARNA <- 
-            as.character(rowData(AIBSARNA)[[AIBSARNAid]][matchIdx])
-        # get indices of v that are present in vInAIBSARNA
-        genesToKeep <- which(match(names(v), vInAIBSARNA, nomatch = 0,
-                             incomparables = c(NA, "")) > 0)
-        # update v to only include comparable genes (genes in vInAIBSARNA)
-        v <- v[genesToKeep]
-        # remove any duplicate genes
-        genesToKeep <- unique(names(v))
-        v <- v[genesToKeep]
-        return(v)
+    # check for proper data input
+    if(!is(dataSet,"SummarizedExperiment")){
+        stop("dataSet must be a CellScabbard or other SummarizedExperiment object")
     }
+    if(!is.character(dataSetId) | !is.character(AIBSARNAid)){
+        stop("dataSetId and AIBSARNAid must be a character")
+    }
+    # extract id's from CellScabbard object
+    if(is(dataSet, "CellScabbard")){ 
+      dataSetId <- dataSetId(dataSet)
+      AIBSARNAid <- AIBSARNAid(dataSet)
+    }
+    if(is.null(AIBSARNA)){
+        em <-
+            "AIBSARNA is required and must be built using buildAIBSARNA()."
+        stop(em)
+    }
+    v <- assay(dataSet)[, index]
+    names(v) <- as.character(rowData(dataSet)[[dataSetId]])
+    # get gene identifiers common to v and AIBSARNA
+    matchIdx <- which(match(rowData(AIBSARNA)[[AIBSARNAid]], 
+                    names(v), nomatch = 0, incomparables = c(NA, "")) > 0)
+    vInAIBSARNA <- 
+        as.character(rowData(AIBSARNA)[[AIBSARNAid]][matchIdx])
+    # get indices of v that are present in vInAIBSARNA
+    genesToKeep <- which(match(names(v), vInAIBSARNA, nomatch = 0,
+                         incomparables = c(NA, "")) > 0)
+    # update v to only include comparable genes (genes in vInAIBSARNA)
+    v <- v[genesToKeep]
+    # remove any duplicate genes
+    genesToKeep <- unique(names(v))
+    v <- v[genesToKeep]
+    return(v)
+}

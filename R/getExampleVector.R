@@ -17,6 +17,10 @@
 #' myExampleVector <- getExampleVector(myGenes, AIBSARNA)
 
 getExampleVector <- function(genes, AIBSARNA = NULL) {
+    # validate proper input
+    if(!is.character(genes)){
+        stop("genes must be a character vector")
+    }
     if(is.null(AIBSARNA)){
         em <-
             "AIBSARNA is required and must be built using buildAIBSARNA()."

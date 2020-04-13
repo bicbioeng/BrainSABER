@@ -8,7 +8,8 @@ getRelevantGenes(
   data,
   dataSetId = NULL,
   AIBSARNA = NULL,
-  AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol", "entrez_id", "refseq_ids")
+  AIBSARNAid = c("gene_id", "ensembl_gene_id", "gene_symbol", "entrez_id",
+    "refseq_ids")
 )
 }
 \arguments{

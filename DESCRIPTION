@@ -1,16 +1,20 @@
 Package: BrainSABER
 Type: Package
 Title: Brain Span Atlas in Biobase Expressionset R toolset
-Version: 0.99.0
-Author: Carrie Minette, with contributions from Evgeni Radichev
+Version: 0.99.1
+Author: Carrie Minette
 Maintainer: USD Biomedical Engineering <bicbioeng@gmail.com>
-Description: Tools to compare gene expression data to data from The Allen 
-    Institute for Brain Science BrainSpan Atlas, found separately in the 
-    AIBSARNA package.  For more information, please see the vignette.
+Description:  The Allen Institute for Brain Science provides an 
+    RNA sequencing (RNA-Seq) data resource for studying 
+    transcriptional mechanisms involved in human brain 
+    development known as BrainSpan. BrainSABER is an R package that facilitates 
+    comparison of user data with the various developmental stages and brain 
+    structures found in the BrainSpan atlas by generating dynamic similarity 
+    heatmaps for the two data sets. It also provides a self-validating container
+    for user data.
 License: Artistic-2.0
 Encoding: UTF-8
 Depends: R (>= 4.0),
-    Biobase,
     biomaRt,
     SummarizedExperiment
 Imports: 
@@ -19,7 +23,7 @@ Imports:
     methods,
     S4Vectors,
     utils
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 biocViews: GeneExpression, Visualization
 VignetteBuilder: knitr
 Suggests:

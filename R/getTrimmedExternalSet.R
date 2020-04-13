@@ -50,6 +50,14 @@ getTrimmedExternalSet <- function(dataSet, dataSetId = "gene_symbol",
     AIBSARNA = NULL, AIBSARNAid = c("gene_id", "ensembl_gene_id",
     "gene_symbol", "entrez_id", "refseq_ids")) {
 
+    # check for proper data input
+    if(!is(dataSet,"SummarizedExperiment")){
+        stop("dataSet must be a CellScabbard or other SummarizedExperiment object")
+    }
+    if(!is.character(dataSetId) | !is.character(AIBSARNAid)){
+        stop("dataSetId and AIBSARNAid must be a character")
+    }
+    
     # get a trimmed vector to faciliate things
     v <- getExternalVector(dataSet = dataSet, index = 1, AIBSARNA,
                 dataSetId = dataSetId, AIBSARNAid = AIBSARNAid)
