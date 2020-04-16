@@ -1,7 +1,7 @@
 Package: BrainSABER
 Type: Package
 Title: Brain Span Atlas in Biobase Expressionset R toolset
-Version: 0.99.1
+Version: 0.99.2
 Author: Carrie Minette
 Maintainer: USD Biomedical Engineering <bicbioeng@gmail.com>
 Description:  The Allen Institute for Brain Science provides an 
@@ -17,7 +17,7 @@ Encoding: UTF-8
 Depends: R (>= 4.0),
     biomaRt,
     SummarizedExperiment
-Imports: 
+Imports:
     data.table,
     lsa,
     methods,

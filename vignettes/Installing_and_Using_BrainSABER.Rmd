@@ -88,9 +88,6 @@ The expression value matrix must have the same number of columns as the phenoDat
 For this vignette, we will construct a toy CellScabbard object by extracting 50 samples and 200 genes from AIBSARNA, using the code below:
 
 ```{r getSampleData, message=FALSE, warning=FALSE, results='hide'}
-# Load for function
-library(SummarizedExperiment)
-
 # Obtain the sample indexes to use for subsetting (not random)
 sample_idx <- 1:50 * 10 - 1
 # Set the RNG seed for repeatable results
