@@ -10,6 +10,7 @@
 #' @return A SummarizedExperiment containing BrainSpan data, with the addition
 #'     of RefSeq IDs via biomaRt
 #' @import SummarizedExperiment
+#' @import BiocFileCache
 #' @importFrom utils download.file read.csv
 #' @importFrom biomaRt useEnsembl getBM
 #' @export
@@ -55,24 +56,28 @@ buildAIBSARNA <- function(mini = FALSE){
                                         rowData = minifd)
         return(miniAIB)
     }
-    # download AIBSARNA
-    temp <- tempfile()
-    download.file(
-        "http://www.brainspan.org/api/v2/well_known_file_download/267666525",
-        temp, mode = "wb")
+    # download AIBSARNA, store in BiocFileCache
+    # temp <- tempfile()
+    # download.file(
+    #     "http://www.brainspan.org/api/v2/well_known_file_download/267666525",
+    #     temp, mode = "wb")
+    url <- "http://www.brainspan.org/api/v2/well_known_file_download/267666525"
+    bfc <- BiocFileCache()
+    path <- bfcrpath(bfc, url)
+    
     #read in csv files and clean them up
     exprs <- as.matrix(read.csv(
-        file=unz(temp, "expression_matrix.csv"),
+        file=unz(path, "expression_matrix.csv"),
         header=FALSE, sep=","))
     exprs <- exprs[, 2:525]
     colnames(exprs) <- paste0("Sample_",as.character(c(seq(1,524))))
     rownames(exprs) <- paste0("Gene_",as.character(c(seq(1,length(exprs[,1])))))
-    pd <- read.csv(file=unz(temp, "columns_metadata.csv"),
+    pd <- read.csv(file=unz(path, "columns_metadata.csv"),
                    header=TRUE, sep=",")
     #reorder factor levels in pd$age so they are interpreted chronologically
     pd$age <- factor(pd$age, levels = unique(pd$age))
     rownames(pd) <- colnames(exprs)
-    fd <- read.csv(file=unz(temp, "rows_metadata.csv"),
+    fd <- read.csv(file=unz(path, "rows_metadata.csv"),
                    header=TRUE, sep=",", stringsAsFactors = FALSE)
     rownames(fd) <- rownames(exprs)
     #set up bioMaRt

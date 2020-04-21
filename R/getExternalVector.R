@@ -18,7 +18,6 @@
 #' @return a named vector of gene expression values
 #' @export
 #' @import SummarizedExperiment
-#' @import Biobase
 #'
 #' @examples
 #' miniAIBSARNA <- buildAIBSARNA(mini = TRUE)

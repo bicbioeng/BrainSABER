@@ -71,8 +71,8 @@ getSimMatrix <- function(data = NULL, sim_score = NULL, relevantGenes = NULL) {
     stopifnot(is.vector(sim_score) || is.data.frame(sim_score))
     if (is.vector(sim_score)) {
         #get data vectors
-        age <- colData(relevantGenes)$age
-        structure_acronym <- colData(relevantGenes)$structure_acronym
+        age <- as.factor(colData(relevantGenes)$age)
+        structure_acronym <- as.factor(colData(relevantGenes)$structure_acronym)
         #get the dimensions
         nrows <- nlevels(age)
         ncols <- nlevels(structure_acronym)

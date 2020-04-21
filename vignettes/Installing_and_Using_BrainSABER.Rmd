@@ -52,11 +52,15 @@ library(BrainSABER)
 # Dynamically Constructing the AIBSARNA Reference Dataset
 
 To leverage the Allen Institute for Brain Science Brain Atlas RNA sequence 
-data, BrainSABER includes a function, buildAIBSARNA, that will download the 
+data, BrainSABER includes a function, 'buildAIBSARNA', that will download the 
 data, format it into a RangedSummarizedExperiment, and use biomaRt to add RefSeq 
-identifiers.  This function requires an active internet connection.  
+identifiers. This function also stores the downloaded zipped file using the BiocFileCache
+package in a local cached directory, so after the initial run the process should
+be faster and won't require an active internet connection. For more information
+on how `r Biocpkg("BiocFileCache")` stores data use the link or see the package vignette.
 
 ```{r, buildAIB}
+# Extract dataset from online source or from local BiocCache
 AIBSARNA <- buildAIBSARNA()
 ```
 
