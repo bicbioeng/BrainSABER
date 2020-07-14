@@ -12,8 +12,12 @@
 #' @return a list of correlation data frames and matrices, one list element for each sample
 #' 
 #' @import SummarizedExperiment
-#' @import tidyr
-#' @import purrr
+#' @importFrom purrr map
+#' @importFrom tibble tibble
+#' @importFrom tidyr nest
+#' @importFrom dplyr mutate
+#' @importFrom dplyr group_by
+#' @export
 
 calcDistance <- function(dataSet){
   
@@ -41,8 +45,8 @@ calcDistance <- function(dataSet){
   
   allenNested <- allenSummarized %>%
     group_by(allenMetaCollapsed) %>%
-    nest() %>%
-    mutate(allenMeanData = map(.x = data, .f = colSums))
+    tidyr::nest() %>%
+    mutate(allenMeanData = purrr::map(.x = data, .f = colSums))
   allenSubset <- matrix(unlist(allenNested$allenMeanData), byrow = F, nrow = nrow(allenMappedSubset),
                         dimnames = list(row = rownames(allenMappedSubset),
                                         col = allenNested$allenMetaCollapsed))
@@ -99,42 +103,4 @@ calcDistance <- function(dataSet){
   
   names(distances) <- colnames(mappedexprsData)
   distances
-}
-
-#' mapIDs
-#'
-#' Placeholder until I get docs done
-#' 
-#' 
-
-mapIDs <- function(dataSet, AIBSARNA){
-  
-  cs <- CellScabbard(exprsData = as.matrix(dataSet[,-1]),
-                     phenoData = data.frame(sample = colnames(dataSet[,-1]),
-                                            sample1 = colnames(dataSet[,-1])),
-                     featureData = data.frame(gene = dataSet[,1],
-                                              gene1 = dataSet[,1]),
-                     AIBSARNA = AIBSARNA, autoTrim = T)
-  
-  allenVariantGenes <- read.csv(file.path(system.file('variant_genes_list', package = "shinyBrainSABER"),
-                                          'allenVariantGenes.csv'), stringsAsFactors = F, header = T)[,2]
-  allenVariantGeneID <- rowData(AIBSARNA)@listData[AIBSARNAid(cs)][[1]][allenVariantGenes]
-  
-  cs <- cs[rowData(cs)$gene %in% allenVariantGeneID,]
-}
-
-
-#' Run shinyBrainSABER
-#'
-#' This is a wrapper function to run the Shiny application in the BrainSABER package.
-#' 
-#' @export
-
-runShinyBrainSaber <- function(){
-  appDir <- system.file("Shiny", package = "BrainSABER")
-  if (appDir == "") {
-    stop("Example directory not found. Try re-installing BrainSABER.",
-         call. = FALSE)
-  }
-  shiny::runApp(appDir, display.mode = "normal")
 }

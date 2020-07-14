@@ -5,11 +5,13 @@
 #' @import DT
 #' @import shinycssloaders
 #' @import plotly
-#' @importFrom ComplexHeatmap Heatmap
+#' @import ComplexHeatmap
 #' 
 
+library(shinydashboard)
 library(shinycssloaders)
 library(plotly)
+library(ComplexHeatmap)
 
 options(shiny.maxRequestSize=120*1024^2)
 
