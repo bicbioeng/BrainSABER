@@ -6,6 +6,16 @@
 \usage{
 mapIDs(dataSet, AIBSARNA)
 }
+\arguments{
+\item{dataSet}{a CellScabbard or SummarizedExperiment object containing
+a gene expression matrix along with phenotype and sample feature data}
+
+\item{AIBSARNA}{an instance of the AIBSARNA dataset}
+}
+\value{
+a CellScabbard object containing a subset of relevant genes from the
+Allen institute data
+}
 \description{
-placeholder
+mapIDs
 }

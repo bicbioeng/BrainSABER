@@ -12,6 +12,8 @@
 #' @return a list of correlation data frames and matrices, one list element for each sample
 #' 
 #' @import SummarizedExperiment
+#' @importFrom stats cor.test
+#' @importFrom utils data
 #' @importFrom purrr map
 #' @importFrom tibble tibble
 #' @importFrom tidyr nest
@@ -45,9 +47,9 @@ calcDistance <- function(dataSet){
   
   allenNested <- allenSummarized %>%
     group_by(allenMetaCollapsed) %>%
-    tidyr::nest() %>%
-    mutate(allenMeanData = purrr::map(.x = data, .f = colSums))
-  allenSubset <- matrix(unlist(allenNested$allenMeanData), byrow = F, nrow = nrow(allenMappedSubset),
+    nest() %>%
+    mutate(allenMeanData = map(.x = data, .f = colSums))
+  allenSubset <- matrix(unlist(allenNested$allenMeanData), byrow = FALSE, nrow = nrow(allenMappedSubset),
                         dimnames = list(row = rownames(allenMappedSubset),
                                         col = allenNested$allenMetaCollapsed))
   
@@ -82,7 +84,7 @@ calcDistance <- function(dataSet){
     })
     colnames(allenDistance) <- c('Cos', 'Tau', 'Tau pVal', 'Rho', 'Rho pVal')
     uniqueAllenColsMeta <- matrix(unlist(strsplit(allenNested$allenMetaCollapsed, "_")),
-                                  ncol = 2, byrow = T)
+                                  ncol = 2, byrow = TRUE)
     allenDistanceMeta <- cbind.data.frame(allenDistance, as.data.frame(uniqueAllenColsMeta))
     colnames(allenDistanceMeta)[6:7] <- c("structure_name", "age")
     #allenDistanceMeta <- allenDistanceMeta[,c(1:5, 9, 13)]

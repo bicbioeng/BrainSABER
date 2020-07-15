@@ -19,18 +19,28 @@ Depends: R (>= 4.0),
     SummarizedExperiment
 Imports: 
     data.table,
+    DT,
+    dplyr,
+    grDevices,
     lsa,
     methods,
-    S4Vectors,
+    plotly,
+    purrr,
+    shiny,
+    shinydashboard,
+    shinycssloaders,
+    stats,
+    tibble,
+    tidyr,
     utils,
-    BiocFileCache
+    BiocFileCache,
+    ComplexHeatmap,
+    S4Vectors
 RoxygenNote: 7.1.1
 biocViews: GeneExpression, Visualization, Sequencing
 VignetteBuilder: knitr
 Suggests:
     BiocStyle,
-    ComplexHeatmap,
     fastcluster,
     heatmaply,
-    knitr,
-    plotly
+    knitr
