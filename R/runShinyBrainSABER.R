@@ -1,6 +1,7 @@
 #' Run the shiny application for the BrainSABER package workflow.
 #' 
 #' @return NULL (Invisibly)
+#' @export
 #' 
 #' @examples 
 #' if (interactive()) {

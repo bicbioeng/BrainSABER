@@ -17,7 +17,7 @@ mapIDs <- function(dataSet, AIBSARNA){
                featureData = data.frame(gene = dataSet[,1],
                                         gene1 = dataSet[,1]),
                AIBSARNA = AIBSARNA, autoTrim = TRUE)
-  allenVariantGenesPath <- file.path(system.file("inst", package = "BrainSABER"),
+  allenVariantGenesPath <- file.path(system.file(package = "BrainSABER"),
                                      'variant_genes_list',
                                      'allenVariantGenes.csv')
   allenVariantGenes <- read.csv(allenVariantGenesPath, stringsAsFactors = FALSE, header = TRUE)[,2]
