@@ -6,8 +6,6 @@
 #' @import plotly
 #' @importFrom ComplexHeatmap Heatmap draw
 
-options(shiny.maxRequestSize=120*1024^2)
-
 # Define UI for application that draws a histogram
 sidebar <- dashboardSidebar(
   sidebarMenu(

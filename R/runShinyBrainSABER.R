@@ -19,6 +19,8 @@ runShinyBrainSaber <- function(){
   
   ui = shinyAppUI
   server= shinyAppServer
+  options(shiny.maxRequestSize=120*1024^2)
+  
   # Run the application
   shiny::shinyApp(ui = ui, server = server)
 }
