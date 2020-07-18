@@ -90,11 +90,11 @@ calcDistance <- function(dataSet){
     #allenDistanceMeta <- allenDistanceMeta[,c(1:5, 9, 13)]
     
     #Kendall's tau heatmap matrix
-    correlationMatrix <- matrix(0, ncol = length(ages), nrow = length(regions), dimnames = list(regions, ages))
+    correlationMatrix <- matrix(NA, ncol = length(ages), nrow = length(regions), dimnames = list(regions, ages))
     correlationMatrix[as.matrix(allenDistanceMeta[c("structure_name", "age")])] <- allenDistanceMeta[["Tau"]]
     
     #Spearman's rho heatmap matrix
-    scorrelationMatrix <- matrix(0, ncol = length(ages), nrow = length(regions), dimnames = list(regions, ages))
+    scorrelationMatrix <- matrix(NA, ncol = length(ages), nrow = length(regions), dimnames = list(regions, ages))
     scorrelationMatrix[as.matrix(allenDistanceMeta[c("structure_name", "age")])] <- allenDistanceMeta[["Rho"]]
     
     ######prepare output
