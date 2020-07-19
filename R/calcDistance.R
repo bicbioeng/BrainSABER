@@ -21,14 +21,16 @@
 #' @importFrom dplyr group_by
 #' @export
 
-calcDistance <- function(dataSet){
+calcDistance <- function(dataSet, AIBSARNA){
   
   mappedexprsData <- assay(dataSet)
   rownames(mappedexprsData) <- rowData(dataSet)$gene
   
   #subset Allen data to remove features not in gene list
-  allen <- assay(relevantGenes(dataSet))
-  rownames(allen) <- rowData(relevantGenes(dataSet))[AIBSARNAid(dataSet)][[1]]
+  #allen <- assay(relevantGenes(dataSet))
+  #rownames(allen) <- rowData(relevantGenes(dataSet))[AIBSARNAid(dataSet)][[1]]
+  allen <- assay(AIBSARNA)
+  rownames(allen) <- rowData(AIBSARNA)$ensembl_gene_id
   allenMappedSubset <- allen[rownames(mappedexprsData),]
   
   #set up cosine distance function

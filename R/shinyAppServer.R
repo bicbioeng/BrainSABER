@@ -68,7 +68,7 @@ shinyAppServer <- function(input, output) {
     if(!isTruthy(values$AIBSARNA) || !isTruthy(values$exprs)){
       return("Please upload AIBSARNA and dataset")
     } else {
-      values$distance <- calcDistance(dataSet = values$cs)
+      values$distance <- calcDistance(dataSet = values$cs, AIBSARNA = values$AIBSARNA)
       return("")
     }
   })
