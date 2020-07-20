@@ -88,17 +88,22 @@ getRelevantGenes <- function(data, dataSetId = NULL, AIBSARNA = NULL,
     relfd[[AIBSARNAid]] <- factor(relfd[[AIBSARNAid]], levels=unique(names(v)))
     relfd <- relfd[order(relfd[[AIBSARNAid]]), ]
     relfd$row_num <- factor(relfd$row_num, levels = unique(relfd$row_num))
+    
+    #order relexprs genes by dataset order
+    rownames(relexprs) <- rowData(AIBSARNA)[[AIBSARNAid]][vInd]
+    relexprs <- relexprs[as.character(relfd[[AIBSARNAid]]),]
+    
     # convert relexprs to data.frame and add a column to do factor manipulation
-    relexprs <- as.data.frame(relexprs)
-    row_num <- row.names(relexprs)
-    relexprs <- cbind(relexprs, row_num)
-    relexprs$row_num <- as.character(relexprs$row_num)
-    relexprs$row_num <- factor(relexprs$row_num,
-                                levels = trimws(as.character(relfd$row_num)))
-    relexprs <- relexprs[order(relexprs$row_num), ]
+    #relexprs <- as.data.frame(relexprs)
+    #row_num <- row.names(relexprs)
+    #relexprs <- cbind(relexprs, row_num)
+    #relexprs$row_num <- as.character(relexprs$row_num)
+    #relexprs$row_num <- factor(relexprs$row_num,
+    #                            levels = trimws(as.character(relfd$row_num)))
+    #relexprs <- relexprs[order(relexprs$row_num), ]
     # convert relexprs back to a matrix, remove the added column
-    lastcol <- length(relexprs[1,])
-    relexprs <- as.matrix(relexprs[,-lastcol])
+    #lastcol <- length(relexprs[1,])
+    #relexprs <- as.matrix(relexprs[,-lastcol])
     # put together SummarizedExperiment
     relevantGenes <- SummarizedExperiment(assays = SimpleList(relexprs),
         colData = colData(AIBSARNA), rowData = relfd)
