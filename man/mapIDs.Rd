@@ -2,13 +2,12 @@
 % Please edit documentation in R/mapIDs.R
 \name{mapIDs}
 \alias{mapIDs}
-\title{mapIDs}
+\title{Form CellScabbard object and identify relevant gene subset in Shiny App}
 \usage{
 mapIDs(dataSet, AIBSARNA)
 }
 \arguments{
-\item{dataSet}{a CellScabbard or SummarizedExperiment object containing
-a gene expression matrix along with phenotype and sample feature data}
+\item{dataSet}{a dataframe containing ENSEMBL gene ids and a gene expression matrix}
 
 \item{AIBSARNA}{an instance of the AIBSARNA dataset}
 }
@@ -17,5 +16,7 @@ a CellScabbard object containing a subset of relevant genes from the
 Allen institute data
 }
 \description{
-mapIDs
+This function takes a dataframe read in from a csv file with the first column
+representing ENSEMBL gene id and subsequent columns representing a normalized
+gene expression matrix with one column for each sample and one row for each gene.
 }

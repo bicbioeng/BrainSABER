@@ -1,7 +1,10 @@
-#' mapIDs
+#' Form CellScabbard object and identify relevant gene subset in Shiny App
+#' 
+#' This function takes a dataframe read in from a csv file with the first column
+#' representing ENSEMBL gene id and subsequent columns representing a normalized
+#' gene expression matrix with one column for each sample and one row for each gene.
 #'
-#' @param dataSet a CellScabbard or SummarizedExperiment object containing
-#' a gene expression matrix along with phenotype and sample feature data
+#' @param dataSet a dataframe containing ENSEMBL gene ids and a gene expression matrix
 #' @param AIBSARNA an instance of the AIBSARNA dataset
 #' 
 #' @return a CellScabbard object containing a subset of relevant genes from the

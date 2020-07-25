@@ -4,7 +4,7 @@
 \alias{calcDistance}
 \title{Calculate Correlation Between User Dataset and Allen Brain Institute in Shiny App}
 \usage{
-calcDistance(dataSet)
+calcDistance(dataSet, AIBSARNA)
 }
 \arguments{
 \item{dataSet}{a CellScabbard object with non-empty relevantGenes slot}

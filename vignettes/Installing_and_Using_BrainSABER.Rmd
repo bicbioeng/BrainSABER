@@ -22,14 +22,18 @@ RNA sequencing (RNA-Seq) data resource for studying
 transcriptional mechanisms involved in human brain 
 development known as BrainSpan. This resource serves as an 
 additional control in research involving RNA sequencing of 
-human brain tissue. BrainSABER facilitates comparisons of user data
-with the various developmental stages and brain structures found in
-the BrainSpan atlas. It extends the SummarizedExperiment class into a
-self-validating container for user data
-and produces similarity matrices containing samples of the user’s data
-analyzed against each sample in the BrainSpan database. These matrices 
-are presented as dynamic heat maps, and include both cosine and Euclidean 
-similarity methods.
+human brain tissue and may also prove useful in the study of 
+pediatric neurological diseases including cancers and neurodevelopmental
+diseases. BrainSABER facilitates comparisons of user data
+with developmental ages ranging from 8 weeks post conception to 40
+years of age across the 16 cortical and subcortical brain regions found in
+the BrainSpan atlas. The BrainScabbard class extends the SummarizedExperiment
+class into a self-validating container for user data and produces similarity 
+matrices containing samples of the user’s data
+analyzed against each age and region phenotype in the BrainSpan database. These matrices 
+are presented as dynamic heat maps, and include correlation, cosine, and Euclidean 
+similarity metrics. BrainSABER is implemented both as a flexible command-line
+workflow as well as a Shiny application. 
 
 # Installing BrainSABER
 
@@ -68,6 +72,42 @@ Once AIBSARNA has been build, this function does not need to be run again for
 subsequent work unless the AIBSARNA variable is removed or a new R session is 
 started.  If desired, AIBSARNA can be saved as an R data object and reloaded 
 for future work without the need to rebuild it.
+
+# The Shiny BrainSABER Application
+
+The Shiny application is designed to compare the Allen Institute data with a user dataset for the 2000 genes that have the highest stabilized variance across the Allen Brain Institute dataset. The inputs for the Shiny application are the AIBSARNA dataset and the user dataset as a csv.
+
+The AIBSARNA dataset can be downloaded in-app each time the application is opened or loaded from a saved Rdata file. This latter method is recommended if the user intends to run the application multiple times.
+
+```{r, saveAIB, eval = F}
+# Save AIBSARNA object to load in shinyBrainSABER
+save(AIBSARNA, file = "AIBSARNA.Rdata")
+```
+
+User data will be loaded in-app from a csv file of the user's gene expression matrix, where columns are samples and rows are genes. The first column in the csv file should be the ENSEMBL gene id and the first row should indicate sample names. 
+
+Below, an example csv is prepared from a subset of the BrainSpan dataset. 
+
+
+```{r, shinySample, eval = F}
+# Set the RNG seed for repeatable results
+set.seed(8) 
+
+# Sample AIBSARNA assay
+toy <- AIBSARNA[,sample(1:ncol(AIBSARNA), 5)]
+
+# Prepare assay for export
+toy_exprs <- assay(toy)
+rownames(toy_exprs) <- rowData(toy)$ensembl_gene_id
+
+#write csv
+write.csv(toy_exprs, "toy_exprs.csv")
+```
+
+Once inputs are prepared, the application can be run using the **runShinyBrainSaber()** function. Multiple datasets can be run in the same application session without redownloading the AIBSARNA object.
+
+*Note: To see the dynamic heatmaps, the application must be run in a browser. After the application is open, click on the 'Open in Browser' button under the window header and above the shinyBrainSABER name.*
+
 
 # The BrainSABER Workflow
 
