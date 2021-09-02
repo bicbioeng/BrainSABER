@@ -85,9 +85,9 @@ getRelevantGenes <- function(data, dataSetId = NULL, AIBSARNA = NULL,
     relfd <- as.data.frame(apply(relfd, 2, function(x) {x[drop = TRUE]}))
     relexprs <- assay(AIBSARNA)[vInd,] # subset exprs
     # sort relfd and relexprs so the genes are in the same order as dataSet
-    relfd[[AIBSARNAid]] <- factor(relfd[[AIBSARNAid]], levels=unique(names(v)))
+    #relfd[[AIBSARNAid]] <- factor(relfd[[AIBSARNAid]], levels=unique(names(v)))
     relfd <- relfd[order(relfd[[AIBSARNAid]]), ]
-    relfd$row_num <- factor(relfd$row_num, levels = unique(relfd$row_num))
+    #relfd$row_num <- factor(relfd$row_num, levels = unique(relfd$row_num))
     # convert relexprs to data.frame and add a column to do factor manipulation
     relexprs <- as.data.frame(relexprs)
     row_num <- row.names(relexprs)
@@ -100,7 +100,8 @@ getRelevantGenes <- function(data, dataSetId = NULL, AIBSARNA = NULL,
     lastcol <- length(relexprs[1,])
     relexprs <- as.matrix(relexprs[,-lastcol])
     # put together SummarizedExperiment
-    relevantGenes <- SummarizedExperiment(assays = SimpleList(relexprs),
+    #relevantGenes <- SummarizedExperiment(assays = SimpleList(relexprs),
+    relevantGenes <- SummarizedExperiment(assays = relexprs,
         colData = colData(AIBSARNA), rowData = relfd)
     return(relevantGenes)
 }

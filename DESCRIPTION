@@ -1,9 +1,16 @@
 Package: BrainSABER
 Type: Package
 Title: Brain Span Atlas in Biobase Expressionset R toolset
-Version: 1.3.0
-Author: Carrie Minette and Evgeni Radichev
-Maintainer: USD Biomedical Engineering <bicbioeng@gmail.com>
+Version: 1.3.1
+Authors@R: c(person("Carrie","Minette",
+                  email="carrie.minette@coyotes.usd.edu",
+                  role="aut"),
+           person("Evgeni","Radichev",
+                  email="evgeni.radichev@usd.edu",
+                  role="aut"),
+           person("USD","Biomedical Engineering",
+                  email="bicbioeng@gmail.com",
+                  role=c("aut","cre")))
 Description:  The Allen Institute for Brain Science provides an 
     RNA sequencing (RNA-Seq) data resource for studying 
     transcriptional mechanisms involved in human brain 
@@ -14,7 +21,7 @@ Description:  The Allen Institute for Brain Science provides an
     for user data.
 License: Artistic-2.0
 Encoding: UTF-8
-Depends: R (>= 4.0),
+Depends: R (>= 4.1.0),
     biomaRt,
     SummarizedExperiment
 Imports: 
@@ -23,8 +30,9 @@ Imports:
     methods,
     S4Vectors,
     utils,
-    BiocFileCache
-RoxygenNote: 7.1.0
+    BiocFileCache,
+    shiny
+RoxygenNote: 7.1.1
 biocViews: GeneExpression, Visualization, Sequencing
 VignetteBuilder: knitr
 Suggests:
@@ -33,4 +41,5 @@ Suggests:
     fastcluster,
     heatmaply,
     knitr,
-    plotly
+    plotly,
+    rmarkdown

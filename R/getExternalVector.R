@@ -36,7 +36,8 @@ getExternalVector <- function(dataSet, index = 1, AIBSARNA = NULL, dataSetId,
                             "refseq_ids")) {
     # check for proper data input
     if(!is(dataSet,"SummarizedExperiment")){
-        stop("dataSet must be a CellScabbard or other SummarizedExperiment object")
+        stop("dataSet must be a CellScabbard or other SummarizedExperiment 
+             object")
     }
     if(!is.character(dataSetId) | !is.character(AIBSARNAid)){
         stop("dataSetId and AIBSARNAid must be a character")
