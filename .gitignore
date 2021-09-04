@@ -8,10 +8,6 @@ packrat/lib*/
 vignettes/toy_expression_matrix.csv
 vignettes/toy_gene_identification_data.csv
 vignettes/toy_sample_information_data.csv
-inst/shiny-examples/shiny_brainsaber/server.R
-inst/shiny-examples/shiny_brainsaber/ui.R
-man/runShinyBrainSABER.Rd
-R/runShinyBrainSABER.R
 AIBSARNA_0.1.1.1000.tar.gz
 Installing_and_Using_BrainSABER.html
 BrainSABER_0.0.2.tar.gz
