@@ -81,8 +81,8 @@ buildAIBSARNA <- function(mini = FALSE){
                    header=TRUE, sep=",", stringsAsFactors = FALSE)
     rownames(fd) <- rownames(exprs)
     #set up bioMaRt
-    ensembl <- biomaRt::useEnsembl("ensembl", dataset = "hsapiens_gene_ensembl",
-                                version = 67)
+    ensembl <- biomaRt::useEnsembl("ensembl", dataset = "hsapiens_gene_ensembl")
+                                #version = 67)
     #get ensembl.ids from AIBSARNA
     ensemblIds <- as.character(fd$ensembl_gene_id)
     #get map of applicable refseq_mrna ids

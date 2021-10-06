@@ -1,7 +1,7 @@
 Package: BrainSABER
 Type: Package
 Title: Brain Span Atlas in Biobase Expressionset R toolset
-Version: 1.3.2
+Version: 1.3.3
 Authors@R: c(person("Carrie","Minette",
                   email="carrie.minette@coyotes.usd.edu",
                   role="aut"),
