@@ -46,7 +46,7 @@
 #' myTrimmedGeneSet <- getTrimmedExternalSet(myGeneSet,
 #'     dataSetId = "gene_symbol", AIBSARNA, AIBSARNAid = "gene_symbol")
 
-getTrimmedExternalSet <- function(dataSet, dataSetId = "gene_symbol",
+getTrimmedExternalSet <- function(dataSet, dataSetId = NULL,
     AIBSARNA = NULL, AIBSARNAid = c("gene_id", "ensembl_gene_id",
     "gene_symbol", "entrez_id", "refseq_ids")) {
 
@@ -61,25 +61,12 @@ getTrimmedExternalSet <- function(dataSet, dataSetId = "gene_symbol",
     # get a trimmed vector to faciliate things
     v <- getExternalVector(dataSet = dataSet, index = 1, AIBSARNA,
                 dataSetId = dataSetId, AIBSARNAid = AIBSARNAid)
-    vInd <- which(match(rowData(dataSet)[[dataSetId]],
-                        names(v), nomatch = 0, incomparables = c(NA, "")) > 0)
-    # subset feature data
-    relfd <- rowData(dataSet)[vInd,]
-    # get index(es) of any duplicates
-    dup <- which(duplicated(relfd[[dataSetId]]), arr.ind = TRUE)
-    # if there are duplicates, remove them from vInd and regenerate relfd
-    if (length(dup) > 0) {
-        vInd <- vInd[-dup]
-        relfd <- rowData(dataSet)[vInd,]
-    }
-    # remove any unused factor levels
-    relfd <- as.data.frame(apply(relfd, 2, function(x) {x[drop = TRUE]}))
-    # convert to Annotated Data Frame
-    # subset exprs
-    relexprs <- assay(dataSet)[vInd,]
-    # put together SummarizedExperiment
-    relevantGenes <- SummarizedExperiment(assays = SimpleList(relexprs),
-                                          colData = colData(dataSet),
-                                          rowData = relfd)
+    
+    # match AIBSARNA names to dataSet names
+    vInd <- match(names(v), rowData(dataSet)[[dataSetId]])
+    
+    # subset dataset
+    relevantGenes = dataSet[vInd,]
+
     return(relevantGenes)
 }

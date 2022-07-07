@@ -72,36 +72,12 @@ getRelevantGenes <- function(data, dataSetId = NULL, AIBSARNA = NULL,
     }
     #relevantGenes <- subset of AIBSARNA containing only genes specified in v
     # get indices of genes common to v and AIBSARNA
-    vInd <- which(match(rowData(AIBSARNA)[[AIBSARNAid]], 
-                        names(v), nomatch = 0, incomparables = c(NA, "")) > 0)
+    Ind <- match(names(v), rowData(AIBSARNA)[[AIBSARNAid]])
+    vInd = unique(Ind[!is.na(Ind)])
+    
+    relevantGenes = AIBSARNA[vInd,]
     relfd <- rowData(AIBSARNA)[vInd,] # subset feature data
-    # get indices of any duplicates, remove them from vInd and regenerate relfd
-    dup <- which(duplicated(relfd[[AIBSARNAid]]), arr.ind = TRUE)
-    if (length(dup) > 0) {
-        vInd <- vInd[-dup]
-        relfd <- rowData(AIBSARNA)[vInd,]
-    }
-    # remove any unused factor levels
-    relfd <- as.data.frame(apply(relfd, 2, function(x) {x[drop = TRUE]}))
-    relexprs <- assay(AIBSARNA)[vInd,] # subset exprs
-    # sort relfd and relexprs so the genes are in the same order as dataSet
-    #relfd[[AIBSARNAid]] <- factor(relfd[[AIBSARNAid]], levels=unique(names(v)))
-    relfd <- relfd[order(relfd[[AIBSARNAid]]), ]
-    #relfd$row_num <- factor(relfd$row_num, levels = unique(relfd$row_num))
-    # convert relexprs to data.frame and add a column to do factor manipulation
-    relexprs <- as.data.frame(relexprs)
-    row_num <- row.names(relexprs)
-    relexprs <- cbind(relexprs, row_num)
-    relexprs$row_num <- as.character(relexprs$row_num)
-    relexprs$row_num <- factor(relexprs$row_num,
-                                levels = trimws(as.character(relfd$row_num)))
-    relexprs <- relexprs[order(relexprs$row_num), ]
-    # convert relexprs back to a matrix, remove the added column
-    lastcol <- length(relexprs[1,])
-    relexprs <- as.matrix(relexprs[,-lastcol])
-    # put together SummarizedExperiment
-    #relevantGenes <- SummarizedExperiment(assays = SimpleList(relexprs),
-    relevantGenes <- SummarizedExperiment(assays = relexprs,
-        colData = colData(AIBSARNA), rowData = relfd)
+    
+    
     return(relevantGenes)
 }

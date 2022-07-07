@@ -54,18 +54,11 @@ getExternalVector <- function(dataSet, index = 1, AIBSARNA = NULL, dataSetId,
     }
     v <- assay(dataSet)[, index]
     names(v) <- as.character(rowData(dataSet)[[dataSetId]])
-    # get gene identifiers common to v and AIBSARNA
-    matchIdx <- which(match(rowData(AIBSARNA)[[AIBSARNAid]], 
-                    names(v), nomatch = 0, incomparables = c(NA, "")) > 0)
-    vInAIBSARNA <- 
-        as.character(rowData(AIBSARNA)[[AIBSARNAid]][matchIdx])
-    # get indices of v that are present in vInAIBSARNA
-    genesToKeep <- which(match(names(v), vInAIBSARNA, nomatch = 0,
-                         incomparables = c(NA, "")) > 0)
-    # update v to only include comparable genes (genes in vInAIBSARNA)
-    v <- v[genesToKeep]
-    # remove any duplicate genes
-    genesToKeep <- unique(names(v))
-    v <- v[genesToKeep]
+    
+    genesToKeep = rowData(AIBSARNA)[[AIBSARNAid]][match(names(v), rowData(AIBSARNA)[[AIBSARNAid]])]
+    uniqueGTK = unique(genesToKeep[!is.na(genesToKeep)])
+    
+    v <- v[uniqueGTK]
+    
     return(v)
 }

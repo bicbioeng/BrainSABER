@@ -32,6 +32,7 @@
 #' @aliases CellScabbard-class
 #' @exportClass CellScabbard
 #' @import SummarizedExperiment
+#' @import data.table
 .CellScabbard <- 
     setClass( "CellScabbard",
             contains="SummarizedExperiment",
@@ -98,16 +99,16 @@ CellScabbard <- function( exprsData,
     if(autoTrim) {
         # find optimal id pairing
         df <- as.data.frame(CJ(
-            dataSetId = colnames(as.data.frame(rowData(se))),
+            dataSetId = colnames(as.data.frame(featureData)),
             AIBSARNAid = colnames(as.data.frame(rowData(AIBSARNA)))
         ))
-        scores <- rep_len(0, length.out = length(df$dataSetId))
+        scores <- rep_len(NA, length.out = length(df$dataSetId))
         df <- cbind(df, scores)
-        dfidx <- 0
+        dfidx <- 1
         # get the lengths of results of getExternalVector to see how many genes
         # match for each combination
-        for (i in colnames(rowData(se))) {
-            for (j in colnames(rowData(AIBSARNA))) {
+        for (i in unique(df$dataSetId)) {
+            for (j in unique(df$AIBSARNAid)) {
                 if (j != "row_num") {
                     df$scores[dfidx] <-
                         length(
@@ -120,6 +121,7 @@ CellScabbard <- function( exprsData,
                             )
                         )
                 }
+              dfidx = dfidx+1
             }
         }
         df <- df[order(df$scores, decreasing = TRUE),]
